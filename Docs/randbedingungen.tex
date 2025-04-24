@@ -2,6 +2,54 @@
 
 \section{Technische Randbedingungen}
 
+Das verteilte Steuerungssystem unterliegt mehreren festgelegten technischen Rahmenbedingungen, die den Entwicklungs- und Implementierungsspielraum einschränken. Diese Bedingungen sind im Folgenden aufgeführt:
+
+\begin{itemize}
+    \item \textbf{Hardwareplattform:}  
+    Das System basiert auf einem ITS-Board, z. B. dem STM32F4. Die verfügbaren Schnittstellen (UART, I\textsuperscript{2}C, SPI), Speichergrenzen und Taktfrequenzen sind dabei zu berücksichtigen. Das Gesamtsystem besteht aus einem zentralen Administrator-Knoten sowie einem autonomen Roboter.
+
+    \item \textbf{Testumgebung:}  
+    Der reale Testbereich befindet sich im Raum BT7 R7.65. Die Steuerung und Navigation des Roboters müssen innerhalb der räumlich definierten Grenzen erfolgen. Die dort vorhandene WLAN-Infrastruktur kann zur Netzwerkkommunikation verwendet werden.
+
+    \item \textbf{Programmiersprachen:}  
+    Für die Umsetzung des Systems kommen zwei Programmiersprachen zum Einsatz:
+    \begin{itemize}
+        \item \textbf{C:} Für die Embedded-Programmierung auf dem ITS-Board. Dabei wird die STM32 HAL (Hardware Abstraction Layer) genutzt.
+        \item \textbf{Java:} Für die netzwerkbasierte Steuerung sowie die Anbindung an eine zentrale Cloud-Komponente. Auch Visualisierungstools können in Java realisiert werden.
+    \end{itemize}
+\end{itemize}
+
 \section{Organisatorische Randbedingungen}
 
+\begin{itemize}
+    \item \textbf{Jour Fixe:}  
+    Wöchentliche Abstimmung findet donnerstags statt.
+
+    \item \textbf{Projektlaufzeit:}  
+    Das Projekt erstreckt sich vom 24.04.2025 bis zum 03.07.2025.
+    \item \textbf{Versionsverwaltung:}  
+    Die Entwicklung erfolgt zentral über ein Git-Repository in GitLab. Alle Teammitglieder arbeiten nach einem gemeinsamen Branch-Modell (z. B. Feature-Branches mit Pull Requests). Die Commit-Historie dient als nachvollziehbare Projektdokumentation.
+
+    \item \textbf{Teamstruktur:}  
+    Das Projektteam besteht aus vier Mitgliedern mit folgenden Aufgabenbereichen:
+    \begin{itemize}
+        \item \textbf{Jannik Schön:} Dokumentationsvorbereitung, z. B. gemäß arc42-Vorlage
+        \item \textbf{Marc Siekmann:} Ausarbeitung des Business Requirements Documents (BRD)
+        \item \textbf{Phillip Patt:} Vorbereitung und Aufbau des Kransystems
+        \item \textbf{Manh-An David Dao:} Aufbau der DevOps-Toolchain (Sprache, Plattform, Repository, etc.)
+    \end{itemize}
+
+    \item \textbf{Ressourcenverwendung:}
+    \begin{itemize}
+        \item \textbf{Versionsverwaltung:} Nutzung eines gemeinsamen Git-Repositories (z. B. GitHub)
+        \item \textbf{Infrastruktur:} Verwendung des Raums BT7 R7.65 sowie der bereitgestellten ITS-Boards
+        \item \textbf{Dokumentation:} Erstellung der Systemdokumentation nach dem \textit{arc42}-Template
+    \end{itemize}
+\end{itemize}
+
 \section{Konventionen}
+\begin{itemize}
+     \item \textbf{Kommunikation im Team:}  
+    Die projektinterne Kommunikation erfolgt primär über \textbf{Microsoft Teams}. Dort werden sowohl kurze Abstimmungen als auch Besprechungen koordiniert.
+
+\end{itemize}
