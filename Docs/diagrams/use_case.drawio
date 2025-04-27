@@ -1,0 +1,58 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0" version="26.2.13">
+  <diagram name="Seite-1" id="2WTPporhcF-KrZm2_1vh">
+    <mxGraphModel dx="1022" dy="808" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-1" value="uc: Projekt Verteile Systeme" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" vertex="1" parent="1">
+          <mxGeometry x="60" y="50" width="530" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-2" value="System" style="shape=rect;html=1;verticalAlign=top;fontStyle=1;whiteSpace=wrap;align=center;" vertex="1" parent="Eat8XKyJZQClgKLcrNQC-1">
+          <mxGeometry x="97" y="70" width="393" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-10" value="Roboster steuern " style="ellipse;html=1;whiteSpace=wrap;" vertex="1" parent="Eat8XKyJZQClgKLcrNQC-1">
+          <mxGeometry x="366.5" y="180" width="70" height="47.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-11" value="überwachen auf Erreichbarkeit" style="ellipse;html=1;whiteSpace=wrap;" vertex="1" parent="Eat8XKyJZQClgKLcrNQC-1">
+          <mxGeometry x="350" y="260" width="103" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="Eat8XKyJZQClgKLcrNQC-1" target="Eat8XKyJZQClgKLcrNQC-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="210" y="154" />
+              <mxPoint x="210" y="154" />
+            </Array>
+            <mxPoint x="60" y="154" as="sourcePoint" />
+            <mxPoint x="239.99999999999977" y="146" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-5" value="auswählen eines Roboters" style="ellipse;html=1;whiteSpace=wrap;" vertex="1" parent="Eat8XKyJZQClgKLcrNQC-1">
+          <mxGeometry x="240" y="130" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-4" value="Betreiber" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="Eat8XKyJZQClgKLcrNQC-1">
+          <mxGeometry x="30" y="120" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-6" value="bestätigen" style="ellipse;html=1;whiteSpace=wrap;" vertex="1" parent="Eat8XKyJZQClgKLcrNQC-1">
+          <mxGeometry x="150" y="240" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-7" value="Steuerungsbefehl&lt;div&gt;senden&lt;/div&gt;" style="ellipse;html=1;whiteSpace=wrap;" vertex="1" parent="Eat8XKyJZQClgKLcrNQC-1">
+          <mxGeometry x="160" y="320" width="140" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-8" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=0.584;exitY=-0.1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.622;entryY=1.031;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="Eat8XKyJZQClgKLcrNQC-1" source="Eat8XKyJZQClgKLcrNQC-7" target="Eat8XKyJZQClgKLcrNQC-5">
+          <mxGeometry x="0.2522" y="-29" width="160" relative="1" as="geometry">
+            <mxPoint x="260" y="250" as="sourcePoint" />
+            <mxPoint x="420" y="250" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Eat8XKyJZQClgKLcrNQC-9" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0.321;entryY=1.003;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="Eat8XKyJZQClgKLcrNQC-1" source="Eat8XKyJZQClgKLcrNQC-6" target="Eat8XKyJZQClgKLcrNQC-5">
+          <mxGeometry x="-0.2947" y="25" width="160" relative="1" as="geometry">
+            <mxPoint x="290" y="230" as="sourcePoint" />
+            <mxPoint x="450" y="230" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
