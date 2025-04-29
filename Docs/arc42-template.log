@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.2.6)  27 APR 2025 16:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.2.6)  29 APR 2025 18:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1278,17 +1278,7 @@ File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count353
 \l__pdf_internal_box=\box67
 )
-(./arc42-template.aux
-
-LaTeX Warning: Label `tab:qualitaetsziele' multiply defined.
-
-
-LaTeX Warning: Label `tab:qualitaetsziele' multiply defined.
-
-
-LaTeX Warning: Label `tab:qualitaetsziele' multiply defined.
-
-)
+(./arc42-template.aux)
 \openout1 = `arc42-template.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
@@ -1309,7 +1299,8 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
- (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count354
 \scratchdimen=\dimen186
@@ -1437,46 +1428,62 @@ Class scrreprt Warning: \float@addtolists detected!
 (scrreprt)              a package that still implements the
 (scrreprt)              deprecated \float@addtolist interface.
 
-<diagrams/use_case.png, id=118, 532.99126pt x 462.72874pt>
-File: diagrams/use_case.png Graphic file (type png)
-<use diagrams/use_case.png>
-Package pdftex.def Info: diagrams/use_case.png  used on input line 12.
-(pdftex.def)             Requested size: 266.49498pt x 231.3638pt.
+
+Underfull \hbox (badness 2644) in paragraph at lines 29--31
+[]|\T1/lmr/m/n/10.95 Das Sys-tem ist über dem
+ []
+
+
+Underfull \hbox (badness 4543) in paragraph at lines 29--31
+\T1/lmr/m/n/10.95 ge-sam-ten Ab-nah-me-zeit-raum
+ []
+
+
+Underfull \hbox (badness 1521) in paragraph at lines 34--36
+\T1/lmr/m/n/10.95 bo-ter hin-zu-ge-fügt und ent-
+ []
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [4
 
- <./diagrams/use_case.png>] [5]
-Underfull \hbox (badness 7649) in paragraph at lines 93--93
+] [5]
+Underfull \hbox (badness 7649) in paragraph at lines 104--104
 []|\T1/lmr/m/n/10.95 Räumliche Ska-lier-bar-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--95
+Underfull \hbox (badness 10000) in paragraph at lines 108--108
 []|\T1/lmr/m/n/10.95 Administrative-
  []
 
 [6
 
 ]
-Overfull \hbox (1.80281pt too wide) in paragraph at lines 113--113
+Overfull \hbox (1.80281pt too wide) in paragraph at lines 129--129
 []|\T1/lmr/m/n/10.95 Replikationstransparenz| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--116
+Underfull \hbox (badness 10000) in paragraph at lines 135--135
 []|\T1/lmr/m/n/10.95 Skalierbarkeits-
  []
 
 [7]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-33.
+52.
  (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)) (./randbedingungen.tex [8
+)
+<diagrams/use_case.png, id=150, 532.99126pt x 462.72874pt>
+File: diagrams/use_case.png Graphic file (type png)
+<use diagrams/use_case.png>
+Package pdftex.def Info: diagrams/use_case.png  used on input line 164.
+(pdftex.def)             Requested size: 266.49498pt x 231.3638pt.
+) (./randbedingungen.tex [8
 
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}]
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc} <./diagrams/use_case.png>]
 chapter 2.
 ) (./kontextabgrenzung.tex [9
 
@@ -1486,25 +1493,34 @@ chapter 3.
 
 ]
 chapter 4.
-) (./bausteinsicht.tex [11
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+2.
+(/usr/share/texmf/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Underfull \hbox (badness 10000) in paragraph at lines 20--25
 
-]
+ []
+
+[11
+
+]) (./bausteinsicht.tex [12]
 chapter 5.
-) (./laufzeitsicht.tex [12
+) (./laufzeitsicht.tex [13
 
 ]
 chapter 6.
-) (./verteilungssicht.tex [13
+) (./verteilungssicht.tex [14
 
 ]
 chapter 7.
-) (./konzepte.tex [14
+) (./konzepte.tex [15
 
 ]
 chapter 8.
-[15
+[16
 
-] [16] [17]
+] [17] [18]
 Overfull \hbox (7.87697pt too wide) in paragraph at lines 122--123
 \T1/lmr/m/n/10.95 ne-ben-läu-fi-ger Sys-te-me sind vie-le tech-ni-sche De-tai-l
 a-spek-te zu be-rück-sich-ti-gen (Adress-
@@ -1516,13 +1532,13 @@ Overfull \hbox (2.30981pt too wide) in paragraph at lines 132--133
 r-bei-te-ten Da-ten über-
  []
 
-[18] [19]) (./entwurfsentscheidungen.tex [20]
+[19] [20]) (./entwurfsentscheidungen.tex [21]
 chapter 9.
-) (./qualitaetsszenarien.tex [21
+) (./qualitaetsszenarien.tex [22
 
 ]
 chapter 10.
-) (./risiken.tex [22
+) (./risiken.tex [23
 
 ]
 chapter 11.
@@ -1531,7 +1547,7 @@ No file arc42-template.gls.
 \@gls@deffile=\write7
 \openout7 = `arc42-template.glsdefs'.
 
-)) [23
+)) [24
 
 ] 
 enddocument/afterlastpage: lastpage setting LastPage.
@@ -1540,19 +1556,15 @@ enddocument/afterlastpage: lastpage setting LastPage.
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
-
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `arc42-template.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 26772 strings out of 474222
- 498195 string characters out of 5748734
+ 26829 strings out of 474222
+ 499101 string characters out of 5748734
  1941975 words of memory out of 5000000
- 48465 multiletter control sequences out of 15000+600000
- 618037 words of font info for 79 fonts, out of 8000000 for 9000
+ 48513 multiletter control sequences out of 15000+600000
+ 618356 words of font info for 80 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  110i,20n,107p,10909b,820s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
@@ -1562,11 +1574,12 @@ ut does not exist, replaced by a fixed one
 </usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type
 1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/
 share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/publi
-c/lm/lmss10.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on arc42-template.pdf (23 pages, 219634 bytes).
+c/lm/lmss10.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/shar
+e/texmf/fonts/type1/public/lm/lmtt10.pfb>
+Output written on arc42-template.pdf (24 pages, 251467 bytes).
 PDF statistics:
- 429 PDF objects out of 1000 (max. 8388607)
- 385 compressed objects within 4 object streams
- 82 named destinations out of 1000 (max. 500000)
+ 446 PDF objects out of 1000 (max. 8388607)
+ 399 compressed objects within 4 object streams
+ 87 named destinations out of 1000 (max. 500000)
  374 words of extra memory for PDF output out of 10000 (max. 10000000)
 
