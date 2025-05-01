@@ -17,31 +17,37 @@
 \contentsline {chapter}{\numberline {4}Lösungsstrategie}{11}{chapter.4}%
 \contentsline {chapter}{\numberline {5}Bausteinsicht}{13}{chapter.5}%
 \contentsline {chapter}{\numberline {6}Laufzeitsicht}{14}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Einleitung - Was?}{14}{section.6.1}%
 \contentsline {chapter}{\numberline {7}Verteilungssicht}{15}{chapter.7}%
 \contentsline {chapter}{\numberline {8}Konzepte}{16}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Fachliche Strukturen (Domäne)}{16}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Typische Muster und Strukturen}{16}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Ablaufsteuerung}{16}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Ausnahme- und Fehlerbehandlung}{16}{section.8.4}%
-\contentsline {section}{\numberline {8.5}Batchverarbeitung}{17}{section.8.5}%
-\contentsline {section}{\numberline {8.6}Bedienoberfläche}{17}{section.8.6}%
-\contentsline {section}{\numberline {8.7}Ergonomie}{17}{section.8.7}%
-\contentsline {section}{\numberline {8.8}Geschäftsregeln}{17}{section.8.8}%
-\contentsline {section}{\numberline {8.9}Hochverfügbarkeit}{17}{section.8.9}%
-\contentsline {section}{\numberline {8.10}Internationalisierung}{17}{section.8.10}%
-\contentsline {section}{\numberline {8.11}Kommunikation, Integration}{17}{section.8.11}%
-\contentsline {section}{\numberline {8.12}Konfiguration}{18}{section.8.12}%
-\contentsline {section}{\numberline {8.13}Logging, Protokollierung}{18}{section.8.13}%
-\contentsline {section}{\numberline {8.14}Management und Administrierbarkeit}{18}{section.8.14}%
-\contentsline {section}{\numberline {8.15}Migration}{19}{section.8.15}%
-\contentsline {section}{\numberline {8.16}Parallelisierung / Nebenläufigkeit}{19}{section.8.16}%
-\contentsline {section}{\numberline {8.17}Persistenz}{19}{section.8.17}%
-\contentsline {section}{\numberline {8.18}Plausibilisierung und Validierung}{20}{section.8.18}%
-\contentsline {section}{\numberline {8.19}Sessionbehandlung}{20}{section.8.19}%
-\contentsline {section}{\numberline {8.20}Sicherheit}{20}{section.8.20}%
-\contentsline {section}{\numberline {8.21}Skalierung / Clusterung}{20}{section.8.21}%
-\contentsline {section}{\numberline {8.22}Transaktionsbehandlung}{20}{section.8.22}%
-\contentsline {section}{\numberline {8.23}Verteilung}{21}{section.8.23}%
+\contentsline {section}{\numberline {8.1}Kommunikation}{16}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Offenheit}{16}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Skalierbarkeit}{16}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Verteilungstranzparenzen}{16}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Kohärenz}{16}{section.8.5}%
+\contentsline {section}{\numberline {8.6}Sicherheit (Safety)}{16}{section.8.6}%
+\contentsline {section}{\numberline {8.7}GUI}{16}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Fachliche Strukturen (Domäne)}{16}{section.8.8}%
+\contentsline {section}{\numberline {8.9}Typische Muster und Strukturen}{16}{section.8.9}%
+\contentsline {section}{\numberline {8.10}Ablaufsteuerung}{17}{section.8.10}%
+\contentsline {section}{\numberline {8.11}Ausnahme- und Fehlerbehandlung}{17}{section.8.11}%
+\contentsline {section}{\numberline {8.12}Batchverarbeitung}{17}{section.8.12}%
+\contentsline {section}{\numberline {8.13}Bedienoberfläche}{17}{section.8.13}%
+\contentsline {section}{\numberline {8.14}Ergonomie}{17}{section.8.14}%
+\contentsline {section}{\numberline {8.15}Hochverfügbarkeit}{17}{section.8.15}%
+\contentsline {section}{\numberline {8.16}Kommunikation, Integration}{18}{section.8.16}%
+\contentsline {section}{\numberline {8.17}Konfiguration}{18}{section.8.17}%
+\contentsline {section}{\numberline {8.18}Logging, Protokollierung}{18}{section.8.18}%
+\contentsline {section}{\numberline {8.19}Management und Administrierbarkeit}{18}{section.8.19}%
+\contentsline {section}{\numberline {8.20}Migration}{19}{section.8.20}%
+\contentsline {section}{\numberline {8.21}Parallelisierung / Nebenläufigkeit}{19}{section.8.21}%
+\contentsline {section}{\numberline {8.22}Persistenz}{19}{section.8.22}%
+\contentsline {section}{\numberline {8.23}Plausibilisierung und Validierung}{20}{section.8.23}%
+\contentsline {section}{\numberline {8.24}Sessionbehandlung}{20}{section.8.24}%
+\contentsline {section}{\numberline {8.25}Sicherheit}{20}{section.8.25}%
+\contentsline {section}{\numberline {8.26}Skalierung / Clusterung}{20}{section.8.26}%
+\contentsline {section}{\numberline {8.27}Transaktionsbehandlung}{20}{section.8.27}%
+\contentsline {section}{\numberline {8.28}Verteilung}{21}{section.8.28}%
 \contentsline {chapter}{\numberline {9}Entwurfsentscheidungen}{22}{chapter.9}%
 \contentsline {chapter}{\numberline {10}Qualitätsszenarien}{23}{chapter.10}%
 \contentsline {section}{\numberline {10.1}Bewertungsszenarien}{23}{section.10.1}%

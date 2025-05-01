@@ -1,9 +1,17 @@
 \chapter{Einführung und Ziele}
 
-\section{Aufgabenstellung}
+\section{Aufgabenstellung und Anforderungen}
 
 Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen entworfen und implementiert werden. Über ein ITS-Board (bspw. STM32F4) soll ein autonomer Roboter innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher und effizient gesteuert werden. Die verteilte Architektur soll dabei explizit gewährleisten, dass durch Fehlverhalten der Software oder Architektur keine Gefahr für anwesende entstehen kann.
 
+\subsection*{Use Case Diagramm} % TODO make this the label/caption
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=.5]{diagrams/use_case.png}
+	\caption{Funktionales Use Case Diagramm der Aufgabenstellung}
+	\label{fig:meine-grafik}
+\end{figure}
 
 \section{Qualitätsziele}
 % Aus VS Skript Kapitel 2.4 Seite 23
@@ -157,11 +165,4 @@ Die folgenden Gruppen sind direkt oder indirekt vom System betroffen:
 \end{itemize}
 
 
-\subsection*{Use Case Diagramm} % TODO make this the label/caption
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=.5]{diagrams/use_case.png}
-	\caption{Funktionales Use Case Diagramm der Aufgabenstellung}
-	\label{fig:meine-grafik}
-\end{figure}
