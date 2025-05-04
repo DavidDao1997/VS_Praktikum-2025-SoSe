@@ -1,2 +1,46 @@
 \chapter{Bausteinsicht}
 
+Welche Dekompistionsstrategie soll gewählt werden(funktional, technisch, Schichten)?
+Erstes Diagramm zeigt  Gesamtystem, wobei System als Blackbox dargestellt wird und der Benutzer auf das System zugreifen kann. 
+Zweites Diagramm zeigt innere Struktur von Blackboxen, 
+
+
+
+
+
+
+5.1 
+    <insert overview diagram of overall system>
+
+    <describe motivation/reasoning for overall system decomposition>
+
+    <describe contained building blocks (blackboxes)>
+
+    <(optionally) describe important interfaces>
+
+5.2 
+    5.2.1 
+        <insert white box template of building block 1>
+    5.2.2
+        ...
+5.3
+    5.3.1 
+        < insert white box template of building block x.1 >
+
+
+
+Level 1 
+
+User auf System 
+
+System besteht aus ITS-BOARD, ... , Roboterarm 
+
+Level 2
+
+ITS Board besteht aus GUI, IO, Heartbeat
+
+Roboterarm besteht aus Steuerung, (Watchdog),  Hardware-API
+
+Level 3
+
+Steuerung, Watchdog, Heartbeat, GUI, IO

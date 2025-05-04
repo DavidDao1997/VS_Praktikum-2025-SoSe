@@ -3,6 +3,22 @@ Ziel dieses Kapitels ist es, das zu entwickelnde System innerhalb seines fachlic
 
 \section{Fachlicher Kontext}
 
+Das verteilte System soll es ermöglichen beliebig viele (1 - 254) Roboterarme in einem Raum zu steuern. Die Kommunikation zum Nutzer und die Steuerung wird durch ein ITS-Board realisiert. 
+
 \section{Technischer Kontext}
 
+Die Realisierung wird in einem /24 Netzwerk durchgeführt. In diesem wird das ITS-Board liegen. Ebenfalls sind in den Netzwerk die Roboterarme mit den vorgeschalteten Raspberry Pi, der jeweils einen Roboterarm ansteuert. Weitere Hilfmittel wie eine ICC-Cloud können ebenfalls genutzt werden.
+
 \section{Externe Schnittstellen}
+
+\begin{itemize}
+	\item{System:} Der Benutzer kann über ein Bildschirm einzelne erreichbare Roboterarme erkennen. Die Auswahl und Steuern der einzelnen Roboterarme wird durch Buttons realisiert.
+	
+	\item{ITS-Board:} Das ITS-Board kommuniziert über einen TCP-Server mit einer eigenen IP-Adresse mit dem System.
+	
+	\item{Roboterarm:} Der Roboterarm wird mit einer IP-Adresse angesprochen. Dafür ist der vorgeschaltete Raspberry Pi mit einem eigenem TCP-Server zuständig. Dieser stellt ebenfalls eine API für die Steuerung zur Verfügung.  
+	
+	\item{ICC Cloud:} Die ICC Cloud kommuniziert über eine IP-Adresse. % TODO wording, ist das korrekt formuliert?
+	
+	
+\end{itemize}
