@@ -136,6 +136,27 @@
 	\label{tab:transparenzen}
 \end{table}
 
-\section{Bewertungsszenarien}
+\newpage
 
-\section{Qualitätsbaum}
+\section{Bewertungsszenarien}
+\begin{table}[h!]
+\centering
+\begin{tabular}{p{2cm}|p{5cm}|p{4cm}|p{5cm}}
+\hline
+\textbf{ID} & \textbf{Context / Background} & \textbf{Source / Stimulus} & \textbf{Metric / Acceptance Criteria} \\
+\hline
+QS-1 &
+Gesamtsystem betriebsbereit. Der Roboter befindet sich im Ruhezustand (Stop). &
+Bediener sendet Bewegungsbefehl und das Stromkabel des ITS Board wird gezogen & 
+Roboter geht innerhalb von 250 ms in den Ruhezustand. &
+
+\hline
+QS-2 &
+Gesamtsystem betriebsbereit. Der Roboter befindet sich im Ruhezustand. &
+Bediener sendet Bewegungsbefehl und das Stromkabel des Raspberry Pi wird herausgezogen. &
+Roboter innerhalb von 250 ms in den Ruhezustand. 
+
+\end{tabular}
+\caption{Bewertungsszenarien nach q42-Modell}
+\label{tab:bewertungsszenarien}
+\end{table}
