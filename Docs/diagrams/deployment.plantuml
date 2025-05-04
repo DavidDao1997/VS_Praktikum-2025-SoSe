@@ -1,0 +1,26 @@
+@startuml
+
+node "ITS-Board" {
+  [GUI-Software]
+}
+
+node "Roboter (A)" {
+  [Roboter-Software (A)]
+}
+
+node "Roboter (B)" {
+  [Roboter-Software (B)]
+}
+
+node "Roboter (n)" {
+  [Roboter-Software (n)]
+}
+
+[GUI-Software] --> [Roboter-Software (A)] : RPC
+[Roboter-Software (A)] --> [GUI-Software] : RPC
+[GUI-Software] --> [Roboter-Software (B)] : RPC
+[Roboter-Software (B)] --> [GUI-Software] : RPC
+[GUI-Software] --> [Roboter-Software (n)] : RPC
+[Roboter-Software (n)] --> [GUI-Software] : RPC
+
+@enduml
