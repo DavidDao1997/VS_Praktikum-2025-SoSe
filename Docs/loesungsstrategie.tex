@@ -2,26 +2,23 @@
 
 % TODO: Architekturdiagramm zur Schichtenstruktur und Kommunikationsbeziehungen einfügen
 
-Grundlage ist ein angepasstes Drei-Schichten-Modell, das auf die Anforderungen ( KAPITEL)
+Grundlage ist ein bi-direktionales Client-Server-Modell, das auf die Anforderungen ( KAPITEL)
 %TODO Kapitel
 zugeschnitten ist.
  
 
 \begin{itemize}
-	\item{Präsentationsschicht:} Diese besteht aus dem ITS-Board, das über ein integriertes Display eine grafische Benutzeroberfläche (GUI) zur Verfügung stellt. Die Interaktion erfolgt über Buttons, die Steuerbefehle auslösen. Das ITS-Board kommuniziert ausschließlich mit der Middleware und hat keine direkte Verbindung zu den Robotern. 
+	\item{Client:} Dieser besteht aus einer GUI-Software auf dem ITS-Board, das über ein integriertes Display eine grafische Benutzeroberfläche (GUI) zur Verfügung stellt. Die Interaktion erfolgt über Buttons, die Steuerbefehle auslösen. Das ITS-Board kommuniziert mit der Roboter-Software, die auf dem Raspberry Pi des zu steuernden Roboterarms, liegt.
 	
-	\item{Logik- bzw. Vermittlungsschicht:} Die Middleware ist das zentrale Element des Systems. Sie verwaltet den Systemzustand, koordiniert die Steuerbefehle und leitet Anfragen gezielt an die jeweiligen Roboter weiter. Zusätzlich fungiert sie als Watchdog: Sie überwacht alle aktiven Verbindungen (ITS-Board und Roboter) und sorgt im Fehlerfall (z.B. Verbindungsabbruch) für einen sicheren Stopp der Roboteraktivität. Die Middleware führt eine zentrale Registrierungstabelle, in der sich alle Teilnehmer (Roboter und ITS-Board) mit einem Typ-Tag (z.B. "robot", "controller") und einem eindeutigen Bezeichner (Name oder ID) anmelden müssen.
-	
-	\item{Geräteschicht:} Die Geräteschicht umfasst die Roboter selbst sowie deren lokale Steuereinheit und Sensorik. Jeder Roboter betreibt eine eigene API zur Steuerung und stellt Statusinformationen bereit. Auch auf dieser Ebene ist ein Watchdog implementiert, der bei Verbindungsverlust zur Middleware sofortige Sicherheitsmaßnahmen (z.B. Not-Stopp) auslöst.
-	
-	
+	\item{Server:} Die Roboter-Software liegt auf dem Raspberry Pi der Roboterarme. Sie verwaltet den Verbindungszustand, koordiniert die einkommenden Steuerbefehle und leitet/übersetzt Anfragen gezielt an den Roboterarm weiter. Zusätzlich sendet sie als einen Heartbeat an die GUI-Software. Die Roboter-Software führt einen Registrierung durch mit einem eindeutigen Bezeichner (Name oder ID) , und einem status beim ITS-Board durch
+	Der Server umfasst auch die Roboter selbst sowie deren lokale Steuereinheit und Sensorik. Jeder Roboter betreibt eine eigene API zur Steuerung und stellt Statusinformationen bereit. 	
 \end{itemize} 
 
-Die Kommunikation zwischen den Schichten erfolgt über TCP/IP. Die Wahl von TCP garantiert eine zuverlässige, geordnete und fehlerfreie Datenübertragung. Um jedoch Verbindungsabbrüche rechtzeitig zu erkennen, wird zusätzlich ein Heartbeat-Mechanismus (Watchdog) eingesetzt, der regelmäßig geprüft wird (siehe Metriken, Kapitel 
+Die Kommunikation zwischen dem Client und Servern erfolgt über TCP/IP. Die Wahl von TCP garantiert eine zuverlässige, geordnete und fehlerfreie Datenübertragung. Um jedoch Verbindungsabbrüche rechtzeitig zu erkennen, wird zusätzlich ein Heartbeat-Mechanismus (Watchdog) auf in der GUI-Software eingesetzt, der regelmäßig geprüft wird (siehe Metriken, Kapitel 
 %TODO hier richtigen verweis einfügen
-). Alle Teilnehmer (ITS-Board und Roboter) müssen sich nach dem Systemstart aktiv bei der Middleware registrieren. Die Middleware verwaltet eine zentrale Teilnehmerliste in Form einer Tabelle mit Tupeln der Form \texttt{(Typ, Name, IP-Adresse)}. Diese wird zur Adressierung und gezielten Kommunikation verwendet. % TODO Wie genau muss das dann passieren Stichwort asynchron usw...
+). Jede Roboter-Software muss sich nach dem Systemstart aktiv bei dem ITS-Board registrieren. Die GUI-Software verwaltet eine zentrale Teilnehmerliste in Form einer Tabelle mit Tupeln der Form \texttt{(Name, IP-Adresse, Status)}. Diese wird zur Adressierung und gezielten Kommunikation verwendet. % TODO Wie genau muss das dann passieren Stichwort asynchron usw...
 \\\\
-In der GUI werden nur die erreichbaren Roboterarme aufgeführt. So kann sich der Benutzer einen der Roboterarme aussuchen und diesen anschließend per Buttons steuern. Dabei werden evtl. vorherige bewegte Roboterarme gestoppt. Sollte ein Roboterarm ausfallen bzw. vom Netz getrennt werden, ist dieser Roboterarm nicht mehr auf der GUI aufgeführt. Alle Bewegungen dieses Roboters werden sofort beendet. Ebenfalls wird das ITS-Board mit einem Not-Aus Button ausgestattet, sodass der ausgewählte Roboter sofort jede Bewegung abbricht.
+In der GUI werden nur die erreichbaren Roboterarme aufgeführt. So kann sich der Benutzer einen der Roboterarme aussuchen zu diesem eine TCP Verbindung aufbauen und diesen anschließend per Buttons steuern. Durch den Abbruch der vorherigen Verbindung werden evtl. vorherige bewegte Roboterarme gestoppt. Dadurch ist gesichert, dass immer nur ein Roboterarm gesteuert wird. Sollte ein Roboterarm ausfallen bzw. vom Netz getrennt werden, ist dieser Roboterarm mit dem status "offline" gekennzeichnet. Alle Bewegungen dieses Roboters werden sofort beendet. Ebenfalls wird die GUI-Software mit einem Not-Aus über einen Button ausgestattet, sodass der ausgewählte Roboter sofort jede Bewegung abbricht. Die Ansteuerung des Roboters erfolgt mit dem RPC-Protokoll. Dadurch wird regelmässig eine Funktion auf der Roboter-Software aufgerufen, anschliessend übersetzt und die Bewegung am Roboterarm durchgeführt. Das Statusupdate des jeweiligen Roboterarms kann dann per RPC von der Roboter-Software zum ITS-Board erfolgen.
 
 
 \subsection*{Überprüfung der Lösungsstrategie}
@@ -29,30 +26,49 @@ In der GUI werden nur die erreichbaren Roboterarme aufgeführt. So kann sich der
 \subsubsection*{Ziele für Software Engineering}
 
 \begin{itemize}
-	\item \textbf{3-Schichten-Modell}: Klare Trennung von Darstellung, Logik und physikalischer Ausführung. Separation of Concern (SE-Ziele Funktionalität, Skalierbarkeit, Wartbarkeit, Anpassbarkeit, Kompatibilität)
-	\item \textbf{Watchdog}: Middleware und Roboter überwachen gegenseitig den Verbindungsstatus, um bei Abbruch in einen sicheren Zustand zu wechseln. (SE-Ziel Safety)
-	\item \textbf{Kommunikationsprotokoll:} TCP/IP wurde gewählt, um eine zuverlässige, verbindungsorientierte Kommunikation zu gewährleisten.
+	\item \textbf{Client-Server}: Es existiert genau ein Client und mehrere Server, die einzeln angesprochen werden können. Die Server haben alle die gleiche API und Funktionaliät (SE-Ziele Funktionalität, Skalierbarkeit, Wartbarkeit, Anpassbarkeit, Kompatibilität)
+	\item \textbf{Watchdog}: Roboter-Software und Roboter überwachen gegenseitig den Verbindungsstatus, um bei Abbruch in einen sicheren Zustand zu wechseln. (SE-Ziel Safety)
+	\item \textbf{Kommunikationsprotokoll:} TCP/IP wurde gewählt, um eine zuverlässige, verbindungsorientierte Kommunikation zu gewährleisten. RPC wurde gewählt, da so eine funktionale Umsetzung konsequent durchgeführt wird.
 	\item \textbf{Adressierung:} Die Teilnehmer befinden sich im selben /24-Netzwerk und kommunizieren über IPv4. Jeder Roboter benötigt eine eindeutige ID oder Namen.
 \end{itemize}
 
 \subsection*{Ziele für Verteilte Systeme}
 \begin{itemize}
-	\item \textbf{Ressourcenteilung:} Alle Roboter können über eine einheitliche GUI des ITS-Boards gemeinsam verwendet werden.
-	\item \textbf{Offenheit:} Neue Roboter können sich dynamisch an der Middleware registrieren. Das System bleibt erweiterbar ohne strukturelle Änderungen.
-	\item \textbf{Skalierbarkeit:} Die Middleware verwaltet Roboter unabhängig voneinander. Solange Hardware-Ressourcen ausreichen, ist horizontale Skalierung durch zusätzliche Roboter möglich.
-	\item \textbf{Verteilungstransparenzen:} Durch das 3-Schichtenmodell und das MMI über die GUI werden die Verteilungstransparenzen teilweise eingehalten. Die Architektur versteckt die konkrete Lage und Ansteuerung der Roboter (Ortstransparenz, Zugriffstransparenz) vor dem Nutzer. Die GUI zeigt nur logische Namen an, nicht IP-Adressen oder spezifische Schnittstellen.
+	\item \textbf{Ressourcenteilung:} Alle Roboter können einheitlich über eine GUI-Software des ITS-Boards gemeinsam verwendet werden.
+	\item \textbf{Offenheit:} Neue Roboter können sich dynamisch am ITS-Board registrieren. Das System bleibt erweiterbar ohne strukturelle Änderungen.
+	\item \textbf{Skalierbarkeit:} Das Netzwerk begrenzt die Anzahl der Roboterarme. Diese registrieren sich mit aktualisierenden Status bei der GUI-Software des Clients
+	\item \textbf{Verteilungstransparenzen:} Durch das Client-Server Modell und das MMI über die GUI werden die Verteilungstransparenzen teilweise eingehalten. Die Architektur versteckt die konkrete Lage und Ansteuerung der Roboter (Ortstransparenz, Zugriffstransparenz) vor dem Nutzer. Die GUI zeigt nur logische Namen an, nicht IP-Adressen oder spezifische Schnittstellen.
 \end{itemize}
 
 
 \subsection*{Schwächen}
 \begin{itemize}
-	\item Netzwerk kann durch UDP-Anfragen "lahmgelegt werden", Watchdog an Middleware und am Roboterarm darf also nicht auf Antwort warten
-	\item Single Point of Failure. SE-Ziel Zuverlässigkeit durch Absturz von Middleware möglicherweise nicht gegeben.
-	\item Ziel Leistung: Leistung des Systems durch Middleware abhängig. (Befehle pro Sekunde)
+	\item Netzwerk kann durch UDP-Anfragen "lahmgelegt werden", Watchdog an Roboter-Software und am Roboterarm darf also nicht auf Antwort warten
+	\item Ziel Leistung: Leistung des Systems durch ITS-Board Hardware abhängig. (Befehle pro Sekunde). Das ITS-Board ist aber sehr eingeschränkt in Speicher und Leistungsfähigkeit.
 	\item Fehlertransparenz: GUI zeigt nicht verfügbaren Roboter nicht mehr an.
-	\item Skalierbarkeitstransparenz: Neue Roboter könnten durch Watchdog zu Leistungseinbrüchen des Systems durch Middleware führen
+	\item Skalierbarkeitstransparenz: Neue Roboter könnten durch zu Leistungseinbrüchen des Systems durch ITS-Board führen
 	\item Lokalitätstransparenz: Ist durch den eindeutigen Namen nicht gegeben und durch Hinzufügen bzw. Verschwinden auf der GUI nicht gegeben.
 \end{itemize}
+
+
+\textbf{Alternative Überlegung:}
+
+Um das ITS-Board zu entlasten.
+
+\begin{itemize}
+	\item Die Roboter melden sich bei einem Service an und diese verwaltet und überprüft die Verfügbarkeit der Roboter und des ITS-Boards. Die Liste der verfügbaren Roboter wird dem ITS-Board übermittelt. Dieser Service läuft auf der ICC Cloud, dafür wird auf einem Rechner im Netzwerk ein Proxy eingerichtet, der die Anfragen weiterleitet.
+	\begin{itemize}
+		\item Vorteil: Rechenlast ausgelagert
+		\item Nachteil: Single Point of Failure durch Proxy
+	\end{itemize}
+	\item Die Raspberry Pi tauschen sich untereinander aus, wer die Liste an das ITS-Board sendet. So ist das Gesamtsystem ausfallsicher. Die Raspberry Pi wissen alle voneinander.
+	\begin{itemize}
+		\item Vorteil: Kein Single Point of Failure, Rechenlast auf Rapberry Pi, der schon im System vorhanden ist und somit keine neue Fehlerquelle.
+		\item Nachteil: Erhöhter Verwaltungsaufwand
+	\end{itemize}
+\end{itemize}
+
+
 
 
 

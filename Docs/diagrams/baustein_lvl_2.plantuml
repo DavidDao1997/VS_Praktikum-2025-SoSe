@@ -1,0 +1,10 @@
+@startuml
+package "Roboter‑System" {
+  component "GUI-Software"    as ITS
+  component "Roboter-Software“   as RS
+}
+
+
+ITS  --> RS : Steuerbefehle
+RS  --> ITS : Registrierung
+@enduml
