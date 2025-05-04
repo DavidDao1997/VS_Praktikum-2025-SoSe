@@ -1,56 +1,47 @@
 \babel@toc {ngerman}{}\relax 
 \contentsline {chapter}{\numberline {1}Einführung und Ziele}{4}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Aufgabenstellung}{4}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Qualitätsziele}{4}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}Ziele für Software Engineering}{4}{subsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.2.2}Ziele der Verteilte Systeme}{6}{subsection.1.2.2}%
-\contentsline {subsubsection}{\nonumberline Skalierbarkeit}{6}{subsubsection*.3}%
-\contentsline {subsubsection}{\nonumberline Verteilungs-Transparenzen}{7}{subsubsection*.5}%
-\contentsline {section}{\numberline {1.3}Stakeholder}{8}{section.1.3}%
-\contentsline {chapter}{\numberline {2}Randbedingungen}{9}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Technische Randbedingungen}{9}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Organisatorische Randbedingungen}{9}{section.2.2}%
-\contentsline {chapter}{\numberline {3}Kontextabgrenzung}{10}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Fachlicher Kontext}{10}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Technischer Kontext}{10}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Externe Schnittstellen}{10}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Lösungsstrategie}{11}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Bausteinsicht}{13}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Laufzeitsicht}{14}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Einleitung - Was?}{14}{section.6.1}%
-\contentsline {chapter}{\numberline {7}Verteilungssicht}{15}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Konzepte}{16}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Kommunikation}{16}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Offenheit}{16}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Skalierbarkeit}{16}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Verteilungstranzparenzen}{16}{section.8.4}%
-\contentsline {section}{\numberline {8.5}Kohärenz}{16}{section.8.5}%
-\contentsline {section}{\numberline {8.6}Sicherheit (Safety)}{16}{section.8.6}%
-\contentsline {section}{\numberline {8.7}GUI}{16}{section.8.7}%
-\contentsline {section}{\numberline {8.8}Fachliche Strukturen (Domäne)}{16}{section.8.8}%
-\contentsline {section}{\numberline {8.9}Typische Muster und Strukturen}{16}{section.8.9}%
-\contentsline {section}{\numberline {8.10}Ablaufsteuerung}{17}{section.8.10}%
-\contentsline {section}{\numberline {8.11}Ausnahme- und Fehlerbehandlung}{17}{section.8.11}%
-\contentsline {section}{\numberline {8.12}Batchverarbeitung}{17}{section.8.12}%
-\contentsline {section}{\numberline {8.13}Bedienoberfläche}{17}{section.8.13}%
-\contentsline {section}{\numberline {8.14}Ergonomie}{17}{section.8.14}%
-\contentsline {section}{\numberline {8.15}Hochverfügbarkeit}{17}{section.8.15}%
-\contentsline {section}{\numberline {8.16}Kommunikation, Integration}{18}{section.8.16}%
-\contentsline {section}{\numberline {8.17}Konfiguration}{18}{section.8.17}%
-\contentsline {section}{\numberline {8.18}Logging, Protokollierung}{18}{section.8.18}%
-\contentsline {section}{\numberline {8.19}Management und Administrierbarkeit}{18}{section.8.19}%
-\contentsline {section}{\numberline {8.20}Migration}{19}{section.8.20}%
-\contentsline {section}{\numberline {8.21}Parallelisierung / Nebenläufigkeit}{19}{section.8.21}%
-\contentsline {section}{\numberline {8.22}Persistenz}{19}{section.8.22}%
-\contentsline {section}{\numberline {8.23}Plausibilisierung und Validierung}{20}{section.8.23}%
-\contentsline {section}{\numberline {8.24}Sessionbehandlung}{20}{section.8.24}%
-\contentsline {section}{\numberline {8.25}Sicherheit}{20}{section.8.25}%
-\contentsline {section}{\numberline {8.26}Skalierung / Clusterung}{20}{section.8.26}%
-\contentsline {section}{\numberline {8.27}Transaktionsbehandlung}{20}{section.8.27}%
-\contentsline {section}{\numberline {8.28}Verteilung}{21}{section.8.28}%
-\contentsline {chapter}{\numberline {9}Entwurfsentscheidungen}{22}{chapter.9}%
-\contentsline {chapter}{\numberline {10}Qualitätsszenarien}{23}{chapter.10}%
-\contentsline {section}{\numberline {10.1}Bewertungsszenarien}{23}{section.10.1}%
-\contentsline {section}{\numberline {10.2}Qualitätsbaum}{23}{section.10.2}%
+\contentsline {section}{\numberline {1.1}Aufgabenstellung und Anforderungen}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Qualitätsziele}{5}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Ziele für Software Engineering}{5}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Ziele der Verteilte Systeme}{7}{subsection.1.2.2}%
+\contentsline {subsubsection}{\nonumberline Skalierbarkeit}{7}{subsubsection*.4}%
+\contentsline {subsubsection}{\nonumberline Verteilungs-Transparenzen}{8}{subsubsection*.6}%
+\contentsline {section}{\numberline {1.3}Stakeholder}{9}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Randbedingungen}{10}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Technische Randbedingungen}{10}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Organisatorische Randbedingungen}{10}{section.2.2}%
+\contentsline {chapter}{\numberline {3}Kontextabgrenzung}{11}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Fachlicher Kontext}{11}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Technischer Kontext}{11}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Externe Schnittstellen}{11}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Lösungsstrategie}{12}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Bausteinsicht}{14}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Laufzeitsicht}{15}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Einleitung - Was?}{15}{section.6.1}%
+\contentsline {chapter}{\numberline {7}Verteilungssicht}{16}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Konzepte}{17}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Offenheit}{17}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Verteilungstranzparenzen}{17}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Kohärenz}{17}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Sicherheit (Safety)}{17}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Bedienoberfläche}{17}{section.8.5}%
+\contentsline {section}{\numberline {8.6}Ablaufsteuerung}{17}{section.8.6}%
+\contentsline {section}{\numberline {8.7}Ausnahme- und Fehlerbehandlung}{18}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Kommunikation}{18}{section.8.8}%
+\contentsline {section}{\numberline {8.9}Konfiguration}{18}{section.8.9}%
+\contentsline {section}{\numberline {8.10}Logging, Protokollierung}{18}{section.8.10}%
+\contentsline {section}{\numberline {8.11}Plausibilisierung und Validierung}{18}{section.8.11}%
+\contentsline {section}{\numberline {8.12}Sessionbehandlung}{18}{section.8.12}%
+\contentsline {section}{\numberline {8.13}Skalierung}{18}{section.8.13}%
+\contentsline {section}{\numberline {8.14}Verteilung}{18}{section.8.14}%
+\contentsline {chapter}{\numberline {9}Entwurfsentscheidungen}{19}{chapter.9}%
+\contentsline {chapter}{\numberline {10}Qualitätsszenarien}{20}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Quality Requirements Overview}{20}{section.10.1}%
+\contentsline {subsection}{\numberline {10.1.1}Ziele für Software Engineering}{20}{subsection.10.1.1}%
+\contentsline {subsection}{\numberline {10.1.2}Ziele der Verteilte Systeme}{22}{subsection.10.1.2}%
+\contentsline {subsubsection}{\nonumberline Skalierbarkeit}{22}{subsubsection*.12}%
+\contentsline {subsubsection}{\nonumberline Verteilungs-Transparenzen}{23}{subsubsection*.14}%
+\contentsline {section}{\numberline {10.2}Bewertungsszenarien}{23}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Qualitätsbaum}{23}{section.10.3}%
 \contentsline {chapter}{\numberline {11}Risiken}{24}{chapter.11}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

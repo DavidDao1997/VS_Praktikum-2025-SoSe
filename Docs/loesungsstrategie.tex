@@ -8,20 +8,18 @@ zugeschnitten ist.
  
 
 \begin{itemize}
-	\item{Präsentationsschicht:} Diese besteht aus dem ITS-Board, das über ein integriertes Display eine grafische Benutzeroberfläche (GUI) zur Verfügung stellt. Die Interaktion erfolgt über Buttons, die Steuerbefehle auslösen. Das ITS-Board kommuniziert ausschließlich mit der Middleware und hat keine direkte Verbindung zu den Robotern. 
+	\item{Präsentationsschicht:} Diese besteht aus dem ITS-Board, das über ein integriertes Display eine grafische Benutzeroberfläche (GUI) zur Verfügung stellt. Die Interaktion erfolgt über Buttons, die Steuerbefehle auslösen. Das ITS-Board kommuniziert mit der Middleware, die auf dem Raspberry Pi des zu steuernden Roboterarms, liegt.
 	
-	\item{Logik- bzw. Vermittlungsschicht:} Die Middleware ist das zentrale Element des Systems. Sie verwaltet den Systemzustand, koordiniert die Steuerbefehle und leitet Anfragen gezielt an die jeweiligen Roboter weiter. Zusätzlich fungiert sie als Watchdog: Sie überwacht alle aktiven Verbindungen (ITS-Board und Roboter) und sorgt im Fehlerfall (z.B. Verbindungsabbruch) für einen sicheren Stopp der Roboteraktivität. Die Middleware führt eine zentrale Registrierungstabelle, in der sich alle Teilnehmer (Roboter und ITS-Board) mit einem Typ-Tag (z.B. "robot", "controller") und einem eindeutigen Bezeichner (Name oder ID) anmelden müssen.
+	\item{Logik- bzw. Vermittlungsschicht:} Die Middleware liegt auf dem Raspberry Pi der Roboterarme. Sie verwaltet den Verbindungszustand, koordiniert die einkommenden Steuerbefehle und leitet Anfragen gezielt an den Roboterarm weiter. Zusätzlich fungiert sie als Watchdog: Sie überwacht eine aktive Verbindungen (zum ITS-Board) und sorgt im Fehlerfall (z.B. Verbindungsabbruch) für einen sicheren Stopp der Roboteraktivität. Die Middleware führt einen Registrierung durch mit einem eindeutigen Bezeichner (Name oder ID) , und einem status beim ITS-Board durch
 	
-	\item{Geräteschicht:} Die Geräteschicht umfasst die Roboter selbst sowie deren lokale Steuereinheit und Sensorik. Jeder Roboter betreibt eine eigene API zur Steuerung und stellt Statusinformationen bereit. Auch auf dieser Ebene ist ein Watchdog implementiert, der bei Verbindungsverlust zur Middleware sofortige Sicherheitsmaßnahmen (z.B. Not-Stopp) auslöst.
-	
-	
+	\item{Geräteschicht:} Die Geräteschicht umfasst die Roboter selbst sowie deren lokale Steuereinheit und Sensorik. Jeder Roboter betreibt eine eigene API zur Steuerung und stellt Statusinformationen bereit. 	
 \end{itemize} 
 
-Die Kommunikation zwischen den Schichten erfolgt über TCP/IP. Die Wahl von TCP garantiert eine zuverlässige, geordnete und fehlerfreie Datenübertragung. Um jedoch Verbindungsabbrüche rechtzeitig zu erkennen, wird zusätzlich ein Heartbeat-Mechanismus (Watchdog) eingesetzt, der regelmäßig geprüft wird (siehe Metriken, Kapitel 
+Die Kommunikation zwischen den Schichten Präsentation und Logik erfolgt über TCP/IP. Die Wahl von TCP garantiert eine zuverlässige, geordnete und fehlerfreie Datenübertragung. Um jedoch Verbindungsabbrüche rechtzeitig zu erkennen, wird zusätzlich ein Heartbeat-Mechanismus (Watchdog) eingesetzt, der regelmäßig geprüft wird (siehe Metriken, Kapitel 
 %TODO hier richtigen verweis einfügen
-). Alle Teilnehmer (ITS-Board und Roboter) müssen sich nach dem Systemstart aktiv bei der Middleware registrieren. Die Middleware verwaltet eine zentrale Teilnehmerliste in Form einer Tabelle mit Tupeln der Form \texttt{(Typ, Name, IP-Adresse)}. Diese wird zur Adressierung und gezielten Kommunikation verwendet. % TODO Wie genau muss das dann passieren Stichwort asynchron usw...
+). Jede Middleware muss sich nach dem Systemstart aktiv bei dem ITS-Board registrieren. Das ITS-Board verwaltet eine zentrale Teilnehmerliste in Form einer Tabelle mit Tupeln der Form \texttt{(Name, IP-Adresse, Status)}. Diese wird zur Adressierung und gezielten Kommunikation verwendet. % TODO Wie genau muss das dann passieren Stichwort asynchron usw...
 \\\\
-In der GUI werden nur die erreichbaren Roboterarme aufgeführt. So kann sich der Benutzer einen der Roboterarme aussuchen und diesen anschließend per Buttons steuern. Dabei werden evtl. vorherige bewegte Roboterarme gestoppt. Sollte ein Roboterarm ausfallen bzw. vom Netz getrennt werden, ist dieser Roboterarm nicht mehr auf der GUI aufgeführt. Alle Bewegungen dieses Roboters werden sofort beendet. Ebenfalls wird das ITS-Board mit einem Not-Aus Button ausgestattet, sodass der ausgewählte Roboter sofort jede Bewegung abbricht.
+In der GUI werden nur die erreichbaren Roboterarme aufgeführt. So kann sich der Benutzer einen der Roboterarme aussuchen und diesen anschließend per Buttons steuern. Dabei werden evtl. vorherige bewegte Roboterarme gestoppt. Sollte ein Roboterarm ausfallen bzw. vom Netz getrennt werden, ist dieser Roboterarm mit dem status "offline" gekennzeichnet. Alle Bewegungen dieses Roboters werden sofort beendet. Ebenfalls wird das ITS-Board mit einem Not-Aus Button ausgestattet, sodass der ausgewählte Roboter sofort jede Bewegung abbricht. Daraus folgt, dass das ITS-Board genau eine TCP-Verbindung zu einem Roboterarm aufbaut. Dadurch ist gesichert, dass immer nur ein Roboterarm gesteuert wird. Die Ansteuerung des Roboters erfolgt mit dem RPC-Protokoll. Dadurch wird eine Funktion auf der Middleware aufgerufen, anschliessend übersetzt und die Bewegung am Roboterarm durchgeführt. Das Statusupdate des jeweiligen Roboterarms kann dann per RPC von der Middleware zum ITS-Board erfolgen.
 
 
 \subsection*{Überprüfung der Lösungsstrategie}
@@ -31,15 +29,15 @@ In der GUI werden nur die erreichbaren Roboterarme aufgeführt. So kann sich der
 \begin{itemize}
 	\item \textbf{3-Schichten-Modell}: Klare Trennung von Darstellung, Logik und physikalischer Ausführung. Separation of Concern (SE-Ziele Funktionalität, Skalierbarkeit, Wartbarkeit, Anpassbarkeit, Kompatibilität)
 	\item \textbf{Watchdog}: Middleware und Roboter überwachen gegenseitig den Verbindungsstatus, um bei Abbruch in einen sicheren Zustand zu wechseln. (SE-Ziel Safety)
-	\item \textbf{Kommunikationsprotokoll:} TCP/IP wurde gewählt, um eine zuverlässige, verbindungsorientierte Kommunikation zu gewährleisten.
+	\item \textbf{Kommunikationsprotokoll:} TCP/IP wurde gewählt, um eine zuverlässige, verbindungsorientierte Kommunikation zu gewährleisten. RPC wurde gewählt, da so eine funktionale Umsetzung konsequent durchgeführt wird.
 	\item \textbf{Adressierung:} Die Teilnehmer befinden sich im selben /24-Netzwerk und kommunizieren über IPv4. Jeder Roboter benötigt eine eindeutige ID oder Namen.
 \end{itemize}
 
 \subsection*{Ziele für Verteilte Systeme}
 \begin{itemize}
 	\item \textbf{Ressourcenteilung:} Alle Roboter können über eine einheitliche GUI des ITS-Boards gemeinsam verwendet werden.
-	\item \textbf{Offenheit:} Neue Roboter können sich dynamisch an der Middleware registrieren. Das System bleibt erweiterbar ohne strukturelle Änderungen.
-	\item \textbf{Skalierbarkeit:} Die Middleware verwaltet Roboter unabhängig voneinander. Solange Hardware-Ressourcen ausreichen, ist horizontale Skalierung durch zusätzliche Roboter möglich.
+	\item \textbf{Offenheit:} Neue Roboter können sich dynamisch am ITS-Board registrieren. Das System bleibt erweiterbar ohne strukturelle Änderungen.
+	\item \textbf{Skalierbarkeit:} Das Netzwerk begrenzt die Anzahl der Roboterarme. Diese registrieren sich mit aktualisierenden Status am ITS-Board
 	\item \textbf{Verteilungstransparenzen:} Durch das 3-Schichtenmodell und das MMI über die GUI werden die Verteilungstransparenzen teilweise eingehalten. Die Architektur versteckt die konkrete Lage und Ansteuerung der Roboter (Ortstransparenz, Zugriffstransparenz) vor dem Nutzer. Die GUI zeigt nur logische Namen an, nicht IP-Adressen oder spezifische Schnittstellen.
 \end{itemize}
 
@@ -47,10 +45,9 @@ In der GUI werden nur die erreichbaren Roboterarme aufgeführt. So kann sich der
 \subsection*{Schwächen}
 \begin{itemize}
 	\item Netzwerk kann durch UDP-Anfragen "lahmgelegt werden", Watchdog an Middleware und am Roboterarm darf also nicht auf Antwort warten
-	\item Single Point of Failure. SE-Ziel Zuverlässigkeit durch Absturz von Middleware möglicherweise nicht gegeben.
-	\item Ziel Leistung: Leistung des Systems durch Middleware abhängig. (Befehle pro Sekunde)
+	\item Ziel Leistung: Leistung des Systems durch ITS-Board abhängig. (Befehle pro Sekunde). Das ITS-Board ist aber sehr eingeschränkt in Speicher und Leistungsfähigkeit.
 	\item Fehlertransparenz: GUI zeigt nicht verfügbaren Roboter nicht mehr an.
-	\item Skalierbarkeitstransparenz: Neue Roboter könnten durch Watchdog zu Leistungseinbrüchen des Systems durch Middleware führen
+	\item Skalierbarkeitstransparenz: Neue Roboter könnten durch zu Leistungseinbrüchen des Systems durch ITS-Board führen
 	\item Lokalitätstransparenz: Ist durch den eindeutigen Namen nicht gegeben und durch Hinzufügen bzw. Verschwinden auf der GUI nicht gegeben.
 \end{itemize}
 

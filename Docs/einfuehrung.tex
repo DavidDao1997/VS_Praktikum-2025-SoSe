@@ -4,15 +4,36 @@
 
 Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen entworfen und implementiert werden. Über ein ITS-Board (bspw. STM32F4) soll ein autonomer Roboter innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher und effizient gesteuert werden. Die verteilte Architektur soll dabei explizit gewährleisten, dass durch Fehlverhalten der Software oder Architektur keine Gefahr für anwesende entstehen kann.
 
-\subsection*{Use Case Diagramm} % TODO make this the label/caption
+\subsection*{Funktionale Beschreibung}
 
-\begin{figure}[h]
+
+\begin{itemize}
+	
+	\item \textbf{Betreiber - System}
+		\begin{itemize}
+			\item Nutzer wählt genau einen Roboterarm aus
+			\item Nutzer gibt Steuerbefehl an genau einen Roboterarm
+			\item System zeigt an, ob Roboterarm verfügbar
+			\item Notstop löst sofortigen Stopp des ausgewählten Roboters aus
+		\end{itemize}
+		
+	\item \textbf{System}
+		\begin{itemize}
+			\item Roboterarme stoppen, sobald nicht mehr von aussen kontrollierbar
+			\item automatisches Erkennen von Hinzufügen und Entfernen von Roboterarmen
+			
+		\end{itemize}
+	
+\end{itemize}
+
+\begin{figure}[h!]
 	\centering
 	\includegraphics[scale=.5]{diagrams/use_case.png}
 	\caption{Funktionales Use Case Diagramm der Aufgabenstellung}
 	\label{fig:meine-grafik}
 \end{figure}
 
+\newpage
 \section{Qualitätsziele}
 % Aus VS Skript Kapitel 2.4 Seite 23
 % TODO zu jeden Punkt eine Definition oder entfernen
@@ -38,29 +59,30 @@ Das verteilte Steuerungssystem soll eine Reihe von nicht-funktionalen Anforderun
         \\
         \hline
         Skalierbarkeit & 
-        %Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
+        Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
         & Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - N)
         \\
         \hline
         Leistung & 
         %Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
-        & Reaktionszeit max. 500 ms
+        & Reaktionszeit max. 250 ms
         \\
         \hline
         Sicherheit (Safety) & 
+        Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
         %Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
-        & Reaktionszeit max. 500 ms
+        & Reaktionszeit max. 250 ms, bis Roboterarm stoppt
         \\
-        \hline
-        Wartbarkeit & 
+        %\hline
+        %Wartbarkeit & 
         %Der Code muss modular, gut dokumentiert und testbar sein. Fehlerdiagnose und Protokollierung sollen integriert sein. 
-        & 
-        \\
+        %& 
+        %\\
         \hline
-        Portabilität & %Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
-        & nicht relevant
-        \\
-        \hline
+        %Portabilität & %Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
+        %& nicht relevant
+        %\\
+        %\hline
         Benutzerfreundlichkeit & %Konfiguration und Überwachung müssen intuitiv bedienbar und gut visualisiert sein. 
         & Keine Einweisung erforderlich
         \\
@@ -160,7 +182,7 @@ Die folgenden Gruppen sind direkt oder indirekt vom System betroffen:
     \item \textbf{Endnutzer:} Personen, die mit dem Roboter interagieren (z.B. Lehrpersonal, Kinder im Testbereich)
     \item \textbf{Entwicklerteam:} Zuständig für Entwurf, Umsetzung, Tests und Wartung des Systems
     \item \textbf{Betreiber:} Verantwortlich für die Überwachung und den sicheren Betrieb des Systems im realen Umfeld
-    \item \textbf{Professor:} Person, die für die Bewertung des Systems verantwortlich ist und vorgabe der Rahmenbedingungen.
+    \item \textbf{Professor:} Person, die für die Bewertung des Systems verantwortlich ist und Rahmenbedingungen vorgibt.
 
 \end{itemize}
 
