@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.2.6)  4 MAY 2025 02:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.2.6)  4 MAY 2025 16:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1528,26 +1528,26 @@ chapter 3.
 
 ]
 chapter 4.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-0.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
+9.
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (28.3161pt too wide) in paragraph at lines 18--23
-\T1/lmr/m/n/10.95 Um je-doch Ver-bin-dungs-ab-brü-che recht-zei-tig zu er-ken-n
-en, wird zu-sätz-lich ein Heartbeat-Mechanismus
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 18--23
+Underfull \hbox (badness 10000) in paragraph at lines 17--22
 
  []
 
 [12
 
-]) (./bausteinsicht.tex [13]
+]
+Overfull \hbox (5.0813pt too wide) in paragraph at lines 46--47
+[]\T1/lmr/m/n/10.95 Netzwerk kann durch UDP-Anfragen "lahm-ge-legt wer-den", Wa
+t-ch-dog an Roboter-Software
+ []
+
+[13]) (./bausteinsicht.tex [14]
 chapter 5.
-) (./laufzeitsicht.tex [14
+) (./laufzeitsicht.tex [15
 
 ]
 chapter 6.
@@ -1566,36 +1566,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--26
 
  []
 
-) (./verteilungssicht.tex [15
+) (./verteilungssicht.tex [16
 
 ]
 chapter 7.
-) (./konzepte.tex [16
+) (./konzepte.tex [17
 
 ]
 chapter 8.
-[17
+[18
 
-]) (./entwurfsentscheidungen.tex [18]
+]) (./entwurfsentscheidungen.tex [19]
 chapter 9.
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--13
-[]|\T1/lmr/m/n/10.95 3 Schichten-
- []
-
-
-Underfull \hbox (badness 6268) in paragraph at lines 13--13
-[]|\T1/lmr/m/n/10.95 Client-Server, Service-
- []
-
-
-Underfull \hbox (badness 6510) in paragraph at lines 13--13
-\T1/lmr/m/n/10.95 Orientiert, Er-eig-nis-ge-
+[]|\T1/lmr/m/n/10.95 Schichten-Modell,
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--13
-\T1/lmr/m/n/10.95 steu-ert,Microservice,
+\T1/lmr/m/n/10.95 Service-Orientiert,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
+\T1/lmr/m/n/10.95 Er-eig-nis-ge-steu-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
+\T1/lmr/m/n/10.95 ert,Microservice, P2P,
  []
 
 
@@ -1609,8 +1609,8 @@ Underfull \hbox (badness 1412) in paragraph at lines 15--15
  []
 
 
-Underfull \hbox (badness 2941) in paragraph at lines 19--19
-[]|\T1/lmr/m/n/10.95 Middleware liegt
+Underfull \hbox (badness 8189) in paragraph at lines 19--19
+[]|\T1/lmr/m/n/10.95 Logik liegt auf
  []
 
 
@@ -1623,7 +1623,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--23
 \T1/lmr/m/n/10.95 lung,Losgekoppelte
  []
 
-) (./qualitaetsszenarien.tex [19
+) (./qualitaetsszenarien.tex [20
 
 ]
 chapter 10.
@@ -1723,9 +1723,9 @@ LaTeX Warning: Float too large for page by 106.79962pt on input line 68.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[20
+[21
 
-] [21]
+] [22]
 Underfull \hbox (badness 7649) in paragraph at lines 99--99
 []|\T1/lmr/m/n/10.95 Räumliche Ska-lier-bar-
  []
@@ -1735,7 +1735,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 103--103
 []|\T1/lmr/m/n/10.95 Administrative-
  []
 
-[22
+[23
 
 ]
 Overfull \hbox (1.80281pt too wide) in paragraph at lines 124--124
@@ -1747,7 +1747,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--130
 []|\T1/lmr/m/n/10.95 Skalierbarkeits-
  []
 
-) (./risiken.tex [23]
+) (./risiken.tex [24]
 chapter 11.
 
 Underfull \hbox (badness 10000) in paragraph at lines 10--13
@@ -1759,7 +1759,7 @@ No file arc42-template.gls.
 \@gls@deffile=\write7
 \openout7 = `arc42-template.glsdefs'.
 
-)) [24
+)) [25
 
 ] 
 enddocument/afterlastpage: lastpage setting LastPage.
@@ -1776,8 +1776,8 @@ Package rerunfilecheck Info: File `arc42-template.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 26826 strings out of 474222
- 499108 string characters out of 5748734
+ 26827 strings out of 474222
+ 499115 string characters out of 5748734
  1940975 words of memory out of 5000000
  48506 multiletter control sequences out of 15000+600000
  618356 words of font info for 80 fonts, out of 8000000 for 9000
@@ -1792,10 +1792,10 @@ ut does not exist, replaced by a fixed one
 share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/publi
 c/lm/lmss10.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/shar
 e/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on arc42-template.pdf (24 pages, 253739 bytes).
+Output written on arc42-template.pdf (25 pages, 254757 bytes).
 PDF statistics:
- 433 PDF objects out of 1000 (max. 8388607)
- 386 compressed objects within 4 object streams
- 91 named destinations out of 1000 (max. 500000)
+ 439 PDF objects out of 1000 (max. 8388607)
+ 391 compressed objects within 4 object streams
+ 92 named destinations out of 1000 (max. 500000)
  334 words of extra memory for PDF output out of 10000 (max. 10000000)
 
