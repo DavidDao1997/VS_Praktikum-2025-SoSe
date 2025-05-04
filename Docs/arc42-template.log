@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.3.15)  4 MAY 2025 18:44
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.3.15)  4 MAY 2025 18:48
+>>>>>>> main
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1126,8 +1130,12 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count368
 \l__pdf_internal_box=\box69
+<<<<<<< HEAD
 )
 No file arc42-template.aux.
+=======
+) (./arc42-template.aux)
+>>>>>>> main
 \openout1 = `arc42-template.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
@@ -1148,7 +1156,11 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
+<<<<<<< HEAD
 (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+=======
+ (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+>>>>>>> main
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count369
 \scratchdimen=\dimen189
@@ -1242,6 +1254,7 @@ LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 1.
 
 ]
 chapter 1.
+<<<<<<< HEAD
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 12.
 (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1271,15 +1284,35 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 47.
 
 Underfull \hbox (badness 2644) in paragraph at lines 58--60
+=======
+<diagrams/use_case.png, id=19, 532.99126pt x 462.72874pt>
+File: diagrams/use_case.png Graphic file (type png)
+<use diagrams/use_case.png>
+Package pdftex.def Info: diagrams/use_case.png  used on input line 11.
+(pdftex.def)             Requested size: 266.49498pt x 231.3638pt.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 26.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 26.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 26.
+
+Underfull \hbox (badness 2644) in paragraph at lines 37--39
+>>>>>>> main
 []|\T1/lmr/m/n/10.95 Das Sys-tem ist über dem
  []
 
 
+<<<<<<< HEAD
 Underfull \hbox (badness 4543) in paragraph at lines 58--60
+=======
+Underfull \hbox (badness 4543) in paragraph at lines 37--39
+>>>>>>> main
 \T1/lmr/m/n/10.95 ge-sam-ten Ab-nah-me-zeit-raum
  []
 
 
+<<<<<<< HEAD
 Underfull \hbox (badness 10000) in paragraph at lines 62--63
 []|\T1/lmr/m/n/10.95 Zusätzliche Ro-bo-ter oder
  []
@@ -1291,6 +1324,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 62--63
 
 
 Underfull \hbox (badness 1521) in paragraph at lines 63--65
+=======
+Underfull \hbox (badness 1521) in paragraph at lines 42--44
+>>>>>>> main
 \T1/lmr/m/n/10.95 bo-ter hin-zu-ge-fügt und ent-
  []
 
@@ -1310,6 +1346,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 
+<<<<<<< HEAD
 LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 105.
 
 [4 <./diagrams/use_case.png>]
@@ -1326,46 +1363,110 @@ LaTeX Warning: Reference `tab:transparenzen' on page 6 undefined on input line 1
 
 
 Underfull \hbox (badness 7649) in paragraph at lines 134--134
+=======
+LaTeX Warning: Reference `LastPage' on page 3 undefined on input line 83.
+
+[3
+
+ <./diagrams/use_case.png>]
+
+
+LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 83.
+
+[4]
+
+LaTeX Warning: Reference `tab:skalierbarkeit' on page 5 undefined on input line 93.
+
+
+LaTeX Warning: Reference `tab:transparenzen' on page 5 undefined on input line 94.
+
+
+Underfull \hbox (badness 7649) in paragraph at lines 112--112
+>>>>>>> main
 []|\T1/lmr/m/n/10.95 Räumliche Ska-lier-bar-
  []
 
 
+<<<<<<< HEAD
 Underfull \hbox (badness 10000) in paragraph at lines 138--138
+=======
+Underfull \hbox (badness 10000) in paragraph at lines 116--116
+>>>>>>> main
 []|\T1/lmr/m/n/10.95 Administrative-
  []
 
 
 
 
+<<<<<<< HEAD
 LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 145.
 
 [6
 
 ]
 Overfull \hbox (1.80281pt too wide) in paragraph at lines 159--159
+=======
+LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 123.
+
+[5
+
+]
+Overfull \hbox (1.80281pt too wide) in paragraph at lines 137--137
+>>>>>>> main
 []|\T1/lmr/m/n/10.95 Replikationstransparenz| 
  []
 
 
+<<<<<<< HEAD
 Underfull \hbox (badness 10000) in paragraph at lines 165--165
+=======
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
+>>>>>>> main
 []|\T1/lmr/m/n/10.95 Skalierbarkeits-
  []
 
 
 
 
+<<<<<<< HEAD
 LaTeX Warning: Reference `LastPage' on page 7 undefined on input line 177.
 
 [7]) (./randbedingungen.tex
 
 
 LaTeX Warning: Reference `LastPage' on page 8 undefined on input line 3.
+=======
+LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 155.
+
+[6]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 160.
+ (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)) (./randbedingungen.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 7 undefined on input line 3.
+
+[7
+
+{/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+chapter 2.
+) (./kontextabgrenzung.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 8 undefined on input line 1.
+>>>>>>> main
 
 [8
 
 ]
+<<<<<<< HEAD
 chapter 2.
 ) (./kontextabgrenzung.tex
+=======
+chapter 3.
+) (./loesungsstrategie.tex
+>>>>>>> main
 
 
 LaTeX Warning: Reference `LastPage' on page 9 undefined on input line 1.
@@ -1373,6 +1474,7 @@ LaTeX Warning: Reference `LastPage' on page 9 undefined on input line 1.
 [9
 
 ]
+<<<<<<< HEAD
 chapter 3.
 ) (./loesungsstrategie.tex
 
@@ -1384,6 +1486,10 @@ LaTeX Warning: Reference `LastPage' on page 10 undefined on input line 1.
 ]
 chapter 4.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 19.
+=======
+chapter 4.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 22.
+>>>>>>> main
 (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1393,11 +1499,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--22
 
 
 
+<<<<<<< HEAD
 
 LaTeX Warning: Reference `LastPage' on page 11 undefined on input line 30.
 
 [11
 
+=======
+
+LaTeX Warning: Reference `LastPage' on page 10 undefined on input line 33.
+
+[10
+
+]) (./bausteinsicht.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 11 undefined on input line 1.
+
+[11]
+chapter 5.
+) (./laufzeitsicht.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 12 undefined on input line 1.
+
+[12
+
+>>>>>>> main
 ]
 Overfull \hbox (5.0813pt too wide) in paragraph at lines 46--47
 []\T1/lmr/m/n/10.95 Netzwerk kann durch UDP-Anfragen "lahm-ge-legt wer-den", Wat-ch-dog an Roboter-Software
@@ -1428,9 +1556,66 @@ Underfull \hbox (badness 1796) in paragraph at lines 20--20
 
 
 
+<<<<<<< HEAD
 LaTeX Warning: Reference `LastPage' on page 14 undefined on input line 26.
+=======
+./laufzeitsicht.tex:31: LaTeX Error: Lonely \item--perhaps a missing list environment.
 
-[14
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.31 \item a
+            ctivity diagram
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 31
+[][]
+ []
+
+
+./laufzeitsicht.tex:32: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.32 \item f
+            low charts
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 32
+[][]
+ []
+
+
+./laufzeitsicht.tex:33: LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.33 \item S
+            equenz diagram
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) detected at line 33
+[][]
+ []
+
+) (./verteilungssicht.tex
+>>>>>>> main
+
+
+LaTeX Warning: Reference `LastPage' on page 13 undefined on input line 1.
+
+[13
 
  <./diagrams/bausteinsicht_lvl_1_system_name_change.png (PNG copy)>]
 <diagrams/baustein_lvl_2.png, id=108, 302.12875pt x 232.87pt>
@@ -1532,6 +1717,7 @@ LaTeX Warning: Reference `LastPage' on page 19 undefined on input line 1.
 
  <./diagrams/Verbindungsabbruch.png>]
 chapter 7.
+<<<<<<< HEAD
 <diagrams/deployment.png, id=151, 742.775pt x 276.03125pt>
 File: diagrams/deployment.png Graphic file (type png)
 <use diagrams/deployment.png>
@@ -1539,6 +1725,14 @@ Package pdftex.def Info: diagrams/deployment.png  used on input line 5.
 (pdftex.def)             Requested size: 371.38658pt x 138.01527pt.
 ) (./konzepte.tex
 
+=======
+) (./konzepte.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 14 undefined on input line 1.
+
+[14
+>>>>>>> main
 
 LaTeX Warning: Reference `LastPage' on page 20 undefined on input line 1.
 
@@ -1548,9 +1742,17 @@ LaTeX Warning: Reference `LastPage' on page 20 undefined on input line 1.
 chapter 8.
 
 
+<<<<<<< HEAD
+=======
+
+LaTeX Warning: Reference `LastPage' on page 15 undefined on input line 51.
+
+[15
+>>>>>>> main
 
 LaTeX Warning: Reference `LastPage' on page 21 undefined on input line 59.
 
+<<<<<<< HEAD
 [21
 
 ]) (./entwurfsentscheidungen.tex
@@ -1560,11 +1762,62 @@ LaTeX Warning: Reference `LastPage' on page 22 undefined on input line 1.
 
 [22]
 chapter 9.
+=======
+
+LaTeX Warning: Reference `LastPage' on page 16 undefined on input line 93.
+
+[16]
+
+
+LaTeX Warning: Reference `LastPage' on page 17 undefined on input line 130.
+
+[17]
+Overfull \hbox (7.87697pt too wide) in paragraph at lines 140--141
+\T1/lmr/m/n/10.95 ne-ben-läu-fi-ger Sys-te-me sind vie-le tech-ni-sche De-tai-la-spek-te zu be-rück-sich-ti-gen (Adress-
+ []
+
+
+Overfull \hbox (2.30981pt too wide) in paragraph at lines 150--151
+[]\T1/lmr/m/n/10.95 Die Men-ge der von kom-mer-zi-el-len Software-Systemen be-ar-bei-te-ten Da-ten über-
+ []
+
+
+
+
+LaTeX Warning: Reference `LastPage' on page 18 undefined on input line 160.
+
+[18]
+
+
+LaTeX Warning: Reference `LastPage' on page 19 undefined on input line 199.
+
+[19]) (./entwurfsentscheidungen.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 20 undefined on input line 1.
+
+[20]
+chapter 9.
+) (./qualitaetsszenarien.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 21 undefined on input line 1.
+
+[21
+
+]
+chapter 10.
+) (./risiken.tex
+
+
+LaTeX Warning: Reference `LastPage' on page 22 undefined on input line 1.
+>>>>>>> main
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--13
 []|\T1/lmr/m/n/10.95 Schichten-Modell,
  []
 
+<<<<<<< HEAD
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--13
 \T1/lmr/m/n/10.95 Service-Orientiert,
@@ -1614,6 +1867,19 @@ LaTeX Warning: Reference `LastPage' on page 23 undefined on input line 1.
 
 ]
 chapter 10.
+=======
+]
+chapter 11.
+
+Underfull \hbox (badness 10000) in paragraph at lines 10--13
+
+ []
+
+) (./glossar.tex
+No file arc42-template.gls.
+\@gls@deffile=\write7
+\openout7 = `arc42-template.glsdefs'.
+>>>>>>> main
 
 Underfull \hbox (badness 1281) in paragraph at lines 22--23
 []|\T1/lmr/m/n/10.95 Teilausfälle dür-fen den Ge-
@@ -1715,7 +1981,10 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: Reference `LastPage' on page 24 undefined on input line 70.
 
-[24
+
+LaTeX Warning: Reference `LastPage' on page 23 undefined on input line 13.
+
+[23
 
 ]
 
@@ -1876,10 +2145,17 @@ Package lastpage Warning: Rerun to get the references right on input line 13.
 
  ) 
 Here is how much of TeX's memory you used:
+<<<<<<< HEAD
  27490 strings out of 473190
  540124 string characters out of 5704335
  1358421 words of memory out of 5000000
  50181 multiletter control sequences out of 15000+600000
+=======
+ 27419 strings out of 473190
+ 538114 string characters out of 5704335
+ 1356421 words of memory out of 5000000
+ 50133 multiletter control sequences out of 15000+600000
+>>>>>>> main
  622119 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  108i,20n,107p,10972b,747s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1887,10 +2163,19 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{glo:Architekturdokumentation} has been referenced but does not exist, replaced by a fixed one
 
 </opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/lm/lmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/lm/lmr12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/lm/lmss10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+<<<<<<< HEAD
 Output written on arc42-template.pdf (30 pages, 338768 bytes).
 PDF statistics:
  449 PDF objects out of 1000 (max. 8388607)
  386 compressed objects within 4 object streams
  117 named destinations out of 1000 (max. 500000)
  433 words of extra memory for PDF output out of 10000 (max. 10000000)
+=======
+Output written on arc42-template.pdf (23 pages, 252101 bytes).
+PDF statistics:
+ 396 PDF objects out of 1000 (max. 8388607)
+ 350 compressed objects within 4 object streams
+ 92 named destinations out of 1000 (max. 500000)
+ 422 words of extra memory for PDF output out of 10000 (max. 10000000)
+>>>>>>> main
 
