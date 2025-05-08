@@ -1,6 +1,6 @@
 ## Exclude pdf-build
 
-arc42-template.pdf
+#arc42-template.pdf
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
