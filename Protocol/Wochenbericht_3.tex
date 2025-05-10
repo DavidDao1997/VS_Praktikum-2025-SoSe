@@ -11,7 +11,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Titel}
+\title{Wochenbericht III - Praktikum "Verteilte Systeme": Titel}
 \author{Name Protokollführer}
 \date{\today}
 
@@ -48,7 +48,7 @@ Manh-An David Dao &  & 0\% & 0h & ok \\
 \hline
 Jannik Schön &  & 0\% & 0h & ok \\
 \hline
-Marc Siekmann &  & 0\% & 0h & ok \\
+Marc Siekmann & repo cleanup, arc42 Korrektur Kapitel 1, Anlegen arc42 Middleware & 80\% & 2h & ok \\
 \hline
 Phillip Patt &  & 0\% & 0h & ok \\
 
@@ -56,6 +56,8 @@ Phillip Patt &  & 0\% & 0h & ok \\
 \end{tabular}
 
 \section{Zusammenfassung der Woche}
+Neustrukturierung der Gruppenarbeit mit Korrektur.
+Neue Erkenntnisse bzgl. Middleware und Grundstruktur des Systems.
 
 In dieser Woche fand die Bearbeitung 
 \\\\
@@ -64,7 +66,14 @@ Wesentliche Pull request/commits des Projektes waren: \\ \\
 
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
 
-\subsection{Aufgabe}
+\subsection{arc42 Middleware, Cleanup, Korrektur Kapitel 1}
+Nach der vergangenen Vorlesung haben wir uns entschieden eine Middleware und eine Applikation jeweils als eigenständiges Produkt anzufertigen. Dies hat den Vorteil, dass Entscheidungen bzgl. Kommunikation, Security etc. gekapselt werden (Skript S.72). So kann die eigentliche Applikation ebenfalls unabhängig entwickelt werden und muss sich nur an dem gegebenen Interface der Middleware richten. Das Gesamtsystem ist demnach ein 2-Schichten-System. Daher wurde ein weiteres arc42 Dokument eingerichtet, in der eine eigene Architektur entwickelt wird. Dazu wurde eine Grundlage mithilfe NotebookML für das erste Kapitel geschaffen.
+
+Zeitaufteilung:
+Einarbeitung NotebookML: 20 Minuten
+Repository Cleanup: 20 Minuten
+arc42 Korrektur: 60 Minuten
+Anlegen arc42 Middleware: 20 Minuten
 
 
 \subsection{Aufgabe}
@@ -90,5 +99,6 @@ Wesentliche Pull request/commits des Projektes waren: \\ \\
 \end{itemize}
  
 \section{Nächste Schritte}
-
+- Architektur Middleware und Applikation
+- Ansteuerung Roboter mit ITS-Board
 \end{document}
