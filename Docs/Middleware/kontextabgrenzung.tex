@@ -1,0 +1,30 @@
+\chapter{Kontextabgrenzung}
+
+
+\section{Fachlicher Kontext}
+
+Die Middleware ist fachlich im Bereich der verteilten Steuerungssysteme angesiedelt. Ihre Rolle besteht darin, die komplexen Aspekte der Verteilung für die darüberliegende Anwendungslogik zu kapseln und zu abstrahieren. Sie ist nicht die Steuerungslogik selbst, sondern das Rückgrat für die Kommunikation und Koordination dieser Logik, die auf mehreren verteilten Komponenten (ITS-Board, Raspberry Pis) ausgeführt wird. Sie ermöglicht es, dass beliebig viele (1 - 254) Roboterarme von einem zentralen ITS-Board aus gesteuert werden können, indem sie die Nachrichtenübermittlung und den Austausch von Steuerungsbefehlen handhabt. Sie muss sicherstellen, dass die Kommunikation auch unter den Bedingungen des Projekts (z.B. Fehlverhalten von Komponenten) die Sicherheit der Anwesenden nicht gefährdet, was eine Anforderung an die Zuverlässigkeit und Fehlertoleranz der Middleware impliziert.
+
+\section{Technischer Kontext}
+
+Technisch gesehen positioniert sich die Middleware als eine Schicht zwischen der Anwendungsebene und den Betriebssystem-/Kommunikationsdiensten. Sie ist logisch über mehrere Maschinen verteilt, die über ein Netzwerk (hier: /24 Netzwerk) verbunden sind. Sie nutzt die unterliegenden Netzwerkprotokolle (z.B. TCP/UDP) und Betriebssystemfunktionen, bietet aber eine höhere Abstraktionsebene für die Anwendungen. Im spezifischen Projektkontext läuft sie auf den genannten Hardware-Komponenten (ITS-Board, Raspberry Pis). Die Middleware muss die Heterogenität dieser zugrundeliegenden Systeme (Hardware, Betriebssysteme) verbergen. Sie stellt Middleware-Kommunikationsprotokolle bereit.
+
+\section{Externe Schnittstellen}
+
+Die Middleware interagiert hauptsächlich über zwei externe Schnittstellenbereiche:
+
+
+\begin{itemize}
+	\item{Schnittstelle zur Anwendungsebene:} Dies ist die primäre Schnittstelle der Middleware. Sie bietet eine abstrahierte, einheitliche API (Application Programming Interface) für die Anwendungsentwickler. Über diese Schnittstelle kann die Anwendungslogik (z.B. auf dem ITS-Board oder den Raspberry Pis) verteilte Dienste nutzen, Nachrichten senden/empfangen oder auf benannte Ressourcen zugreifen, ohne sich um die Details der Netzwerkimplementierung, des Marshallings oder der physikalischen Lokalität kümmern zu müssen. Die Schnittstelle sollte idealerweise so gestaltet sein, dass sie sich nicht wesentlich von lokalen Funktionsaufrufen oder Datenzugriffen unterscheidet, um die Transparenz zu maximieren. Sie kann die Unterstützung mehrerer Programmiersprachen umfassen.
+	
+	\item{Schnittstelle zu den System-/Netzwerkschichten:} Die Middleware nutzt die Dienste des lokalen Betriebssystems und des Netzwerkstacks. Sie interagiert mit diesen Schichten, um Nachrichten über das Netzwerk zu senden und zu empfangen, auf Ressourcen zuzugreifen und systemnahe Funktionen auszuführen. Diese Schnittstelle ist intern und verborgen für die Anwendungsebene.
+	
+	
+	
+	
+\end{itemize}
+
+
+%TODO Quellenverzeichnis
+
+Diese Struktur entspricht dem in den Quellen diskutierten Modell einer Middleware-Schicht, die über den Betriebssystemen liegt und Anwendungen eine einheitliche Schnittstelle bietet.

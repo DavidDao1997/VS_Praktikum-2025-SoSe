@@ -1,0 +1,144 @@
+\chapter{Einführung und Ziele}
+
+Diese Dokumentation beschreibt Entwurf und Kontext einer Middleware, die im Rahmen des Praktikums \glqq Verteilte Systeme SoSe 2025\grqq{} entwickelt wird. Ziel des Praktikums ist der Entwurf und die Implementierung eines verteilten Steuerungssystems für autonome Roboterarme. Die Middleware bildet dabei eine zentrale Komponente, die die Komplexität der Verteilung für die Anwendungsebene abstrahieren soll.
+
+
+\section{Aufgabenstellung}
+Die Hauptaufgabe der zu entwickelnden Middleware besteht darin, die Kommunikation und Koordination zwischen den verteilten Komponenten des Steuerungssystems zu ermöglichen. Sie soll eine Abstraktionsschicht zwischen der eigentlichen Anwendungslogik (z.B. Robotersteuerung) und den darunterliegenden Betriebssystem- und Netzwerkdiensten bilden. Gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen, die auch im zugrundeliegenden Skript referenziert werden, verfolgt die Middleware das Ziel, die Verteilung weitestgehend zu verbergen (Transparenz).
+Zu den Kernfunktionen, die eine Middleware typischerweise bereitstellt und die hier adressiert werden sollen, gehören:
+
+\begin{itemize}
+	\item Bereitstellung eines breiten Angebots für die Kommunikation mittels verschiedener Protokolle. Dies kann synchrone oder asynchrone Kommunikation umfassen, wie z.B. Remote Procedure Calls (RPC) oder Nachrichtenübertragung (Message-Oriented Middleware, MOM).
+	\item Unterstützung zur Konvertierung von Datenformaten zwischen Systemen.
+	\item Bereitstellung von Protokollen zur Namensauflösung (Service Discovery), um Ressourcen einfach zu identifizieren und zu referenzieren.
+	\item Mechanismen der Skalierbarkeit, wie z.B. Replikation	
+\end{itemize}
+
+
+Die Middleware dient als Vermittler, der die Interoperabilität über verschiedene Systeme, Betriebssysteme und Hardwaretypen hinweg verbessern soll.
+
+
+\newpage
+\section{Qualitätsziele}
+% Aus VS Skript Kapitel 2.4 Seite 23
+% TODO zu jeden Punkt eine Definition oder entfernen
+% TODO messbar definieren
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{5cm}|}
+	\caption{Qualitätsziele der Software Engineering} \label{tab:seziele} \\
+	\hline
+	Ziel & Beschreibung & Metrik \\
+	\hline
+	\endfirsthead
+	
+	\hline
+	Ziel & Beschreibung & Metrik \\
+	\hline
+	\endhead
+	
+	\hline
+	\endfoot
+	
+	
+	Zuverlässigkeit & 
+	Fehler dürfen den Betrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
+	& Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h)
+	\\
+	\hline
+	Skalierbarkeit & 
+	Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. Die Middleware muss Mechanismen (z.B. Replikation, Caching) bieten, um mit zunehmender Anzahl von Teilnehmern oder der Datenmenge zurechtzukommen.
+	& Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 253)
+	\\
+	\hline
+	Leistung & 
+	Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
+	& max. 200 ms bis Befehlsausführung
+	\\
+	\hline
+	Sicherheit (Safety) & 
+	Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
+	%Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
+	& Reaktionszeit max. 250 ms, bis Roboterarm stoppt
+	\\
+	\hline
+	Wartbarkeit & 
+	Der Code muss übersichtlich sein, gut dokumentiert sein und wenig Komplexität enthalten. 
+	& Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar  
+	
+	\\
+	\hline
+	
+	%Portabilität & %Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
+	%& nicht relevant
+	%\\
+	%\hline
+	Benutzerfreundlichkeit & Bedienung ist intuitiv, sodass die Nutzer möglichst wenig Zeit mit der Einarbeitung in die Bedienung benötigen. 
+	& Keine Einweisung erforderlich
+	\\
+	\hline
+	%Anpassbarkeit & 
+	%Neue Funktionen, Sensoren oder Regeln sollen ohne tiefgreifende Änderungen am System integrierbar sein. 
+	%& 
+	%\\
+	%\hline
+	%Kompatibilität & 
+	%Das System soll mit bestehenden Standards und Protokollen kommunizieren können. 
+	%& 
+	%\\
+	%\hline
+	Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme sind ansteuerbar \\
+	\hline
+	Offenheit & 
+	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
+	& Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
+	\hline
+	Zugriffstransparenz   & Die Umsetzung der Roboterarmsteuerung ist für den Benutzer nicht erkennbar und möglichst einfach gehalten & GUI zeigt nur Zustände des ausgewähltem Roboterarms an ( z.B. Verfügbarkeit) und der Roboterarm ist über das ITS-Board so einfach wie möglich steuerbar\\
+	\hline
+	Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist für den Benutzer unsichtbar  & Aus der Sicht der Benutzer sind alle benötigten Ressourcen zu Steuerung direkt und lokal auf dem ITS-Board\\
+	
+	
+\end{longtable}
+\clearpage
+\section{Stakeholder}
+\begin{table}[h!]
+	\caption{Interessen der Stakeholder}
+	\label{tab:stakeholder}
+	\centering
+	\begin{tabular}{|p{2.5cm}|p{10cm}|}
+		\hline
+		\textbf{Stakeholder} & \textbf{Interesse}  \\
+		\hline
+		Nutzer   
+		& \parbox{10cm}{\begin{itemize}
+				\item vollständige Funktionalität
+				\item Benutzerfreundlichkeit
+				\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
+				\item Reaktionszeit: Die Robotersteuerung reagiert innerhalb eines definierten Zeitfensters
+				\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
+		\end{itemize}}
+		\\
+		\hline
+		Betreiber 
+		&\parbox{10cm}{\begin{itemize}
+				\item Portabilität: Das System kann auf verschiedenen Plattformen betrieben werden.
+				\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
+				\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
+		\end{itemize}}
+		\\
+		\hline
+		Entwicklerteam 
+		&\parbox{10cm}{ \begin{itemize}
+				\item Wartbarkeit
+				\item Portabilität: Das System kann auf verschiedenen Plattformen betrieben werden (z.B Testen)
+				\item Austauschbarkeit: Softwaremodule können ohne großen Aufwand ersetzt werden
+		\end{itemize}}
+		\\
+		\hline
+		
+		Professor & \parbox{10cm}{\begin{itemize}
+				\item Zugang zu allen Arbeitsmitteln zwecks Bewertung und Kontrolle
+				\item Das Endprodukt besitzt alle geforderten Funktionalitäten
+		\end{itemize}}
+		\\
+		\hline
+	\end{tabular}
+\end{table}
