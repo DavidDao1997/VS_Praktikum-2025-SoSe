@@ -2,29 +2,25 @@
 
 \chapter{Randbedingungen}
 
+Dieses Kapitel beschreibt die Rahmenbedingungen, unter denen die Middleware entworfen und implementiert werden muss.
+
 \section{Technische Randbedingungen}
 
-Das verteilte Steuerungssystem unterliegt mehreren festgelegten technischen Rahmenbedingungen, die den Entwicklungs- und Implementierungsspielraum einschränken. Diese Bedingungen sind im Folgenden aufgeführt:
-
 \begin{itemize}
-    \item \textbf{Hardwareplattform:}  Das System basiert auf ein Raspberry Pi der den jeweiligen Roboterarm steuert. Eine Software auf dem Raspberry Pi stellt eine API zur Verfügung, sodass die Roboter sich ohne Einschränkungen bewegen können. % TODO ist eine sicherung eingebaut, dass sich die roboter nicht selbst beschädigen können?
-     Ein ITS-BRD dient als Steuerung/Administration der Roboterarme.
+    \item \textbf{Betriebsumgebung:}  Die Middleware muss auf einer heterogenen Umgebung aus verschiedenen Hardware-Plattformen und Betriebssystemen laufen können. Im spezifischen Projektkontext umfasst dies mindestens ein ITS-Board (STM32F4) und mehrere Raspberry Pis.
     
-    \item \textbf{Programmiersprachen:}  
+    \item \textbf{Netzwerk:}  
     \begin{itemize}
-        \item \textbf{C:} Das ITS-Board wird mit C Programmiert. 
-        \item \textbf{Java:} Die Roboterarme werden mit einem Javaprogramm angesteuert.
+        \item Die Kommunikation findet innerhalb eines begrenzten Netzwerks statt, im Projektkontext ein /24 Netzwerk. Die Middleware baut auf den grundlegenden Kommunikationsdiensten des Betriebssystems und Netzwerks auf.
     \end{itemize}
-    \item \textbf{Netzwerkumgebung:} Es steht ein Adressenraum von 255 Adressen zur verfügung. Daraus folgt, dass nicht mehr als 254 Roboterarme eingesetzt werden können. Das ITS-Board ist ebenfalls ein Teilnehmer des Netzes.
+    \item \textbf{Hardware:} Die Middleware muss auf der Hardware laufen, die für das Steuerungssystem verwendet wird: ITS-Board und Raspberry Pis. Dies impliziert möglicherweise Beschränkungen hinsichtlich Rechenleistung, Speicher und verfügbaren Bibliotheken im Vergleich zu leistungsstarken Servern.
+    \item \textbf{Anbindung:} Die Middleware muss in der Lage sein, sich mit der Anwendungsschicht darüber und den System-/Netzwerkschichten darunter zu integrieren.
 
     
 \end{itemize}
 
 \section{Organisatorische Randbedingungen}
 \begin{itemize}
-
-    \item \textbf{Umgebung:}  
-    Der Abnahme bereich befindet sich im Raum BT7 R7.65. Die Steuerung und Navigation des Roboters müssen innerhalb der räumlich definierten Grenzen erfolgen. Die dort vorhandene LAN-Infrastruktur kann zur Netzwerkkommunikation verwendet werden.
     \item \textbf{Zeit:} Entwicklungszeitraum beträgt 12 Wochen. 
     \item \textbf{Vorwissen:} Einige Konzepte und Herangehensweisen werden erst im Laufe der 12 Wochen gelernt.
     \item \textbf{Budget:} Es steht kein Budget zur Verfügung.

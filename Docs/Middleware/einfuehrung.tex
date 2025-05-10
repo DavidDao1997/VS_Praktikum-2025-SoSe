@@ -14,7 +14,6 @@ Zu den Kernfunktionen, die eine Middleware typischerweise bereitstellt und die h
 	\item Mechanismen der Skalierbarkeit, wie z.B. Replikation	
 \end{itemize}
 
-
 Die Middleware dient als Vermittler, der die Interoperabilität über verschiedene Systeme, Betriebssysteme und Hardwaretypen hinweg verbessern soll.
 
 
@@ -49,11 +48,11 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 	& Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 253)
 	\\
 	\hline
-	Leistung & 
-	Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
-	& max. 200 ms bis Befehlsausführung
-	\\
-	\hline
+	%Leistung & 
+	%Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
+	%& max. 200 ms bis Befehlsausführung
+	%\\
+	%\hline
 	Sicherheit (Safety) & 
 	Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
 	%Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
@@ -71,10 +70,10 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 	%& nicht relevant
 	%\\
 	%\hline
-	Benutzerfreundlichkeit & Bedienung ist intuitiv, sodass die Nutzer möglichst wenig Zeit mit der Einarbeitung in die Bedienung benötigen. 
-	& Keine Einweisung erforderlich
-	\\
-	\hline
+	%Benutzerfreundlichkeit & Bedienung ist intuitiv, sodass die Nutzer möglichst wenig Zeit mit der Einarbeitung in die Bedienung benötigen. 
+%	& Keine Einweisung erforderlich
+	%\\
+	%\hline
 	%Anpassbarkeit & 
 	%Neue Funktionen, Sensoren oder Regeln sollen ohne tiefgreifende Änderungen am System integrierbar sein. 
 	%& 
@@ -85,7 +84,7 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 	%& 
 	%\\
 	%\hline
-	Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme sind ansteuerbar \\
+	Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme werden zuverlässig angesteuert \\
 	\hline
 	Offenheit & 
 	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
@@ -93,7 +92,8 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 	\hline
 	Zugriffstransparenz   & Die Umsetzung der Roboterarmsteuerung ist für den Benutzer nicht erkennbar und möglichst einfach gehalten & GUI zeigt nur Zustände des ausgewähltem Roboterarms an ( z.B. Verfügbarkeit) und der Roboterarm ist über das ITS-Board so einfach wie möglich steuerbar\\
 	\hline
-	Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist für den Benutzer unsichtbar  & Aus der Sicht der Benutzer sind alle benötigten Ressourcen zu Steuerung direkt und lokal auf dem ITS-Board\\
+	Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist nach außen unsichtbar  & Das Interface nach außen ist eineiheitlich und verschleiert die Implementierung\\
+	
 	
 	
 \end{longtable}
@@ -109,27 +109,30 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 		\hline
 		Nutzer   
 		& \parbox{10cm}{\begin{itemize}
-				\item vollständige Funktionalität
-				\item Benutzerfreundlichkeit
-				\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
-				\item Reaktionszeit: Die Robotersteuerung reagiert innerhalb eines definierten Zeitfensters
-				\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
+				\item  Indirekte Stakeholder, deren Erfahrung stark von der Leistung und Zuverlässigkeit des Gesamtsystems, einschließlich der Middleware, abhängt.
 		\end{itemize}}
 		\\
 		\hline
 		Betreiber 
 		&\parbox{10cm}{\begin{itemize}
 				\item Portabilität: Das System kann auf verschiedenen Plattformen betrieben werden.
-				\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
-				\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
+				\item Zuverlässigkeit: Die Middleware kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
 		\end{itemize}}
 		\\
 		\hline
-		Entwicklerteam 
+		Entwicklerteam Middleware
 		&\parbox{10cm}{ \begin{itemize}
 				\item Wartbarkeit
 				\item Portabilität: Das System kann auf verschiedenen Plattformen betrieben werden (z.B Testen)
 				\item Austauschbarkeit: Softwaremodule können ohne großen Aufwand ersetzt werden
+		\end{itemize}}
+		\\
+		\hline
+		Entwicklerteam Applikation
+		&\parbox{10cm}{ \begin{itemize}
+				\item vollständige Funktionalität
+				\item Benutzerfreundlichkeit (der Middleware-Schnittstelle) 
+				\item Zuverlässigkeit und Reaktionszeit der von der Middleware bereitgestellten Kommunikationsdienste.
 		\end{itemize}}
 		\\
 		\hline
