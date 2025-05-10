@@ -53,41 +53,82 @@
 \definecolor{commentcolor}{rgb}{0.25,0.5,0.35}			% comment color
 \definecolor{javadoccolor}{rgb}{0.25,0.35,0.75} 		% javadoc color
 
+\definecolor{lightyellow}{rgb}{1.0, 1.0, 0.5}  % Light Yellow
+\definecolor{lightblue}{rgb}{0.5, 0.5, 1.0}    % Light Blue
+\definecolor{lightgreen}{rgb}{0.5, 1.0, 0.5}   % Light Green
+\definecolor{teal}{rgb}{0.0, 0.5, 0.5}         % Teal
+\definecolor{darkbg}{rgb}{0.12, 0.12, 0.12}    % Dark gray background
+
 \usepackage{listings}
-\lstset{language=Java}
-\lstloadlanguages{Java}								% language options
-\lstset{
-	basicstyle=\ttfamily\footnotesize,      		% fontstyle
-	numbers=left,									% linenumber placement
-	numberstyle=\tiny,								% linenumber fontsize
-	numbersep=5pt,									% how far the line-numbers are from the code
-	breaklines=true,								% print linebreaks
-	backgroundcolor=\color{gray!10},				% background color
-	commentstyle=\color{commentcolor},				% comment color
-	morecomment=[s][\color{javadoccolor}]{/**}{*/}, % javadoc color
-	keywordstyle=\color{keywordcolor},				% keyword color
-	stringstyle=\color{stringcolor},				% string color
-	showstringspaces=false,							% show spaces in a string
-	frame=single,									% frame
-	tabsize=4,										% tabstop
-	rulecolor=\color{black},						% if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here)) 
-	title=\lstname,									% title is name of source file
-	escapeinside={\%*}{*)},			 				% if you want to add LaTeX within your code
-	inputencoding=utf8,								% encoding = utf8
-	extendedchars=true,								% utf8 support 
-	literate=										% utf8 support
-	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
-	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
-	{à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
-	{À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
-	{ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
-	{Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
-	{â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
-	{Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
-	{œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
-	{ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
-	{€}{{\EUR}}1 {£}{{\pounds}}1
+\usepackage{xcolor}
+
+% Define Java language (minimal)
+\lstdefinelanguage{Java}{
+  morekeywords={class, interface, enum, throws},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s][\color{commentcolor}]{/**}{*/},  % Javadoc comment coloring
+  morestring=[b]"
 }
+
+% Listings Style für Quellcode
+\lstset{
+  float,
+  basicstyle=\ttfamily\small,                               % Use monospaced font for code
+  keywordstyle=\color{blue}\bfseries,                        % Blue for keywords
+  commentstyle=\color{green},                                % Green for comments
+  stringstyle=\color{red},                                   % Red for strings
+  showstringspaces=false,                                    % Don't show spaces in strings
+  breaklines=true,                                           % Automatically break long lines
+  frame=single,                                              % Frame around the code block
+  backgroundcolor=\color{gray!10},                           % Light gray background for the code
+  captionpos=b,                                              % Caption position at the bottom
+  tabsize=2,                                                 % Tab size set to 2 for consistent formatting
+  numberstyle=\tiny\color{gray},                             % Line numbers in small gray font
+  stepnumber=1,                                              % Number every line
+  numbers=left,                                              % Place line numbers on the left
+  numbersep=5pt,                                             % Distance of line numbers from the code
+}
+
+\usepackage{caption}
+% \captionsetup[lstlisting]{labelformat=empty}
+\captionsetup[lstlisting]{name=Snippet}
+
+
+% Listings Style für Java
+\lstnewenvironment{Java}[1][]{
+  \lstset{
+    float,
+    #1,                               % Dynamically set the caption
+    language=Java,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{lightblue},   % Light yellow for method names
+    % identifiers
+    identifierstyle=\color{teal!50},  % Light blue for arguments and parameters
+    morekeywords={[2]Position, RobotArm, Movement, UI, IO, ActuatorController, CouldNotReachRobotException},
+    keywordstyle={[2]\color{teal!50}},
+    % properties
+	  morekeywords={[3]
+      Position, rotation, joint1, joint2, claw, 
+      RobotArm, name, id,
+      Movement, ROTATE_CLOCKWISE, ROTATE_COUNTERCLOCKWISE, JOINT1_OPEN, JOINT1_CLOSE, JOINT2_OPEN, JOINT2_CLOSE, CLAW_OPEN, CLAW_CLOSE
+    },
+    keywordstyle={[3]\color{white}},
+    % parameters
+	  morekeywords={[4]robotArms, robotArm , position, message, callback},
+    keywordstyle={[4]\color{lightblue!50}},
+	  % methods
+    morekeywords={[5]displaySelectOptions, displaySelected, displayArmStatus, displayError, onMoveCommand, onSelect, move, getPosition}, % Add methods to keyword list
+    keywordstyle={[5]\color{lightyellow}},
+    commentstyle=\color{commentcolor},                % comment color
+    stringstyle=\color{stringcolor},                  % string color
+    showstringspaces=false,                           % show spaces in a string
+    breaklines=true,                                  % print linebreaks
+    frame=single,                                     % frame
+    backgroundcolor=\color{darkbg},                   % background color
+	  literate={\{}{{\color{white}\{}}1 {\}}{{\color{white}\}}}1,
+  }
+}{}
 
 % PDF einbinden
 \usepackage{pdfpages}
