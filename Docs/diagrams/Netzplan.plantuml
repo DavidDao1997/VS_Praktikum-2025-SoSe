@@ -1,0 +1,56 @@
+@startuml
+title Logischer Netzwerkplan mit Software – Verteiltes Steuerungssystem
+
+cloud "Netzwerkraum (IPv4 /24 – 256 Adressen)" as Netz
+
+component "Switch" as SW
+
+' ITS-Board
+node "ITS-Board\nIP: 192.168.0.1" as ITS {
+  [ITS-Controller\n(C-Programm)] as CApp
+}
+
+' Roboterarme
+rectangle "Roboterarme (1..253)" {
+  node "Raspberry Pi 1\nIP: 192.168.0.2" as Pi1 {
+    [RobotController\n(Java)] as JavaApp1
+    [Bewegungs-API] as API1
+  }
+  node "Raspberry Pi n\nIP: 192.168.0.254" as PiN {
+    [RobotController\n(Java)] as JavaAppN
+    [Bewegungs-API] as APIN
+  }
+}
+
+' Verbindungen zum Switch
+ITS --> SW
+Pi1 --> SW
+PiN --> SW
+
+' Kommunikation zwischen Komponenten
+JavaApp1 --> API1 : nutzt API
+JavaAppN --> APIN : nutzt API
+
+' Switch ist Zugangspunkt zum logischen Netz
+SW --> Netz : Netzverbindung
+
+' Hinweis zum Adressraum
+note right of Netz
+  IPv4 /24:
+  - .0 Netzadresse
+  - .255 Broadcast
+  - .1 ITS-Board
+  ➝ 253 nutzbare Adressen für Raspberry Pis
+end note
+
+' Hinweise zur Softwareverteilung
+note bottom of Pi1
+  Java-Anwendung zur Robotersteuerung\n
+  + API für Bewegungssteuerung
+end note
+
+note bottom of ITS
+  Zentrale Verwaltung & Koordination\n
+  mittels C-Programm
+end note
+@enduml

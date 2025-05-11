@@ -6,19 +6,14 @@
 
 Das verteilte Steuerungssystem unterliegt mehreren festgelegten technischen Rahmenbedingungen, die den Entwicklungs- und Implementierungsspielraum einschränken. Diese Bedingungen sind im Folgenden aufgeführt:
 
-\begin{itemize}
-    \item \textbf{Hardwareplattform:}  Das System basiert auf ein Raspberry Pi der den jeweiligen Roboterarm steuert. Eine Software auf dem Raspberry Pi stellt eine API zur Verfügung, sodass die Roboter sich ohne Einschränkungen bewegen können. % TODO ist eine sicherung eingebaut, dass sich die roboter nicht selbst beschädigen können?
-     Ein ITS-BRD dient als Steuerung/Administration der Roboterarme.
-    
-    \item \textbf{Programmiersprachen:}  
-    \begin{itemize}
-        \item \textbf{C:} Das ITS-Board wird mit C Programmiert. 
-        \item \textbf{Java:} Die Roboterarme werden mit einem Javaprogramm angesteuert.
-    \end{itemize}
-    \item \textbf{Netzwerkumgebung:} Es steht ein Adressenraum von 255 Adressen zur verfügung. Daraus folgt, dass nicht mehr als 254 Roboterarme eingesetzt werden können. Das ITS-Board ist ebenfalls ein Teilnehmer des Netzes.
+\begin{figure}[h]  
+    \centering
+    \includegraphics[width=0.8\linewidth]{diagrams/Netzplan.png}
+    \caption{Skizze der technischen Randbedingungen}
+    \label{fig:Skizze}
+\end{figure}
 
-    
-\end{itemize}
+
 
 \section{Organisatorische Randbedingungen}
 \begin{itemize}
