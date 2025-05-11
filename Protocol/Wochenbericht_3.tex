@@ -11,7 +11,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht III - Praktikum "Verteilte Systeme": Überarbeitung der Kaptiel des arc42 1 bis 6}
+\title{Wochenbericht III - Praktikum "Verteilte Systeme": Überarbeitung der arc42-Kapitel 1 bis 6}
 \author{Manh-An David Dao}
 \date{\today}
 
@@ -44,13 +44,13 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao & arc42: Ergänzung Kapitel 2.1 \& überarbeitung Kapitel 6 & 80\% & 1h & ok \\
+Manh-An David Dao & arc42: Ergänzung Kapitel 2.1 \& überarbeitung Kapitel 6 & 80\% & 2.5h & ok \\
 \hline
 Jannik Schön & arc42: Überarbeitung Kapitel 5 & 70\% & 1h & ok \\
 \hline
 Marc Siekmann & repo cleanup, arc42 Korrektur Kapitel 1, Anlegen arc42 Middleware & 80\% & 2h & ok \\
 \hline
-Phillip Patt & arc42: Organisatorisches, Überarbeitung Kapitel 4 \& Roboterarm initialisieren  & 70\% & 4h & - \\
+Phillip Patt & arc42:  Überarbeitung Kapitel 4, Roboterarm initialisieren \& Organisatorisches & 70\% & 4h & nok \\
 
 \bottomrule
 \end{tabular}
@@ -67,21 +67,20 @@ Wesentliche Pull request/commits des Projektes waren: \\
 \subsection{arc42 Middleware, Cleanup, Korrektur Kapitel 1}
 Nach der vergangenen Vorlesung haben wir uns entschieden eine Middleware und eine Applikation jeweils als eigenständiges Produkt anzufertigen. Dies hat den Vorteil, dass Entscheidungen bzgl. Kommunikation, Security etc. gekapselt werden (Skript S.72). So kann die eigentliche Applikation ebenfalls unabhängig entwickelt werden und muss sich nur an dem gegebenen Interface der Middleware richten. Das Gesamtsystem ist demnach ein 2-Schichten-System. Daher wurde ein weiteres arc42 Dokument eingerichtet, in der eine eigene Architektur entwickelt wird. Dazu wurde eine Grundlage mithilfe NotebookML für die ersten drei Kapitel geschaffen.
 \\\\
-Zeitaufteilung Marc Siekmann:\\
-Einarbeitung NotebookML: 20 Minuten\\
-Repository Cleanup: 20 Minuten\\
-arc42 Korrektur: 60 Minuten\\
-Anlegen arc42 Middleware: 20 Minuten\\
-Organisation, Rücksprache mit Prof, technische Probleme, Sonstiges: ca. 2h\\
-Reviews: 30 Minuten
+
 
 \subsection{arc42 Kapitel 2.1 und 6}
 In dieser Woche wurde das Kapitel 2.1 (technische Randbedingung) überarbeitet und um eine Skizze ergänzt.
+ \footnote{\url {https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/12}}
 Die Skizze dient der Visualisierung des Systems und stellt insbesondere jene Komponenten dar, die für uns fest vorgegeben sind und auf die wir keinen Einfluss nehmen können.
 Ziel war es, ein gemeinsames Verständnis darüber zu schaffen, welche Systemteile als unveränderlich zu betrachten sind und wo unser tatsächlicher Handlungsspielraum liegt.
 \\\\
 Im Rahmen von Kapitel 6 (Laufzeitsicht) entschieden wir uns, ein im Skript (vgl. S.101) erwähntes Verhaltensmuster mit einem Sequenzdiagramm darzustellen.
 Das Diagramm wurde überarbeitet, um die Interaktionen zwischen den Komponenten verständlicher und visuell präziser abzubilden.
+\footnote{\url {https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/13}}
+
+
+
 
 \subsection{arc42 Kapitel 5}
 Kapitel 5 wurde überarbeitet.
@@ -93,16 +92,16 @@ Die Implentierung hilft in der Zukunft bei der Wartung, dem Testen und der Über
 Um die Kritik der vorigen Woche bzgl Zeitmanagement zu verarbeiten wurde ein Issueboard
 \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/boards}}
 auf Gitlab eingerichtet. Des weiteren wurden die nächsten Schritte als Issues formuliert 
-um bessere asynchrone Arbeit zu ermöglichen. (Zeitaufwand 1,5h)
+um bessere asynchrone Arbeit zu ermöglichen. 
 
 Anhand der Rückmeldungen aus der Vorlesung und den Besprechungen mit dem Professor wurde die arc42-Dokumentation Kapitel 4 - Lösungsstrategien überarbeitet.
 Es wurde ein erster Versuch unternommen das System funktional zu zerlegen, der MR
 \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/9}}
-ist noch ein Draft und dient als gesprächsgrundlage für das weitere vorgehen. (Zeitaufwand 2h)
+ist noch ein Draft und dient als gesprächsgrundlage für das weitere vorgehen. 
 
 Das exemplarishe Ansprechen der Roboter ist nicht weiter fortgescrhitten.
 
-Reviews und Wochenbericht. (Zeitaufwand 30m)
+
 
 
 \section{Fachlicher Bezug}
@@ -113,16 +112,46 @@ Dabei wurde auf bestehende Kenntnisse aus dem Studium und der Vorlesung zurückg
 \begin{itemize}
 
 \item \textbf{Verteilte Systeme – Skriptbezug} \\
-Die Verwendung des Sequenzdiagramms geht auf einen Hinweis im Skript zu Verteilten Systemen (vgl. S.101) zurück.
+Die Verwendung des Sequenzdiagramms geht auf einen Hinweis im Skript zu Verteilten Systemen zurück.
+\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 101 }
 \item \textbf{arc42 – technische Randbedingung} \\
 Die Ergänzung der technischen Randbedingung basiert auf einer methodischen Herangehensweise, wie sie im vorherigen Semester im Fach Software Engineering vermittelt wurde.
 \item \textbf{arc42 – Laufzeitsicht} \\
-Die Zuordnung des Sequenzdiagramms basiert auf arc42-Dokumentation (Kapitel 6).
+Die Zuordnung des Sequenzdiagramms basiert auf arc42-Dokumentation (Kapitel 6). 
+\footnote {\url{https://www.dokchess.de/06_laufzeitsicht/01_zugermittlung/}}
 
 
 \end{itemize}
+
+\clearpage
+\section{Zeitaufteeilung}
+
+\begin{itemize}
+\item \textbf{Marc Siekmann} \\
+Einarbeitung NotebookML: 20 Minuten\\
+Repository Cleanup: 20 Minuten\\
+arc42 Korrektur: 60 Minuten\\
+Anlegen arc42 Middleware: 20 Minuten\\
+Organisation, Rücksprache mit Prof, technische Probleme, Sonstiges: ca. 2h\\
+Reviews: 30 Minuten
+
+\item \textbf{Manh-An David Dao}\\
+Ergänzung Kapitel 2.1: 30 Minuten\\
+Überarbeitung Kapitel 6: 60 Minuten\\
+Reviews und Wochenbericht: 60 Minuten\\ 
+
+\item \textbf{Phillip Patt}\\
+Organisatorisches: 120 Minuten \\ 
+Überarbeitung Kapitel 4: 90 Minuten \\ 
+Roboterarm initialisieren: 0 Minuten\\ 
+Reviews und Wochenbericht: Zeitaufwand 30 minuten \\
+
+\end{itemize}
+
 
 \section{Nächste Schritte}
 - Architektur Middleware und Applikation\\
 - Ansteuerung Roboter mit ITS-Board
 \end{document}
+
+
