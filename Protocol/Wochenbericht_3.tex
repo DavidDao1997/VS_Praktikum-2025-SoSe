@@ -44,25 +44,23 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao &  & 0\% & 0h & ok \\
+Manh-An David Dao & arc42: Ergänzung Kapitel 2.1 \& überarbeitung Kapitel 6 & 80\% & 1h & ok \\
 \hline
-Jannik Schön &  & 0\% & 0h & ok \\
+Jannik Schön & arc42: Überarbeitung Kapitel 5 & 70\% & 1h & ok \\
 \hline
 Marc Siekmann & repo cleanup, arc42 Korrektur Kapitel 1, Anlegen arc42 Middleware & 80\% & 2h & ok \\
 \hline
-Phillip Patt &  & 0\% & 0h & ok \\
+Phillip Patt & arc42: Überarbeitung Kapitel 4 \& Roboterarm initialisieren  & 70\% & 3h & ok \\
 
 \bottomrule
 \end{tabular}
 
 \section{Zusammenfassung der Woche}
 Neustrukturierung der Gruppenarbeit mit Korrektur.
-Neue Erkenntnisse bzgl. Middleware und Grundstruktur des Systems.
-
+Neue Erkenntnisse bzgl. Middleware und Grundstruktur des Systems.\\
 In dieser Woche fand die Bearbeitung 
 \\\\
-Wesentliche Pull request/commits des Projektes waren: \\ \\
-
+Wesentliche Pull request/commits des Projektes waren: \\
 
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
 
@@ -77,29 +75,43 @@ Anlegen arc42 Middleware: 20 Minuten\\
 Organisation, Rücksprache mit Prof, technische Probleme, Sonstiges: ca. 2h\\
 Reviews: 30 Minuten
 
-\subsection{Aufgabe}
+\subsection{arc42 Kapitel 2.1 und 6}
+In dieser Woche wurde das Kapitel 2.1 (technische Randbedingung) überarbeitet und um eine Skizze ergänzt.
+Die Skizze dient der Visualisierung des Systems und stellt insbesondere jene Komponenten dar, die für uns fest vorgegeben sind und auf die wir keinen Einfluss nehmen können.
+Ziel war es, ein gemeinsames Verständnis darüber zu schaffen, welche Systemteile als unveränderlich zu betrachten sind und wo unser tatsächlicher Handlungsspielraum liegt.
+\\\\
+Im Rahmen von Kapitel 6 (Laufzeitsicht) entschieden wir uns, ein im Skript (vgl. S.101) erwähntes Verhaltensmuster mit einem Sequenzdiagramm darzustellen.
+Das Diagramm wurde überarbeitet, um die Interaktionen zwischen den Komponenten verständlicher und visuell präziser abzubilden.
+
+\subsection{arc42 Kapitel 5}
+Kapitel 5 wurde überarbeitet.
+So wurde die Bausteinsicht der aktuellen Erkenntnisse von Kapitel 5 aus der Vorlesung angepasst. 
+Dabei wurde darauf geachtet, dass die Bausteinsicht der Logik einer „Three-Layer Architektur“ (s. VS-Skript S. 68) erfüllt.
+Die Implentierung hilft in der Zukunft bei der Wartung, dem Testen und der Übersichtlichkeit des Quellcodes. Auch sind die verschiedenen Schichten austauschbar.
+
+\subsection{arc42 Kapitel 4 \& Roboterarm initialisieren} 
+Anhand der Rückmeldungen aus der Vorlesung und den Besprechungen mit dem Professor wurde die arc42-Dokumentation Kapitel 4 - Lösungsstrategien überarbeitet.
+Hierbei wurde 
 
 
-\subsection{Aufgabe}
+\section{Fachlicher Bezug}
 
-
-\subsection{Aufgabe}
-
-
-\section{Bezug zum Skript}
+Die Überarbeitung der arc42-Dokumentation erfolgte auf Grundlage der Rückmeldungen aus den Besprechungen mit dem Professor sowie unter Berücksichtigung der Inhalte des begleitenden Skripts.  
+Dabei wurde auf bestehende Kenntnisse aus dem Studium und der Vorlesung zurückgegriffen.
 
 \begin{itemize}
-	\item \textbf{Skript Abschnitt}
-		\begin{itemize}
-			\item 
-		\end{itemize}
-	\item \textbf{Skript Abschnitt}
-		\begin{itemize}
-			\item 
-		\end{itemize}
+
+\item \textbf{Verteilte Systeme – Skriptbezug} \\
+Die Verwendung des Sequenzdiagramms geht auf einen Hinweis im Skript zu Verteilten Systemen (vgl. S.101) zurück.
+\item \textbf{arc42 – technische Randbedingung} \\
+Die Ergänzung der technischen Randbedingung basiert auf einer methodischen Herangehensweise, wie sie im vorherigen Semester im Fach Software Engineering vermittelt wurde.
+\item \textbf{arc42 – Laufzeitsicht} \\
+Die Zuordnung des Sequenzdiagramms basiert auf arc42-Dokumentation (Kapitel 6).
+
+
 \end{itemize}
- 
+
 \section{Nächste Schritte}
-- Architektur Middleware und Applikation
+- Architektur Middleware und Applikation\\
 - Ansteuerung Roboter mit ITS-Board
 \end{document}
