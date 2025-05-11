@@ -1,0 +1,161 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{Wochenbericht III - Praktikum "Verteilte Systeme": Überarbeitung der arc42-Kapitel 1 bis 6}
+\author{Manh-An David Dao}
+\date{\today}
+
+\lstset{
+    language=Java,                
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,                  
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,                   
+    numbersep=5pt,                 
+    backgroundcolor=\color{white}, 
+    showspaces=false,               
+    showstringspaces=false,         
+    showtabs=false,                
+    frame=single,                 
+    tabsize=4,                      
+    captionpos=b,                   
+    breaklines=true,                
+    breakatwhitespace=true,        
+    title=\lstname,               
+    escapeinside={\%*}{*)},         
+    morekeywords={Integer,IntWritable, Iterable, Text},
+}
+
+\begin{document}
+\maketitle
+\section{Mitglieder des Projektes }
+
+\begin{tabular}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{2cm} >{\centering\arraybackslash}p{2cm} >{\raggedright\arraybackslash}p{3cm}}
+\toprule
+\textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
+Manh-An David Dao & arc42: Ergänzung Kapitel 2.1 \& überarbeitung Kapitel 6 & 80\% & 2.5h & 2.1 in review, Kapitel 6 in progress  \\
+\hline
+Jannik Schön & arc42: Überarbeitung Kapitel 5,7 & 70\% & 2h & in progress \\
+\hline
+Marc Siekmann & repo cleanup, arc42 Korrektur Kapitel 1, Anlegen arc42 Middleware & 80\% & 4,5h & ok, arc42 Middleware in progress \\
+\hline
+Phillip Patt & arc42:  Überarbeitung Kapitel 4, Roboterarm initialisieren \& Organisatorisches & 60\% & 4h & in progress \\
+
+\bottomrule
+\end{tabular}
+
+\section{Zusammenfassung der Woche}
+Neustrukturierung der Gruppenarbeit mit Korrektur.
+Neue Erkenntnisse bzgl. Middleware und Grundstruktur des Systems.\\
+In dieser Woche fand die Bearbeitung 
+\\\\
+Wesentliche Pull request/commits des Projektes, siehe Fußnote. \\
+
+\section{Bearbeitete Themen und Schlüssel Erkenntnisse}
+
+\subsection{arc42 Middleware, Cleanup, Korrektur Kapitel 1}
+Nach der vergangenen Vorlesung haben wir uns entschieden eine Middleware und eine Applikation jeweils als eigenständiges Produkt anzufertigen. Dies hat den Vorteil, dass Entscheidungen bzgl. Kommunikation, Security etc. gekapselt werden (Skript S.72). So kann die eigentliche Applikation ebenfalls unabhängig entwickelt werden und muss sich nur an dem gegebenen Interface der Middleware richten. Das Gesamtsystem ist demnach ein 2-Schichten-System. Daher wurde ein weiteres arc42 Dokument eingerichtet, in der eine eigene Architektur entwickelt wird. Dazu wurde eine Grundlage mithilfe NotebookML für die ersten drei Kapitel geschaffen.
+\\\\
+
+
+\subsection{arc42 Kapitel 2.1 und 6}
+In dieser Woche wurde das Kapitel 2.1 (technische Randbedingung) überarbeitet und um eine Skizze ergänzt.
+ \footnote{\url {https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/12}}
+Die Skizze dient der Visualisierung des Systems und stellt insbesondere jene Komponenten dar, die für uns fest vorgegeben sind und auf die wir keinen Einfluss nehmen können.
+Ziel war es, ein gemeinsames Verständnis darüber zu schaffen, welche Systemteile als unveränderlich zu betrachten sind und wo unser tatsächlicher Handlungsspielraum liegt.
+\\\\
+Im Rahmen von Kapitel 6 (Laufzeitsicht) entschieden wir uns, ein im Skript (vgl. S.101) erwähntes Verhaltensmuster mit einem Sequenzdiagramm darzustellen.
+Das Diagramm wurde überarbeitet, um die Interaktionen zwischen den Komponenten verständlicher und visuell präziser abzubilden.
+\footnote{\url {https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/13}}
+
+
+
+
+\subsection{arc42 Kapitel 5}
+Kapitel 5 wurde überarbeitet.
+So wurde die Bausteinsicht der aktuellen Erkenntnisse von Kapitel 5 aus der Vorlesung angepasst. 
+Dabei wurde darauf geachtet, dass die Bausteinsicht der Logik einer „Three-Layer Architektur“ \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 68 } erfüllt.
+Die Implentierung hilft in der Zukunft bei der Wartung, dem Testen und der Übersichtlichkeit des Quellcodes. Auch sind die verschiedenen Schichten austauschbar.
+\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/14}} 
+\\\\
+Die Überarbeitung von Kapitel 7 wurde begonnen. Dabei wurden die neuen Bausteine aus Kapitel 5 eingearbeitet. Die Veränderungen davon sind bislang nur lokal.
+\subsection{arc42 Kapitel 4 \& Roboterarm initialisieren} 
+Um die Kritik der vorigen Woche bzgl Zeitmanagement zu verarbeiten wurde ein Issueboard
+\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/boards}}
+auf Gitlab eingerichtet. Des weiteren wurden die nächsten Schritte als Issues formuliert 
+um bessere asynchrone Arbeit zu ermöglichen. 
+\\\\
+Anhand der Rückmeldungen aus der Vorlesung und den Besprechungen mit dem Professor wurde die arc42-Dokumentation Kapitel 4 - Lösungsstrategien überarbeitet.
+Es wurde ein erster Versuch unternommen das System funktional zu zerlegen, der MR
+\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/9}}
+ist noch ein Draft und dient als gesprächsgrundlage für das weitere vorgehen. 
+\\\\
+Das exemplarishe Ansprechen der Roboter ist nicht weiter fortgescrhitten.
+
+
+
+
+\section{Fachlicher Bezug}
+
+Die Überarbeitung der arc42-Dokumentation erfolgte auf Grundlage der Rückmeldungen aus den Besprechungen mit dem Professor sowie unter Berücksichtigung der Inhalte des begleitenden Skripts.  
+Dabei wurde auf bestehende Kenntnisse aus dem Studium und der Vorlesung zurückgegriffen.
+
+\begin{itemize}
+
+\item \textbf{Verteilte Systeme – Skriptbezug} \\
+Die Verwendung des Sequenzdiagramms geht auf einen Hinweis im Skript zu Verteilten Systemen zurück.
+\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 101 }
+\item \textbf{arc42 – technische Randbedingung} \\
+Die Ergänzung der technischen Randbedingung basiert auf einer methodischen Herangehensweise, wie sie im vorherigen Semester im Fach Software Engineering vermittelt wurde.
+\item \textbf{arc42 – Laufzeitsicht} \\
+Die Zuordnung des Sequenzdiagramms basiert auf arc42-Dokumentation (Kapitel 6). 
+\footnote {\url{https://www.dokchess.de/06_laufzeitsicht/01_zugermittlung/}}
+
+
+\end{itemize}
+
+\clearpage
+\section{Zeitaufteeilung}
+
+\begin{itemize}
+\item \textbf{Marc Siekmann} \\
+Einarbeitung NotebookML: 20 Minuten\\
+Repository Cleanup: 20 Minuten\\
+arc42 Korrektur: 60 Minuten\\
+Anlegen arc42 Middleware: 20 Minuten\\
+Organisation, Rücksprache mit Prof, technische Probleme, Sonstiges: 2h\\
+Reviews: 30 Minuten
+
+\item \textbf{Manh-An David Dao}\\
+Ergänzung Kapitel 2.1: 30 Minuten\\
+Überarbeitung Kapitel 6: 60 Minuten\\
+Reviews und Wochenbericht: 60 Minuten\\ 
+
+\item \textbf{Phillip Patt}\\
+Organisatorisches: 120 Minuten \\ 
+Überarbeitung Kapitel 4: 90 Minuten \\ 
+Roboterarm initialisieren: 0 Minuten\\ 
+Reviews und Wochenbericht: 30 minuten \\
+
+\item \textbf{Jannik Schön}\\
+Überarbeitung Kapitel 5: 90 Minuten \\ 
+Überarbeitung Kapitel 7: 30 Minuten \\
+Reviews und Wochenbericht: 30 minuten \\
+
+\end{itemize}
+
+
+\section{Nächste Schritte}
+- Architektur Middleware und Applikation\\
+- Ansteuerung Roboter mit ITS-Board
+\end{document}
