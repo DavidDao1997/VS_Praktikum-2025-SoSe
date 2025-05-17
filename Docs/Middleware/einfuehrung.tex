@@ -4,18 +4,20 @@ Diese Dokumentation beschreibt Entwurf und Kontext einer Middleware, die im Rahm
 
 
 \section{Aufgabenstellung}
-Die Hauptaufgabe der zu entwickelnden Middleware besteht darin, die Kommunikation und Koordination zwischen den verteilten Komponenten des Steuerungssystems zu ermöglichen. Sie soll eine Abstraktionsschicht zwischen der eigentlichen Anwendungslogik (z.B. Robotersteuerung) und den darunterliegenden Betriebssystem- und Netzwerkdiensten bilden. Gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen, die auch im zugrundeliegenden Skript referenziert werden, verfolgt die Middleware das Ziel, die Verteilung weitestgehend zu verbergen (Transparenz).
+Die Hauptaufgabe der zu entwickelnden Middleware besteht darin, die Kommunikation und Koordination zwischen den verteilten Komponenten des Steuerungssystems zu ermöglichen. Sie soll eine Abstraktionsschicht zwischen der eigentlichen Anwendungslogik (Roboterarmsteuerung) und den darunterliegenden Betriebssystem- und Netzwerkdiensten bilden. Gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen, die auch im zugrundeliegenden Skript referenziert werden, verfolgt die Middleware das Ziel, die Verteilung weitestgehend zu verbergen (Transparenz).
 Zu den Kernfunktionen, die eine Middleware typischerweise bereitstellt und die hier adressiert werden sollen, gehören:
 
 \begin{itemize}
-	\item Bereitstellung eines breiten Angebots für die Kommunikation mittels verschiedener Protokolle. Dies kann synchrone oder asynchrone Kommunikation umfassen, wie z.B. Remote Procedure Calls (RPC) oder Nachrichtenübertragung (Message-Oriented Middleware, MOM).
+	\item Bereitstellung der Kommunikation mittels standardisierter Protokolle. Dies wird (asynchrone) Kommunikation-Pattern umfassen, wie z.B. Remote Procedure Calls (RPC) oder Nachrichtenübertragung (Message-Oriented Middleware, MOM).
 	\item Unterstützung zur Konvertierung von Datenformaten zwischen Systemen.
 	\item Bereitstellung von Protokollen zur Namensauflösung (Service Discovery), um Ressourcen einfach zu identifizieren und zu referenzieren.
 	\item Mechanismen der Skalierbarkeit, wie z.B. Replikation	
 \end{itemize}
 
-Die Middleware dient als Vermittler, der die Interoperabilität über verschiedene Systeme, Betriebssysteme und Hardwaretypen hinweg verbessern soll.
+Die Middleware dient als Vermittler, der zwischen der Applikation und der Runtime/OS Schicht Daten- und Informationsaustausch ermöglicht.
 
+
+Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines jeden im System befindlichen Roboterarms ermöglichen. Dazu gehören die Erkennung jeder Node, die Auswahl eines zu steuernden Verbund an Nodes eines dazugehörigen Roboterarms, sowie die Ansteuerung selbst. 
 
 \newpage
 \section{Qualitätsziele}
@@ -44,7 +46,7 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 	\\
 	\hline
 	Skalierbarkeit & 
-	Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. Die Middleware muss Mechanismen (z.B. Replikation, Caching) bieten, um mit zunehmender Anzahl von Teilnehmern oder der Datenmenge zurechtzukommen.
+	Zusätzliche Nodes oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. Die Middleware muss Mechanismen (z.B. Replikation, Caching) bieten, um mit zunehmender Anzahl von Teilnehmern oder der Datenmenge zurechtzukommen.
 	& Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 253)
 	\\
 	\hline
@@ -54,9 +56,9 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 	%\\
 	%\hline
 	Sicherheit (Safety) & 
-	Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
+	Es bewegt sich immer genau ein Node. Dieser darf sich nur Bewegen solange dieser Node erreichbar ist. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht. 
 	%Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
-	& Reaktionszeit max. 250 ms, bis Roboterarm stoppt
+	& Reaktionszeit max. 250 ms, bis Node stoppt
 	\\
 	\hline
 	Wartbarkeit & 
@@ -84,13 +86,13 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 	%& 
 	%\\
 	%\hline
-	Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme werden zuverlässig angesteuert \\
+	Ressourcenteilung  & Mehrere Nodes eines Verbunds (Roboterarm) können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle dem Netzwerk hinzugefügten Nodes können sich registrieren und dessen Verbund beliebig angesteuert werden\\
 	\hline
 	Offenheit & 
 	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
 	& Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
 	\hline
-	Zugriffstransparenz   & Die Umsetzung der Roboterarmsteuerung ist für den Benutzer nicht erkennbar und möglichst einfach gehalten & GUI zeigt nur Zustände des ausgewähltem Roboterarms an ( z.B. Verfügbarkeit) und der Roboterarm ist über das ITS-Board so einfach wie möglich steuerbar\\
+	Zugriffstransparenz   & Die Umsetzung der Nodesteuerung ist für den Benutzer nicht erkennbar  & Nach aussen werden die genutzten Kommunikationsprotokolle verschleiert und durch einen Namen ersetzt. Der Name zeigt einen Verbund an.\\
 	\hline
 	Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist nach außen unsichtbar  & Das Interface nach außen ist eineiheitlich und verschleiert die Implementierung\\
 	
@@ -130,8 +132,8 @@ Die Middleware dient als Vermittler, der die Interoperabilität über verschiede
 		\hline
 		Entwicklerteam Applikation
 		&\parbox{10cm}{ \begin{itemize}
-				\item vollständige Funktionalität
-				\item Benutzerfreundlichkeit (der Middleware-Schnittstelle) 
+				\item Middleware bietet vollständige Funktionalität
+				\item Middleware-Schnittstellen sind vollständig beschrieben
 				\item Zuverlässigkeit und Reaktionszeit der von der Middleware bereitgestellten Kommunikationsdienste.
 		\end{itemize}}
 		\\

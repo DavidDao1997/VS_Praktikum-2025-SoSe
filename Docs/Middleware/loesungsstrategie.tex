@@ -1,6 +1,8 @@
 \chapter{Lösungsstrategie}
 
 
+\textcolor{red}{TODO: Weitere Funktionen (atomar))}
+
 \begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{5cm}|}
 	\caption{Funktionsbeschreibungen} \label{tab:loesungsstrategie} \\
 	\hline
@@ -23,18 +25,23 @@ Schnittstelle für eine Node (Servo), um sich zu beim System zu registrieren. Id
 	\\
 	\hline
 	Node createNewNode (Identifier ident, enum functionality)
-	& Translates externe Node zu internen Node Code
+	& Übersetzt externe Node zu internen Node Code
 	&
 	\\
 	\hline
 	void updateAvailableNodes(List<Node> nodes)
-	& Liste mit allen verfügbaren Nodes, um diese der Applikation mitzuteilen
+	& Liste mit allen verfügbaren Nodes, um diese der Applikation mitzuteilen. 
 	& 
 	\\
 	\hline
-	bool checkAvailability(Node node)
-	& Checks ob Node verfügbar	
-	&
+	void heartbeat(Identifier ident)	
+	& Check ob Node verfügbar	
+	& Vor: Node ist registriert; Nach: Timeout-Zähler zurückgesetzt
+	\\
+	\hline
+	void unregister(Identifier ident)
+	& Entfernt eine Node aus dem System, zb wenn nicht mehr erreichbar anhand seines Identifiers
+	& Vor: Node ist registriert; Nach: Node ist aus Liste entfernt
 	\\
 	\hline
 	void choose(NodeGrp nodeGrpIdent) 
@@ -52,36 +59,55 @@ Schnittstelle für eine Node (Servo), um sich zu beim System zu registrieren. Id
 	& Vor: Node Gruppe ist ausgewählt und verfügbar; Nach: Bewegung wird ausgeführt
 	\\
 	\hline
+	Node readFromNodeList(Direction dir)
+	& Gibt aktiven Node zurück mit passender Funktion
+	&
+	\\
+	\hline
+	void isActive(Direction dir) 
+	& Schnittstelle für Applikation um Node zu bewegen 
+	& Vor: Node Gruppe ist ausgewählt und verfügbar; Nach: Bewegung wird ausgeführt
+	\\
+	\hline
+	void moveNode(Identifier ident)
+	& ruft entsprechende Node Schnittstelle auf
+	& 
 \end{longtable}
 
 
-\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{5cm}|}
+\textcolor{red}{TODO: Identifier muss ausgearbeitet werden (Allgemein Service Discovery und Speicherung) sowie Rückgabetyp Node}\\
+
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{10cm}|}
 	\caption{Lösungstrategien Ziele} \label{tab:loesungsstrategieZiele} \\
 	\hline
-	Ziel & Strategie & Alternative\\
+	Ziel & Strategie \\
 	\hline
 	\endfirsthead
 	
 	\hline
-	Ziel & Strategie & Altenative\\
+	Ziel & Strategiee\\
 	\hline
 	\endhead
 	
 	\hline
 	\endfoot
 	
+	Kommunikation &
+	Asynchrones Remote Procedure Call (RPC) als Kommunikationsmechanismus. Registrierungsvorgänge werden persistent gespeichert, während Steuerbefehle transient und zeitkritisch behandelt werden.  
+	\\
+	\hline
+	Service-Discovery &
+	Flacher Namensraum mit Gruppierung der Nodes. Der Name besteht aus eindeutiger Node-ID, Funktion und Zugehörigkeit zum Roboterarm-Verbund. 
+	\\
+	\hline
+	Namensauflösung
+	& IPv4 Adresse und dazugehöriger Node wird in einen Namen übersetzt, der die Node zu einem Verbund zugehörig macht.  
+	\\
+	\hline
+	Fehlerbehandlung
+	& 
 	
-	Kommunikation
-	& RPC, ..... 
-	& 
-	\\
-	\hline
-	Service-Discovery-Strategie
-	& flacher Namensraum (aber gruppiert); Namenaufbau: ...; Zu jeder Node wird Funktion und IP-Adresse gespeichert
-	& 
-	\\
-	\hline
-
 	
 \end{longtable}
 

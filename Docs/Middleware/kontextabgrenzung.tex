@@ -3,28 +3,94 @@
 
 \section{Fachlicher Kontext}
 
-Die Middleware ist fachlich im Bereich der verteilten Steuerungssysteme angesiedelt. Ihre Rolle besteht darin, die komplexen Aspekte der Verteilung für die darüberliegende Anwendungslogik zu kapseln und zu abstrahieren. Sie ist nicht die Steuerungslogik selbst, sondern das Rückgrat für die Kommunikation und Koordination dieser Logik, die auf mehreren verteilten Komponenten (ITS-Board, Raspberry Pis) ausgeführt wird. Sie ermöglicht es, dass beliebig viele (1 - 254) Roboterarme von einem zentralen ITS-Board aus gesteuert werden können, indem sie die Nachrichtenübermittlung und den Austausch von Steuerungsbefehlen handhabt. Sie muss sicherstellen, dass die Kommunikation auch unter den Bedingungen des Projekts (z.B. Fehlverhalten von Komponenten) die Sicherheit der Anwesenden nicht gefährdet, was eine Anforderung an die Zuverlässigkeit und Fehlertoleranz der Middleware impliziert.
+
+\subsection{Akteure und Rollen}
+
+\begin{tabular}{|p{4cm}|p{10cm}|}
+	\hline
+	\textbf{Akteur / Rolle} & \textbf{Beschreibung} \\
+	\hline
+	Applikation & Externes Steuerungssystem, das über eine Schnittstelle Befehle an die Middleware sendet, z.\,B. zur Auswahl oder Bewegung eines Roboterarms. \\
+	\hline
+	Node (z.\,B. Servo) & Ein einzelner Aktor, der physisch mit einem Roboterarm verbunden ist. Meldet sich eigenständig bei der Middleware an und gehört zu einer logischen Gruppe. \\
+	\hline
+	Node-Gruppe & Eine logische Einheit mehrerer Nodes, die gemeinsam einen vollständigen Roboterarm darstellen. Nur eine Gruppe kann gleichzeitig aktiv sein. \\
+	\hline
+\end{tabular}
+
+\subsection{Fachliche Aufgaben (Use Cases)}
+
+\begin{tabular}{|p{1.5cm}|p{4cm}|p{8.5cm}|}
+	\hline
+	\textbf{ID} & \textbf{Name} & \textbf{Beschreibung} \\
+	\hline
+	U1 & Node registrieren & Eine Node registriert sich bei der Middleware mit einem eindeutigen Identifier und einer Funktionsbeschreibung. Sie wird anschließend einer Node-Gruppe (Roboterarm) zugeordnet. \\
+	\hline
+	U2 & Node-Gruppe auswählen & Die Applikation wählt eine existierende Node-Gruppe aus, die als Ziel für Steuerungsbefehle verwendet werden soll. \\
+	\hline
+	U3 & Node-Gruppe bewegen & Die Middleware empfängt Bewegungsbefehle von der Applikation und leitet diese an entsprechende Nodes der aktiven Node-Gruppe weiter. \\
+	\hline
+	U4 & Verfügbarkeit prüfen & Die Middleware prüft, ob alle Nodes einer gewählten Gruppe erreichbar und einsatzbereit sind, bevor Steuerungsbefehle ausgeführt werden. \\
+	\hline
+	U5 & Verfügbarkeit propagieren & Die Middleware muss der Applikation in regelmäßigen Abständen mitteilen welche Node-Gruppen fehlerfrei erreichbar sind.\\
+	\hline
+\end{tabular}
+
+\subsection{Fachliche Randbedingungen}
+
+\begin{itemize}
+	\item Es können bis zu 253 Nodes gleichzeitig betrieben werden.
+	\item Jede Node gehört genau einer Node-Gruppe an.
+	\item Steuerungsbefehle dürfen nur an Gruppen gesendet werden, die als aktiv markiert sind.
+	\item Die Middleware muss mit dem Ausfall oder der Nichterreichbarkeit einzelner Nodes robust umgehen können.
+	\item Die Systemsicherheit hat höchste Priorität: Bewegungen fehlerhafter Gruppen müssen verhindert werden.
+\end{itemize}
 
 \section{Technischer Kontext}
 
-Technisch gesehen positioniert sich die Middleware als eine Schicht zwischen der Anwendungsebene und den Betriebssystem-/Kommunikationsdiensten. Sie ist logisch über mehrere Maschinen verteilt, die über ein Netzwerk (hier: /24 Netzwerk) verbunden sind. Sie nutzt die unterliegenden Netzwerkprotokolle (z.B. TCP/UDP) und Betriebssystemfunktionen, bietet aber eine höhere Abstraktionsebene für die Anwendungen. Im spezifischen Projektkontext läuft sie auf den genannten Hardware-Komponenten (ITS-Board, Raspberry Pis). Die Middleware muss die Heterogenität dieser zugrundeliegenden Systeme (Hardware, Betriebssysteme) verbergen. Sie stellt Middleware-Kommunikationsprotokolle bereit.
+Die Middleware positioniert sich technisch als Vermittlungsschicht zwischen der Anwendungsebene und den darunterliegenden Betriebssystem- und Kommunikationsdiensten. Sie ist über mehrere Maschinen verteilt, die über ein lokales /24 Netzwerk miteinander verbunden sind.
+Die Middleware nutzt Netzwerkprotokolle, insbesondere TCP und UDP, sowie Betriebssystemfunktionen, um eine zuverlässige Kommunikation zu gewährleisten. Gleichzeitig bietet sie den Anwendungen eine abstrahierte, einheitliche Schnittstelle, die die Heterogenität der zugrundeliegenden Systeme verbirgt.
+Die Middleware stellt darüber hinaus eigene Kommunikationsprotokolle bereit, die speziell auf die Anforderungen der verteilten Steuerung und Koordination der Roboterarme zugeschnitten sind. Hierzu zählen Mechanismen zur Nachrichtenvermittlung, Statusüberwachung und Fehlerbehandlung, um eine hohe Zuverlässigkeit und Fehlertoleranz sicherzustellen.
+Zusammenfassend erfüllt die Middleware folgende technische Aufgaben:
+\begin{itemize}
+	\item Verbergen der Heterogenität der zugrundeliegenden Hardware und Betriebssysteme
+	\item Bereitstellung einer einheitlichen Kommunikationsschnittstelle für die darüber liegenden Anwendungen
+	\item Sicherstellung der zuverlässigen und performanten Kommunikation zwischen verteilten Komponenten
+	\item Implementierung von Mechanismen zur Erkennung und Behandlung von Fehlerzuständen im Netzwerk und auf den Nodes
+\end{itemize}
+
+\subsection{Funktionale Anforderungen an die Middleware}
+
+Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische Funktionen bereitstellen:
+
+\begin{itemize}
+	\item \textbf{Registrierungsmanagement (U1):}  
+	Verwaltung und Verarbeitung von Node-Registrierungen mit eindeutigen Identifikatoren und Funktionsbeschreibungen.  
+	Persistenz der Node-Informationen und Zuordnung zu Node-Gruppen.
+	
+	\item \textbf{Gruppenverwaltung (U2):}  
+	Auswahl, Wechsel und Markierung aktiver Node-Gruppen zur Steuerung. Verwaltung des Gruppenstatus.
+	
+	\item \textbf{Steuerungsweiterleitung (U3):}  
+	Empfang von Steuerbefehlen von der Applikation und Weiterleitung dieser Befehle an die Nodes der aktiven Gruppe.
+	
+	\item \textbf{Verfügbarkeitsprüfung (U4):}  
+	Überwachung des Status und der Erreichbarkeit aller Nodes innerhalb einer Gruppe, inklusive Fehlererkennung und Meldung an die Applikation.
+	\item \textbf{Verfügbare Nodegruppen propagieren (U5):}  
+	Mitteilung an Applikation, welche Node-Gruppen verfügbar und ansteuerbar sind. \textcolor{red}{TODO: Entweder Schnittstelle anbieten und Applikation entscheiden lassen, oder Schnittstelle der Applikation nutzen!?}
+	
+	\item \textbf{Fehlertoleranz und Sicherheit:}  
+	Mechanismen zur Behandlung von Kommunikationsausfällen, erneutes Senden von Nachrichten und Schutz vor Fehlfunktionen einzelner Nodes.
+\end{itemize}
 
 \section{Externe Schnittstellen}
 
-Die Middleware interagiert hauptsächlich über zwei externe Schnittstellenbereiche:
-
+Die Middleware besitzt zwei Schnittstellen:
 
 \begin{itemize}
-	\item{Schnittstelle zur Anwendungsebene:} Dies ist die primäre Schnittstelle der Middleware. Sie bietet eine abstrahierte, einheitliche API (Application Programming Interface) für die Anwendungsentwickler. Über diese Schnittstelle kann die Anwendungslogik (z.B. auf dem ITS-Board oder den Raspberry Pis) verteilte Dienste nutzen, Nachrichten senden/empfangen oder auf benannte Ressourcen zugreifen, ohne sich um die Details der Netzwerkimplementierung, des Marshallings oder der physikalischen Lokalität kümmern zu müssen. Die Schnittstelle sollte idealerweise so gestaltet sein, dass sie sich nicht wesentlich von lokalen Funktionsaufrufen oder Datenzugriffen unterscheidet, um die Transparenz zu maximieren. Sie kann die Unterstützung mehrerer Programmiersprachen umfassen.
+	\item \textbf{Schnittstelle zur Anwendungsebene:}  
+	Bietet eine einheitliche API, über die Anwendungen (z.\,B. auf ITS-Board oder Raspberry Pis) verteilte Dienste nutzen, Nachrichten senden und empfangen können – unabhängig von Netzwerkdetails oder physikalischer Verteilung.
 	
-	\item{Schnittstelle zu den System-/Netzwerkschichten:} Die Middleware nutzt die Dienste des lokalen Betriebssystems und des Netzwerkstacks. Sie interagiert mit diesen Schichten, um Nachrichten über das Netzwerk zu senden und zu empfangen, auf Ressourcen zuzugreifen und systemnahe Funktionen auszuführen. Diese Schnittstelle ist intern und verborgen für die Anwendungsebene.
-	
-	
-	
-	
+	\item \textbf{Schnittstelle zu System- und Netzwerkschichten:}  
+	Nutzt Betriebssystem- und Netzwerkdienste (TCP/IP, IPv4) zur Nachrichtenübermittlung und Ressourcenverwaltung. Diese Schnittstelle ist für die Anwendungen verborgen.
 \end{itemize}
-
-
-%TODO Quellenverzeichnis
-
-Diese Struktur entspricht dem in den Quellen diskutierten Modell einer Middleware-Schicht, die über den Betriebssystemen liegt und Anwendungen eine einheitliche Schnittstelle bietet.
