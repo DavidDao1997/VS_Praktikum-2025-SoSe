@@ -1,7 +1,88 @@
 \chapter{Lösungsstrategie}
 
 
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{5cm}|}
+	\caption{Funktionsbeschreibungen} \label{tab:loesungsstrategie} \\
+	\hline
+	Funktion & Beschreibung & Vor-Nachbedingungen \\
+	\hline
+	\endfirsthead
+	
+	\hline
+	Funktion & Beschreibung & Vor-Nachbedingungen \\
+	\hline
+	\endhead
+	
+	\hline
+	\endfoot
+	
+	
+	void register(Identifier ident, enum functionality) & 
+Schnittstelle für eine Node (Servo), um sich zu beim System zu registrieren. Identifier ist für jeden Servo einzigartig, functionality ist ein enum mit Aufgabenbereich an einem Roboterarm. 
+	& Jede Node (Servo) muss seinen eigenen Identifier und Funktionalität vor der Registrierung kennen. 
+	\\
+	\hline
+	Node createNewNode (Identifier ident, enum functionality)
+	& Translates externe Node zu internen Node Code
+	&
+	\\
+	\hline
+	void updateAvailableNodes(List<Node> nodes)
+	& Liste mit allen verfügbaren Nodes, um diese der Applikation mitzuteilen
+	& 
+	\\
+	\hline
+	bool checkAvailability(Node node)
+	& Checks ob Node verfügbar	
+	&
+	\\
+	\hline
+	void choose(NodeGrp nodeGrpIdent) 
+	& Schnittstelle für Applikation, um Node Gruppe zu wechseln
+	&
+	\\
+	\hline
+	void markActive(NodeGrp nodeGrpIdent)
+	& Node Gruppe wird als aktiv makiert
+	& Vor: Applikation hat wechsel beauftragt; Nach: Node Gruppe wird als aktiv markiert, alle Steuerbefehle beziehen sich auf diese Gruppe
+	\\
+	\hline
+	void move(Direction dir) 
+	& Schnittstelle für Applikation um Node zu bewegen 
+	& Vor: Node Gruppe ist ausgewählt und verfügbar; Nach: Bewegung wird ausgeführt
+	\\
+	\hline
+\end{longtable}
 
 
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{5cm}|}
+	\caption{Lösungstrategien Ziele} \label{tab:loesungsstrategieZiele} \\
+	\hline
+	Ziel & Strategie & Alternative\\
+	\hline
+	\endfirsthead
+	
+	\hline
+	Ziel & Strategie & Altenative\\
+	\hline
+	\endhead
+	
+	\hline
+	\endfoot
+	
+	
+	Kommunikation
+	& RPC, ..... 
+	& 
+	\\
+	\hline
+	Service-Discovery-Strategie
+	& flacher Namensraum (aber gruppiert); Namenaufbau: ...; Zu jeder Node wird Funktion und IP-Adresse gespeichert
+	& 
+	\\
+	\hline
+
+	
+\end{longtable}
 
 
