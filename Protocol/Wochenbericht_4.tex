@@ -42,7 +42,7 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao &  &  &  &  \\
+Manh-An David Dao & Überarbeitung Kapitel 6 & 40\% & 2.5h &  \\
 \hline
 Jannik Schön &  &  &  &  \\
 \hline
@@ -67,6 +67,13 @@ Phillip Patt & & & & \\
 
 
 \subsection{Überarbeitung Kapitel 6 der Applikations Arc42-Dokumentation}
+Die Überarbeitung von Kapitel 6 hatte zum Ziel, die Konsistenz innerhalb der gesamten Architekturdokumentation zu verbessern. \footnote{\url{https://docs.arc42.org/section-6/}}
+Dafür wurden Begriffe, Strukturen und Darstellungsweisen aus den vorherigen Kapiteln übernommen, um eine einheitliche Benennung und Darstellung sicherzustellen.\footnote{\url{https://docs.arc42.org/section-5/}} Eine durchgängige Terminologie erleichtert das Verständnis und reduziert Missverständnisse – sowohl im Team als auch gegenüber externen Lesern.
+
+Im Laufe der Arbeit traten dennoch Unklarheiten und Interpretationsspielräume auf. Um diesen entgegenzuwirken, wurden zunächst zwei einfache Use Cases ausgewählt und als Sequenzdiagramme visualisiert. Diese beiden Fälle erwiesen sich als besonders geeignet, da sie als Gruppe am leichtesten nachvollziehbar waren. Sie dienten als Grundlage, um darauf weiter aufzubauen und als Referenz für komplexere Abläufe genutzt zu werden.
+
+	
+
 
 \subsection{Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation} 
 Bei der Überarbeitung der Kapitel 1 -4 der arc42 Dokumentation der Middleware wurde versucht zunächst die Schnittstellen zur Applikation und zur Runtime/OS zu definieren. Bei der Bestimmung der Schnittstelle zum OS hat sich herausgestellt, dass die Middleware die Netzwerkprotokolle, insbesondere IPv4, von TCP/IP unterstützen muss. Die Schnittstelle zur Applikation soll den Verteilungstransparenzen (insbesondere Zugriffstransparenz und Lokaitätstransparenz (Skript S.32/33)) gerecht werden. Daher werden einzelne Nodes der Applikation nicht bekannt gegeben, sondern nur der Name/die Namen einer zusammenhängenden Gruppe (Roboterarm) von Nodes (Servos). Da Namen vergeben werden und die Verfügbarkeit von Nodes mithilfe eines Watchdogs überprüft wird, müssen Daten über die Nodes persistent sein. Daher wird die Replikationstransparenz (Skript S.34) noch diskutiert werden müssen. Es muss sich noch auf eine Namesauflösung (Skript S.73) festgelegt werden, aus der sich dann Datentypen ergeben, die intern genutzt werden. Ebenfalls muss die Fehlerbehandlung (Skript S.34) noch diskutiert werden. Die Middleware kommuniziert via RPC, daher wird in ein Marshalling Prozess benötigt (Skript S. 72). In einer ersten Iteration wurde sich auf JSON festgelegt. 
