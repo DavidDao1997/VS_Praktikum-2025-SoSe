@@ -46,7 +46,7 @@ Manh-An David Dao &  &  &  &  \\
 \hline
 Jannik Schön &  &  &  &  \\
 \hline
-Marc Siekmann &  &  &  &  \\
+Marc Siekmann & Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation & 60\% & 2h &  \\
 \hline
 Phillip Patt & & & & \\
 
@@ -68,8 +68,8 @@ Phillip Patt & & & & \\
 
 \subsection{Überarbeitung Kapitel 6 der Applikations Arc42-Dokumentation}
 
-\subsection{Überarbeitung Kapitel 4 der Middleware Arc42-Dokumentation} 
-
+\subsection{Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation} 
+Bei der Überarbeitung der Kapitel 1 -4 der arc42 Dokumentation der Middleware wurde versucht zunächst die Schnittstellen zur Applikation und zur Runtime/OS zu definieren. Bei der Bestimmung der Schnittstelle zum OS hat sich herausgestellt, dass die Middleware die Netzwerkprotokolle, insbesondere IPv4, von TCP/IP unterstützen muss. Die Schnittstelle zur Applikation soll den Verteilungstransparenzen (insbesondere Zugriffstransparenz und Lokaitätstransparenz (Skript S.32/33)) gerecht werden. Daher werden einzelne Nodes der Applikation nicht bekannt gegeben, sondern nur der Name/die Namen einer zusammenhängenden Gruppe (Roboterarm) von Nodes (Servos). Da Namen vergeben werden und die Verfügbarkeit von Nodes mithilfe eines Watchdogs überprüft wird, müssen Daten über die Nodes persistent sein. Daher wird die Replikationstransparenz (Skript S.34) noch diskutiert werden müssen. Es muss sich noch auf eine Namesauflösung (Skript S.73) festgelegt werden, aus der sich dann Datentypen ergeben, die intern genutzt werden. Ebenfalls muss die Fehlerbehandlung (Skript S.34) noch diskutiert werden. Die Middleware kommuniziert via RPC, daher wird in ein Marshalling Prozess benötigt (Skript S. 72). In einer ersten Iteration wurde sich auf JSON festgelegt. 
 
 
 
