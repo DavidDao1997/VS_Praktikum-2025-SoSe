@@ -11,7 +11,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht IV - Praktikum "Verteilte Systeme": Überarbeitung der Kapitel 4-6 der Applikations Dokumentation und Überarbeitung Kapitel 4 der Middleware Dokumentation}
+\title{Wochenbericht IV - Praktikum "Verteilte Systeme": Überarbeitung Lösungsstrategie der Applikations Dokumentation und Überarbeitung Kapitel 1-4 der Middleware Dokumentation}
 \author{Jannik Schön}
 \date{\today}
 
@@ -42,56 +42,52 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao & Überarbeitung Kapitel 6 & 40\% & 2.5h &  \\
+Manh-An David Dao & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation & 70\% & 3h & in progress  \\
 \hline
-Jannik Schön &  &  &  &  \\
+Jannik Schön & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation  & 70\% & 3h & in progress  \\
 \hline
-Marc Siekmann & Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation & 60\% & 2h &  \\
+Marc Siekmann & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation, Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation & 60\% & 4h & in progress  \\
 \hline
-Phillip Patt & & & & \\
-
+Philipp Patt & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation, Roboterarm initialisieren & 80\% & 3,5h & in progress, Roboterarm initialisieren ok  \\
 \bottomrule
 \end{tabular}
 
 \section{Zusammenfassung der Woche}
+Diese Woche wurde unsere aktuelle Architektur mit dem MVC-Pattern vereinigt. Außerdem wurde die Middleware Dokumentation in den Kapiteln 1-4 überarbeitet. Weiterhin wurde ein Roboter initialisiert.\\\\
+Wesentliche pull-requests/commits sind in den Fußnoten hinterlegt. 
 
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
 
-\subsection{Überarbeitung Kapitel 4 der Applikations Arc42-Dokumentation}
 
-
-
-\subsection{Überarbeitung Kapitel 5 der Applikations Arc42-Dokumentation}
-
-
-
-
-\subsection{Überarbeitung Kapitel 6 der Applikations Arc42-Dokumentation}
-Die Überarbeitung von Kapitel 6 hatte zum Ziel, die Konsistenz innerhalb der gesamten Architekturdokumentation zu verbessern. \footnote{\url{https://docs.arc42.org/section-6/}}
-Dafür wurden Begriffe, Strukturen und Darstellungsweisen aus den vorherigen Kapiteln übernommen, um eine einheitliche Benennung und Darstellung sicherzustellen.\footnote{\url{https://docs.arc42.org/section-5/}} Eine durchgängige Terminologie erleichtert das Verständnis und reduziert Missverständnisse – sowohl im Team als auch gegenüber externen Lesern.
-
-Im Laufe der Arbeit traten dennoch Unklarheiten und Interpretationsspielräume auf. Um diesen entgegenzuwirken, wurden zunächst zwei einfache Use Cases ausgewählt und als Sequenzdiagramme visualisiert. Diese beiden Fälle erwiesen sich als besonders geeignet, da sie als Gruppe am leichtesten nachvollziehbar waren. Sie dienten als Grundlage, um darauf weiter aufzubauen und als Referenz für komplexere Abläufe genutzt zu werden.
-
-	
-
-
+\subsection{Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation}
+Ziel war es die Konsistenz innerhalb der gesamten Architekturdokumentation zu verbessern, speziell zwischen Kapiteln 4, 5 und 6. \\
+\\
+Zunächst wurden unsere existierenden Bausteine in ein MVC Patttern\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 91 ff. }  gemappt und neue erstellt\footnote{\url{https://git.haw-hamburg.de/-/project/4474/uploads/d429cecaa3eb30b172065ca6c1229bea/image.png}}. 
+Hier stellten wir fest, dass es schwer fiel den Weg von Model bis layer mit der aktuellen Lösungsstrategie zu überbrücken.
+Um hier unser Verständnis zu verbessern wurden zwei Sequenzdiagramme erstellt. 
+Eins stellt dabei die Steuerung eines Roboters dar\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/blob/3a3cd16d69ab67245712d5f10c366434ec9fd5d1/Docs/diagrams/sktech_sd.png}}.
+Das Andere das Auswählen eines Roboters\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/blob/6b53d16d246322afd49ace9909ad38c6db589b02/Docs/diagrams/selectRobot.png}}.\\
+Diese beiden Fälle erwiesen sich als besonders geeignet, da sie als Gruppe am leichtesten nachvollziehbar waren. Sie dienten als Grundlage, um darauf weiter aufzubauen und als Referenz für komplexere Abläufe genutzt.\\
+\\
 \subsection{Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation} 
-Bei der Überarbeitung der Kapitel 1 -4 der arc42 Dokumentation der Middleware wurde versucht zunächst die Schnittstellen zur Applikation und zur Runtime/OS zu definieren. Bei der Bestimmung der Schnittstelle zum OS hat sich herausgestellt, dass die Middleware die Netzwerkprotokolle, insbesondere IPv4, von TCP/IP unterstützen muss. Die Schnittstelle zur Applikation soll den Verteilungstransparenzen (insbesondere Zugriffstransparenz und Lokaitätstransparenz (Skript S.32/33)) gerecht werden. Daher werden einzelne Nodes der Applikation nicht bekannt gegeben, sondern nur der Name/die Namen einer zusammenhängenden Gruppe (Roboterarm) von Nodes (Servos). Da Namen vergeben werden und die Verfügbarkeit von Nodes mithilfe eines Watchdogs überprüft wird, müssen Daten über die Nodes persistent sein. Daher wird die Replikationstransparenz (Skript S.34) noch diskutiert werden müssen. Es muss sich noch auf eine Namesauflösung (Skript S.73) festgelegt werden, aus der sich dann Datentypen ergeben, die intern genutzt werden. Ebenfalls muss die Fehlerbehandlung (Skript S.34) noch diskutiert werden. Die Middleware kommuniziert via RPC, daher wird in ein Marshalling Prozess benötigt (Skript S. 72). In einer ersten Iteration wurde sich auf JSON festgelegt. 
+Bei der Überarbeitung der Kapitel 1 - 4\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/11}} der arc42 Dokumentation der Middleware wurde versucht zunächst die Schnittstellen zur Applikation und zur Runtime/OS zu definieren. 
+Bei der Bestimmung der Schnittstelle zum OS hat sich herausgestellt, dass die Middleware die Netzwerkprotokolle, insbesondere IPv4, von TCP/IP unterstützen muss. 
+Die Schnittstelle zur Applikation soll den Verteilungstransparenzen (insbesondere Zugriffstransparenz und Lokaitätstransparenz \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 32/33 }) gerecht werden. 
+Daher werden einzelne Nodes der Applikation nicht bekannt gegeben, sondern nur der Name/die Namen einer zusammenhängenden Gruppe (Roboterarm) von Nodes (Servos). 
+Da Namen vergeben werden und die Verfügbarkeit von Nodes mithilfe eines Watchdogs überprüft wird, müssen Daten über die Nodes persistent sein. 
+Daher wird die Replikationstransparenz \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 34 } noch diskutiert werden müssen. Es muss sich noch auf eine Namesauflösung \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 73 } festgelegt werden, 
+aus der sich dann Datentypen ergeben, die intern genutzt werden. Ebenfalls muss die Fehlerbehandlung (Skript S.34) noch diskutiert werden. Die Middleware kommuniziert via RPC, 
+daher wird in ein Marshalling Prozess benötigt\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 72 }. In einer ersten Iteration wurde sich auf JSON festgelegt. 
 
+\subsection{Roboterarm initialisieren}
 
-
-
-\section{Fachlicher Bezug}
-
-
-
-
-
-
-\clearpage
-
+Es wurde erstmalig ein Roboterarm angesteuert. Es wurde Beispeilcode getestet, der eine Steuerung der Bewegeungsgeschwindigkeit zulässt.
 
 \section{Nächste Schritte}
+
+Bei der Lösungsstrategie muss zunächst Einigkeit hergestellt werden, um dann auch die Bausteine und Laufzeitsicht anzupassen. \\
+Außerdem müssen die Schnittstellen zwischen Middleware und Applilkation herausgerarbeitet werden. 
+
 \end{document}
 
 
