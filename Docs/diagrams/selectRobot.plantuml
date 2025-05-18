@@ -3,17 +3,15 @@ actor User
 
 participant "IO/UI" as UI
 participant "LCD-Controller" as Ctrl
-participant "Modell ??" as Modell
+participant "Modell" as Modell
 
 
 ' Benutzer wählt einen Roboter (z. B. über Button)
 User -> UI: Auswahl "R1" treffen
 
-' Auswahl anzeigen
-Ctrl -> UI: UpdateDisplay()
-
 ' UI Button bestätigen
 UI -> Ctrl: onButtonSelect("R1")
+
 
 ' LCD-Controller nutzt Roboterauswahl
 Ctrl -> Modell: roboterAuswahl("R1")
