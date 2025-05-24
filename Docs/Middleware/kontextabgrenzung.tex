@@ -10,11 +10,9 @@
 	\hline
 	\textbf{Akteur / Rolle} & \textbf{Beschreibung} \\
 	\hline
-	Applikation & Externes Steuerungssystem, das über eine Schnittstelle Befehle an die Middleware sendet, z.\,B. zur Auswahl oder Bewegung eines Roboterarms. \\
+	Applikation & Externes Steuerungssystem, das über eine Schnittstelle Befehle an die Middleware sendet, z.\,B. zur Auswahl oder Bewegung eines Roboterservos. \\
 	\hline
-	Node (z.\,B. Servo) & Ein einzelner Aktor, der physisch mit einem Roboterarm verbunden ist. Meldet sich eigenständig bei der Middleware an und gehört zu einer logischen Gruppe. \\
-	\hline
-	Node-Gruppe & Eine logische Einheit mehrerer Nodes, die gemeinsam einen vollständigen Roboterarm darstellen. Nur eine Gruppe kann gleichzeitig aktiv sein. \\
+	Node (z.\,B. Servo(s)) & Ein einzelner Aktor. Meldet sich eigenständig bei der Middleware an. \\
 	\hline
 \end{tabular}
 
@@ -24,26 +22,25 @@
 	\hline
 	\textbf{ID} & \textbf{Name} & \textbf{Beschreibung} \\
 	\hline
-	U1 & Node registrieren & Eine Node registriert sich bei der Middleware mit einem eindeutigen Identifier und einer Funktionsbeschreibung. Sie wird anschließend einer Node-Gruppe (Roboterarm) zugeordnet. \\
+	U1 & Node registrieren & Eine Node registriert sich bei der Middleware mit einem eindeutigen Identifier. Dem Identifier wird dessen IPv4 Adresse zugeordnet. \\
 	\hline
-	U2 & Node-Gruppe auswählen & Die Applikation wählt eine existierende Node-Gruppe aus, die als Ziel für Steuerungsbefehle verwendet werden soll. \\
+	U2 & Informationen weiterleiten & Die Middleware leitet RPCs von der Applikation an die entsprechenden Nodes weiter. \\
 	\hline
-	U3 & Node-Gruppe bewegen & Die Middleware empfängt Bewegungsbefehle von der Applikation und leitet diese an entsprechende Nodes der aktiven Node-Gruppe weiter. \\
+	U3 & Verfügbarkeit prüfen & Es wird geprüft, welche Nodes erreichbar sind. \\
 	\hline
-	U4 & Verfügbarkeit prüfen & Die Middleware prüft, ob alle Nodes einer gewählten Gruppe erreichbar und einsatzbereit sind, bevor Steuerungsbefehle ausgeführt werden. \\
+	U4 & Verfügbarkeit propagieren & Die Middleware muss der Applikation mitteilen welche Nodes fehlerfrei erreichbar sind.\\
 	\hline
-	U5 & Verfügbarkeit propagieren & Die Middleware muss der Applikation in regelmäßigen Abständen mitteilen welche Node-Gruppen fehlerfrei erreichbar sind.\\
+	U5 & Marshalling & Die Middleware muss dafür sorgen, dass die Datenstrukturen und Parameter der Funktionsaufrufe korrekt in ein übertragbares Format (Marshalling) umgewandelt und am Zielsystem wieder entpackt (Unmarshalling) werden. \\
 	\hline
 \end{tabular}
 
 \subsection{Fachliche Randbedingungen}
 
 \begin{itemize}
-	\item Es können bis zu 253 Nodes gleichzeitig betrieben werden.
-	\item Jede Node gehört genau einer Node-Gruppe an.
-	\item Steuerungsbefehle dürfen nur an Gruppen gesendet werden, die als aktiv markiert sind.
+	\item Es können bis zu 253 Nodes mit unterschiedlichen IPv4-Adressen gleichzeitig betrieben werden.
+	\item Jede Node ghat einen eindeutigen Namen.
 	\item Die Middleware muss mit dem Ausfall oder der Nichterreichbarkeit einzelner Nodes robust umgehen können.
-	\item Die Systemsicherheit hat höchste Priorität: Bewegungen fehlerhafter Gruppen müssen verhindert werden.
+	\item Die Systemsicherheit hat höchste Priorität: Weiterleitungen an ungültige Nodes müssen verhindert werden. Es muss aber ein Fehlermeldung an den Administrator erfolgen. 
 \end{itemize}
 
 \section{Technischer Kontext}
@@ -57,9 +54,10 @@ Zusammenfassend erfüllt die Middleware folgende technische Aufgaben:
 	\item Bereitstellung einer einheitlichen Kommunikationsschnittstelle für die darüber liegenden Anwendungen
 	\item Sicherstellung der zuverlässigen und performanten Kommunikation zwischen verteilten Komponenten
 	\item Implementierung von Mechanismen zur Erkennung und Behandlung von Fehlerzuständen im Netzwerk und auf den Nodes
+	\item Implementierung einer Namensauflösung
 \end{itemize}
 
-\subsection{Funktionale Anforderungen an die Middleware}
+\subsection{Technische Anforderungen an die Middleware}
 
 Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische Funktionen bereitstellen:
 
@@ -68,19 +66,19 @@ Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische 
 	Verwaltung und Verarbeitung von Node-Registrierungen mit eindeutigen Identifikatoren und Funktionsbeschreibungen.  
 	Persistenz der Node-Informationen und Zuordnung zu Node-Gruppen.
 	
-	\item \textbf{Gruppenverwaltung (U2):}  
-	Auswahl, Wechsel und Markierung aktiver Node-Gruppen zur Steuerung. Verwaltung des Gruppenstatus.
+	\item \textbf{Weiterleitung (U2):}  
+	Marshalling der zu Versendeten Informationen, korrektes Verteilen an den entsprechenden Empfänger mit abschließenden Unmarshalling.
 	
-	\item \textbf{Steuerungsweiterleitung (U3):}  
-	Empfang von Steuerbefehlen von der Applikation und Weiterleitung dieser Befehle an die Nodes der aktiven Gruppe.
+	\item \textbf{Verfügbarkeit prüfen (U3):}  
+	Regelmäßiges Abfragen der einzelnen Nodes auf Verfügbarkeit durch einen Heartbeat-Mechanismus \textcolor{red}{TODO: Prüfen, ob Watchdog tatsächlich Teil der Middleware, da applikation im besten Falle erreichbar sein sollte. Watchdog sollte besser ausserhalb von Middleware und Applikation liegen. Aber auch mit und über Middleware kommunizieren}. Fehlerhafte Nodes oder NIchterreichbarkeit sollte der Applikation mitgeteilt werden.
 	
-	\item \textbf{Verfügbarkeitsprüfung (U4):}  
-	Überwachung des Status und der Erreichbarkeit aller Nodes innerhalb einer Gruppe, inklusive Fehlererkennung und Meldung an die Applikation.
-	\item \textbf{Verfügbare Nodegruppen propagieren (U5):}  
-	Mitteilung an Applikation, welche Node-Gruppen verfügbar und ansteuerbar sind. \textcolor{red}{TODO: Entweder Schnittstelle anbieten und Applikation entscheiden lassen, oder Schnittstelle der Applikation nutzen!?}
+	\item \textbf{Verfügbarkeit propagieren (U4):}  
+	Die interne Namensliste aller verfügbaren Nodes sollte der Applikation auf anfrage mitgeteilt werden.\textcolor{red}{TODO: Entweder Schnittstelle anbieten und Applikation entscheiden lassen, oder Schnittstelle der Applikation nutzen!?}
+	\item \textbf{Marshalling (U5):}  
+	Einführung einer IDL Definition
 	
 	\item \textbf{Fehlertoleranz und Sicherheit:}  
-	Mechanismen zur Behandlung von Kommunikationsausfällen, erneutes Senden von Nachrichten und Schutz vor Fehlfunktionen einzelner Nodes.
+	Mechanismen zur Behandlung von Kommunikationsausfällen, erneutes Senden von Nachrichten und Schutz vor Fehlfunktionen einzelner Nodes. Mitteilung an die Applikation zur Fehlertransparenz.
 \end{itemize}
 
 \section{Externe Schnittstellen}
@@ -89,7 +87,7 @@ Die Middleware besitzt zwei Schnittstellen:
 
 \begin{itemize}
 	\item \textbf{Schnittstelle zur Anwendungsebene:}  
-	Bietet eine einheitliche API, über die Anwendungen (z.\,B. auf ITS-Board oder Raspberry Pis) verteilte Dienste nutzen, Nachrichten senden und empfangen können – unabhängig von Netzwerkdetails oder physikalischer Verteilung.
+	Bietet eine einheitliche API, über die Anwendungen (z.\,B. auf ITS-Board oder Raspberry Pis) verteilte Dienste nutzen, Nachrichten senden und empfangen können, sowie sich als Teilnehmer registrieren können, unabhängig von Netzwerkdetails oder physikalischer Verteilung.
 	
 	\item \textbf{Schnittstelle zu System- und Netzwerkschichten:}  
 	Nutzt Betriebssystem- und Netzwerkdienste (TCP/IP, IPv4) zur Nachrichtenübermittlung und Ressourcenverwaltung. Diese Schnittstelle ist für die Anwendungen verborgen.

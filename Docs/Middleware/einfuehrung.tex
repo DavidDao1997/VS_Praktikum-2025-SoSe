@@ -1,6 +1,6 @@
 \chapter{Einführung und Ziele}
 
-Diese Dokumentation beschreibt Entwurf und Kontext einer Middleware, die im Rahmen des Praktikums \glqq Verteilte Systeme SoSe 2025\grqq{} entwickelt wird. Ziel des Praktikums ist der Entwurf und die Implementierung eines verteilten Steuerungssystems für autonome Roboterarme. Die Middleware bildet dabei eine zentrale Komponente, die die Komplexität der Verteilung für die Anwendungsebene abstrahieren soll.
+Diese Dokumentation beschreibt Entwurf und Kontext einer Middleware, die im Rahmen des Praktikums \glqq Verteilte Systeme SoSe 2025\grqq{} entwickelt wird. Ziel des Praktikums ist der Entwurf und die Implementierung eines verteilten Steuerungssystems für Roboterarme. Die Middleware bildet dabei eine zentrale Komponente, die die Komplexität der Verteilung für die Anwendungsebene abstrahieren soll.
 
 
 \section{Aufgabenstellung}
@@ -8,16 +8,17 @@ Die Hauptaufgabe der zu entwickelnden Middleware besteht darin, die Kommunikatio
 Zu den Kernfunktionen, die eine Middleware typischerweise bereitstellt und die hier adressiert werden sollen, gehören:
 
 \begin{itemize}
+	\item Zuständig für die Verteilungstransparenz	
 	\item Bereitstellung der Kommunikation mittels standardisierter Protokolle. Dies wird (asynchrone) Kommunikation-Pattern umfassen, wie z.B. Remote Procedure Calls (RPC) oder Nachrichtenübertragung (Message-Oriented Middleware, MOM).
 	\item Unterstützung zur Konvertierung von Datenformaten zwischen Systemen.
 	\item Bereitstellung von Protokollen zur Namensauflösung (Service Discovery), um Ressourcen einfach zu identifizieren und zu referenzieren.
-	\item Mechanismen der Skalierbarkeit, wie z.B. Replikation	
+	\item Mechanismen der Skalierbarkeit, wie z.B. Replikation
 \end{itemize}
 
 Die Middleware dient als Vermittler, der zwischen der Applikation und der Runtime/OS Schicht Daten- und Informationsaustausch ermöglicht.
 
 
-Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines jeden im System befindlichen Roboterarms ermöglichen. Dazu gehören die Erkennung jeder Node, die Auswahl eines zu steuernden Verbund an Nodes eines dazugehörigen Roboterarms, sowie die Ansteuerung selbst. 
+Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines jeden im System befindlichen Roboterarms ermöglichen. Dazu gehören die Erkennung jeder Node, und die Weiterleitung der Steuerbefehle.
 
 \newpage
 \section{Qualitätsziele}

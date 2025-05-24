@@ -19,22 +19,47 @@
 	\endfoot
 	
 	
-	void register(Identifier ident, enum functionality) & 
-Schnittstelle für eine Node (Servo), um sich zu beim System zu registrieren. Identifier ist für jeden Servo einzigartig, functionality ist ein enum mit Aufgabenbereich an einem Roboterarm. 
-	& Jede Node (Servo) muss seinen eigenen Identifier und Funktionalität vor der Registrierung kennen. 
+	void register(String name, String socket) & 
+	\textbf{Schnittstelle zur Applikation} für eine Node (Servo), um sich zu beim System zu registrieren. Identifier ist für jeden Servo einzigartig, socket ist die IPv4 Adresse plus Port der Applikation. 
+	& Jede Node (Servo) muss seinen eigenen Identifier und Socket vor der Registrierung kennen. 
 	\\
 	\hline
-	Node createNewNode (Identifier ident, enum functionality)
-	& Übersetzt externe Node zu internen Node Code
-	&
+	int registerNewNode(String name, String socket) & 
+	Registriert neuen Empfänger in der Namensauflösung 
+	& Name ist noch nicht vorhanden; return 0 oder -1
+	\\
+	\hline
+	void invoke(name, Marshallable call)
+	& \textbf{Schnittstelle zur Applikation} um RPCs an entfernte Ziele zu senden. 
+	& IDL der Middleware kann den Typen Marshallable der Applikation serialisieren
+	\\
+	\hline
+	void call(Marshallable call)
+	& \textbf{Schnittstelle zur Applikation} um RPCs von entfernten Zielen zu empfangen
+	& IDL der Middleware kann den Typen Marshallable der Applikation unmarshallen
+	\\
+	\hline
+	int marshal(Marshallable* call, char* buffer, size bufSize)
+	& Führt Marshalling durch
+	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
+	\\
+	\hline
+	int unmarshal(const char* buffer, Marshallable* call)
+	& Führt Unmarshalling durch
+	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
 	\\
 	\hline
 	void updateAvailableNodes(List<Node> nodes)
 	& Liste mit allen verfügbaren Nodes, um diese der Applikation mitzuteilen. 
-	& 
+	& Es existiert eine Liste die auch von der Applikation gelesen werden kann (Liste muss angepasst werden an die )
 	\\
 	\hline
-	void heartbeat(Identifier ident)	
+	void forwardCall(String* target, Marshallable* call)
+	& Leitet den ankommenden RPC an das Target weiter
+	& Das Target muss existieren.
+	\\
+	\hline
+	\textcolor{red}{TODO: CHECK wegen Watchdog} void heartbeat(Identifier ident)	
 	& Check ob Node verfügbar	
 	& Vor: Node ist registriert; Nach: Timeout-Zähler zurückgesetzt
 	\\
@@ -44,38 +69,8 @@ Schnittstelle für eine Node (Servo), um sich zu beim System zu registrieren. Id
 	& Vor: Node ist registriert; Nach: Node ist aus Liste entfernt
 	\\
 	\hline
-	void choose(NodeGrp nodeGrpIdent) 
-	& Schnittstelle für Applikation, um Node Gruppe zu wechseln
-	&
-	\\
-	\hline
-	void markActive(NodeGrp nodeGrpIdent)
-	& Node Gruppe wird als aktiv makiert
-	& Vor: Applikation hat wechsel beauftragt; Nach: Node Gruppe wird als aktiv markiert, alle Steuerbefehle beziehen sich auf diese Gruppe
-	\\
-	\hline
-	void move(Direction dir) 
-	& Schnittstelle für Applikation um Node zu bewegen 
-	& Vor: Node Gruppe ist ausgewählt und verfügbar; Nach: Bewegung wird ausgeführt
-	\\
-	\hline
-	Node readFromNodeList(Direction dir)
-	& Gibt aktiven Node zurück mit passender Funktion
-	&
-	\\
-	\hline
-	void isActive(Direction dir) 
-	& Schnittstelle für Applikation um Node zu bewegen 
-	& Vor: Node Gruppe ist ausgewählt und verfügbar; Nach: Bewegung wird ausgeführt
-	\\
-	\hline
-	void moveNode(Identifier ident)
-	& ruft entsprechende Node Schnittstelle auf
-	& 
+	 
 \end{longtable}
-
-
-\textcolor{red}{TODO: Identifier muss ausgearbeitet werden (Allgemein Service Discovery und Speicherung) sowie Rückgabetyp Node}\\
 
 
 \begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{10cm}|}
@@ -97,17 +92,26 @@ Schnittstelle für eine Node (Servo), um sich zu beim System zu registrieren. Id
 	Asynchrones Remote Procedure Call (RPC) als Kommunikationsmechanismus. Registrierungsvorgänge werden persistent gespeichert, während Steuerbefehle transient und zeitkritisch behandelt werden.  
 	\\
 	\hline
-	Service-Discovery &
-	Flacher Namensraum mit Gruppierung der Nodes. Der Name besteht aus eindeutiger Node-ID, Funktion und Zugehörigkeit zum Roboterarm-Verbund. 
-	\\
-	\hline
 	Namensauflösung
-	& IPv4 Adresse und dazugehöriger Node wird in einen Namen übersetzt, der die Node zu einem Verbund zugehörig macht.  
+	& Flacher Namensraum. Der Name besteht aus eindeutiger Node-ID, und IPv4 Socketinformationen. 
 	\\
 	\hline
 	Fehlerbehandlung
-	& 
-	
+	& Logging, Timeouts und Wiederholungen von Weiterleitungen. Erkannte Fehler werden der Applikation mitgeteilt \textcolor{red}{TODO: Funktion bestimmen}
+	\\
+	\hline
+	Marshalling
+	& Verwendung eines einheitlichen Marshallable-Typs und einer IDL zur Beschreibung und Serialisierung komplexer Funktionsaufrufe.
+	\\
+	\hline
+	Transparenz
+	& Middleware abstrahiert Verbindungsdetails, Adressierung und Datenformate für die Applikation vollständig (Standort-, Zugriffstransparenz).
+	\\
+	\hline
+	Sicherheit / Safety
+	& \textcolor{red}{TODO: Watchdog }
+	\\
+	\hline
 	
 \end{longtable}
 
