@@ -19,7 +19,7 @@
 	\endfoot
 	
 	
-	void register(String name, String socket) & 
+	void register(char* name, char* socket) & 
 	\textbf{Schnittstelle zur Applikation} für eine Node (Servo), um sich zu beim System zu registrieren. Identifier ist für jeden Servo einzigartig, socket ist die IPv4 Adresse plus Port der Applikation. 
 	& Jede Node (Servo) muss seinen eigenen Identifier und Socket vor der Registrierung kennen. 
 	\\
@@ -54,9 +54,14 @@
 	& Es existiert eine Liste die auch von der Applikation gelesen werden kann (Liste muss angepasst werden an die )
 	\\
 	\hline
-	void forwardCall(String* target, Marshallable* call)
+	void forwardCall( const char* target, Marshallable* call)
 	& Leitet den ankommenden RPC an das Target weiter
 	& Das Target muss existieren.
+	\\
+	\hline
+	char* resolveName(const String* target)
+	& Löst den eindeutigen Namen zu einem Socket (IPv4:Port) auf.
+	& Vorbedingung: target ungleich NULL; Rückgabe: String mit Socket-Adresse oder NULL bei Fehler.
 	\\
 	\hline
 	\textcolor{red}{TODO: CHECK wegen Watchdog} void heartbeat(Identifier ident)	
@@ -115,4 +120,53 @@
 	
 \end{longtable}
 
+\subsection*{Beispiel-Struktur des \texttt{Marshallable}-Typs}
+
+Der Typ \texttt{Marshallable} dient als generischer Container für entfernte Funktionsaufrufe. Er enthält den Funktionsnamen und eine Liste typisierter Parameter.
+
+\begin{lstlisting}[language=C, caption={Definition des \texttt{Marshallable}-Typs}]
+	typedef enum {
+		TYPE_INT,
+		TYPE_FLOAT,
+		TYPE_STRING
+	} ParamType;
+	
+	typedef struct {
+		ParamType type;
+		union {
+			int i;
+			float f;
+			char* s;
+		} data;
+	} Param;
+	
+	#define MAX_PARAMS 8
+	
+	typedef struct {
+		char function_name[64];
+		int param_count;
+		Param params[MAX_PARAMS];
+	} Marshallable;
+\end{lstlisting}
+
+\noindent Die Felder des Typs werden in folgender Tabelle erläutert:
+
+\begin{table}[h]
+	\centering
+	\caption{Felder der Struktur \texttt{Marshallable}}
+	\begin{tabularx}{\textwidth}{|l|l|X|}
+		\hline
+		\textbf{Feld} & \textbf{Typ} & \textbf{Beschreibung} \\
+		\hline
+		\texttt{function\_name} & \texttt{char[64]} & Name der aufzurufenden Funktion. \\
+		\hline
+		\texttt{param\_count} & \texttt{int} & Anzahl der übergebenen Parameter. \\
+		\hline
+		\texttt{params} & \texttt{Param[]} & Liste der Parameter inklusive Typinformationen. \\
+		\hline
+	\end{tabularx}
+\end{table}
+
+\noindent
+Die Middleware kennt die Struktur von \texttt{Marshallable} und kann sie serialisieren. Die genauen Typinformationen der Parameter (z.\,B. Reihenfolge und Datentypen) sind über eine IDL definiert, die separat gepflegt wird.
 
