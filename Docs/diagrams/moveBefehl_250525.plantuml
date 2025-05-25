@@ -10,7 +10,7 @@ participant "ICaDSRoboticArm (Model)" as RobArm
 
 ' == Benutzerinteraktion ==
 User -> IOUI: Button "Dreh dich links" klicken
-IOUI-> Ctrl: onButtonRotateLeft()
+IOUI-> Ctrl: onButtonMove(ROTATE_LEFT)
 
 
 ' == Steuerbefehl ==
