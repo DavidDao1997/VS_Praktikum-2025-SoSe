@@ -12,7 +12,7 @@
 \usepackage{array}
 
 \title{Wochenbericht V - Praktikum "Verteilte Systeme": Trennung Applikation und Middleware}
-\author{Name Protokollführer}
+\author{Marc Siekmann}
 \date{\today}
 
 \lstset{
@@ -44,54 +44,54 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao & Überarbeitung arc42 chapter 6 & 80\% & 3h & <in review, in progress> \\
+Manh-An David Dao & Überarbeitung arc42 Chapter 6 & 100\%& 3h & ok \\
 \hline
-Jannik Schön &  & 0\% & 0h & <ok, in review, in progress> \\
+Jannik Schön & Überarbeitung arc42 Chapter 5 & 80\% & 3h & in review \\
 \hline
 Marc Siekmann &  Überarbeitung arc42 Chapter 1 - 4 Middleware  & 80\% & 4h & in review \\
 \hline
-Phillip Patt &  & 0\% & 0h & <ok, in review, in progress>\\
+Philipp Patt & arc42 Chapter 4 & 80\% & 4h & in review\\
 
 \bottomrule
 \end{tabular}
 
 \section{Zusammenfassung der Woche}
 
-In dieser Woche fand die Bearbeitung 
+In dieser Woche fand die inhaltliche Trennung der Applikation und der Middleware statt. Demnach wurden beide arc42 Dokumentationen überarbeitet.
 \\\\
-Wesentliche Pull request/commits des Projektes waren: \\ \\
+Wesentliche pull-requests/commits sind in den Fußnoten hinterlegt.  \\ \\
 
 
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
 
-\subsection{Überarbeitung arc42 chapter 6}
-In den vorherigen Versionen der Sequenzdiagramme wurden zahlreiche Unstimmigkeiten festgestellt.
-In den Kapiteln 4 und 5 zeigte sich, dass einige Funktionen noch unklar definiert waren und die Zuordnung der vorhandenen Komponenten sowie ihrer Schnittstellen nicht eindeutig war.
-Die Sequenzdiagramme wurden daraufhin überarbeitet und an die definierten Funktionen und Komponenten angepasst.
-\\
+\subsection{Überarbeitung arc42 Chapter 4-6}
+In der vorherigen Woche wurden noch einige Unstimmigkeiten erkannt. 
+Dabei waren Funktionssignaturen, Bausteine, Schnittstellen der Bausteine und die daraus resultierenden Sequenzdiagramme noch nicht kohärent.
+Diese Woche wurde durch gemeinsame Diskussion diese Unstimmigkeiten behoben, so dass die Kapitel nun aufeiander aufbauend sind. 
+Außerdem wird die Middleware zunächst vollständig vernachlässigt. Sobald die Verteilungsschicht thematisiert wird, spielt sie wieder eine Rolle.
+\\\\
+Die Lösungsstrategie ist nun in Tabellenform und grenzt die Schnittstellen sauberer voneinander ab.\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/9}}
+\\\\
+Die Bausteine orientieren sich an einem MVC-Pattern \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 91 ff. } und es wurden klaren Schnittstellen zwischen den Bausteinen definiert \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/17}}.
+\\\\
+Die Sequenzdiagramme wurden anhand der Lösungsstrategie und der Bausteinsicht angepasst.\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/13}}\\\\
 Ziel dieser Anpassungen war es, eine höhere Konsistenz zwischen den verschiedenen Sichten herzustellen und das Verständnis der Gesamtarchitektur zu verbessern.
 
-\subsection{Aufgabe}
+
 
 
 \subsection{Aufgabe Überarbeitung arc42 Chapter 1 - 4 Middleware}
-Vorherige Version war zu stark mit Applikation vermischt. Eine komplette Trennung der Middleware als austauschbare Schicht ist erforderlich (TODO QUELLE). Die Kapitel 1 - 4 wurden daher überarbeitet. Die Middleware ist nun als reine Vermittlungsschicht aufgebaut, die sich um die Verteilungstransparenzen und das Marshalling kümmert. Über den Watchdog muss einmal Rücksprache gehalten werden, da dieser unabhängig von Middleware und Applikation existiert (TODO QUELLE) 
+Vorherige Version war zu stark mit Applikation vermischt. Eine komplette Trennung der Middleware als austauschbare Schicht ist erforderlich (TODO QUELLE). 
+Die Kapitel 1 - 4 wurden daher überarbeitet. 
+Die Middleware ist nun als reine Vermittlungsschicht aufgebaut, die sich um die Verteilungstransparenzen und das Marshalling kümmert. 
+Über den Watchdog muss einmal Rücksprache gehalten werden, da dieser unabhängig von Middleware und Applikation existiert (TODO QUELLE)
+\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/11}}
 
-\subsection{Aufgabe}
 
 
-\section{Bezug zum Skript}
 
-\begin{itemize}
-	\item \textbf{Skript Abschnitt}
-		\begin{itemize}
-			\item 
-		\end{itemize}
-	\item \textbf{Skript Abschnitt}
-		\begin{itemize}
-			\item 
-		\end{itemize}
-\end{itemize}
+
+
  
 \section{Nächste Schritte}
 Middleware:\\
