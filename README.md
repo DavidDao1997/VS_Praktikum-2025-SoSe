@@ -7,7 +7,7 @@ TBD Description
  - [Client (ITS Board)](/Client/)
  - [Application (Arc42)](/Docs/Application/)
  - [Middleware(Arc42)](/Docs/Middleware/)
- - [Weekly Protcol](/Protocol/)
+ - [Weekly Protocol](/Protocol/)
  - [Robot](/Robot/)
 
 ## Installation
