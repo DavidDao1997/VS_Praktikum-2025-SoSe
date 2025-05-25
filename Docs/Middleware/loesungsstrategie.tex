@@ -21,6 +21,7 @@
 	
 	void register(char* name, char* socket) & 
 	\textbf{Schnittstelle zur Applikation} für eine Node (Servo), um sich zu beim System zu registrieren. Identifier ist für jeden Servo einzigartig, socket ist die IPv4 Adresse plus Port der Applikation. 
+	% Funktionsname der Callfunktion der Node als Callback / 3. Argument Callback nötig ?
 	& Jede Node (Servo) muss seinen eigenen Identifier und Socket vor der Registrierung kennen. 
 	\\
 	\hline
@@ -29,32 +30,27 @@
 	& Name ist noch nicht vorhanden; return 0 oder -1
 	\\
 	\hline
-	void invoke(name, Marshallable call)
+	void invoke(String name, String functionName, String[] argTypes, String[] args)
 	& \textbf{Schnittstelle zur Applikation} um RPCs an entfernte Ziele zu senden. 
 	& IDL der Middleware kann den Typen Marshallable der Applikation serialisieren
 	\\
 	\hline
-	void call(Marshallable call)
-	& \textbf{Schnittstelle zur Applikation} um RPCs von entfernten Zielen zu empfangen
-	& IDL der Middleware kann den Typen Marshallable der Applikation unmarshallen
-	\\
-	\hline
-	int marshal(Marshallable* call, char* buffer, size bufSize)
+	int marshal(String functionName, String[] argTypes, String[] args, char* buffer, size bufSize)
 	& Führt Marshalling durch
 	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
 	\\
 	\hline
-	int unmarshal(const char* buffer, Marshallable* call)
+	int unmarshal(const char* buffer, String functionName, String[] argTypes, String[] args)
 	& Führt Unmarshalling durch
 	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
 	\\
 	\hline
-	void updateAvailableNodes(List<Node> nodes)
+	void updateAvailableNodes(List<Node> nodes) \textcolor{red}{TODO: Wie wird die Liste rausgegeben?}
 	& Liste mit allen verfügbaren Nodes, um diese der Applikation mitzuteilen. 
 	& Es existiert eine Liste die auch von der Applikation gelesen werden kann (Liste muss angepasst werden an die )
 	\\
 	\hline
-	void forwardCall( const char* target, Marshallable* call)
+	void forwardCall( const char* target, String functionName, String[] argTypes, String[] args)
 	& Leitet den ankommenden RPC an das Target weiter
 	& Das Target muss existieren.
 	\\

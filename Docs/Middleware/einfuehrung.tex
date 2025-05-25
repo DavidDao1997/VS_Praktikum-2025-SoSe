@@ -47,8 +47,9 @@ Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines
 	\\
 	\hline
 	Skalierbarkeit & 
-	Zusätzliche Nodes oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. Die Middleware muss Mechanismen (z.B. Replikation, Caching) bieten, um mit zunehmender Anzahl von Teilnehmern oder der Datenmenge zurechtzukommen.
-	& Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 253)
+	Zusätzliche Nodes oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
+	% Die Middleware muss Mechanismen (z.B. Replikation, Caching) bieten, um mit zunehmender Anzahl von Teilnehmern oder der Datenmenge zurechtzukommen.
+	& Es können beliebig viele Nodes hinzugefügt und entfernt werden (0 - 253)
 	\\
 	\hline
 	%Leistung & 
@@ -56,12 +57,6 @@ Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines
 	%& max. 200 ms bis Befehlsausführung
 	%\\
 	%\hline
-	Sicherheit (Safety) & 
-	Es bewegt sich immer genau ein Node. Dieser darf sich nur Bewegen solange dieser Node erreichbar ist. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht. 
-	%Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
-	& Reaktionszeit max. 250 ms, bis Node stoppt
-	\\
-	\hline
 	Wartbarkeit & 
 	Der Code muss übersichtlich sein, gut dokumentiert sein und wenig Komplexität enthalten. 
 	& Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar  
@@ -87,13 +82,13 @@ Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines
 	%& 
 	%\\
 	%\hline
-	Ressourcenteilung  & Mehrere Nodes eines Verbunds (Roboterarm) können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle dem Netzwerk hinzugefügten Nodes können sich registrieren und dessen Verbund beliebig angesteuert werden\\
+	Ressourcenteilung  & Alle dem Netzwerk hinzugefügten Nodes können sich registrieren und anschließend miteinander kommunizieren & Das Namensregister ist im gesamten Netzwerk verfügbar\\
 	\hline
 	Offenheit & 
 	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
 	& Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
 	\hline
-	Zugriffstransparenz   & Die Umsetzung der Nodesteuerung ist für den Benutzer nicht erkennbar  & Nach aussen werden die genutzten Kommunikationsprotokolle verschleiert und durch einen Namen ersetzt. Der Name zeigt einen Verbund an.\\
+	Zugriffstransparenz & Die Umsetzung Kommunikation zwischen den Nodes ist für den Benutzer nicht erkennbar & Die Applikation kommuniziert über Namen\\
 	\hline
 	Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist nach außen unsichtbar  & Das Interface nach außen ist eineiheitlich und verschleiert die Implementierung\\
 	
@@ -109,12 +104,6 @@ Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines
 	\begin{tabular}{|p{2.5cm}|p{10cm}|}
 		\hline
 		\textbf{Stakeholder} & \textbf{Interesse}  \\
-		\hline
-		Nutzer   
-		& \parbox{10cm}{\begin{itemize}
-				\item  Indirekte Stakeholder, deren Erfahrung stark von der Leistung und Zuverlässigkeit des Gesamtsystems, einschließlich der Middleware, abhängt.
-		\end{itemize}}
-		\\
 		\hline
 		Betreiber 
 		&\parbox{10cm}{\begin{itemize}
@@ -134,7 +123,7 @@ Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines
 		Entwicklerteam Applikation
 		&\parbox{10cm}{ \begin{itemize}
 				\item Middleware bietet vollständige Funktionalität
-				\item Middleware-Schnittstellen sind vollständig beschrieben
+				\item Middleware-Schnittstellen sind vollständig beschrieben.
 				\item Zuverlässigkeit und Reaktionszeit der von der Middleware bereitgestellten Kommunikationsdienste.
 		\end{itemize}}
 		\\
