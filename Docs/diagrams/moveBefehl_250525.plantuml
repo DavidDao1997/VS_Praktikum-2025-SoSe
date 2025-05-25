@@ -1,0 +1,23 @@
+@startuml
+title Sequenzdiagramm – "Roboterarm bewegen"
+
+actor User
+
+participant "IO/UI (View)" as IOUI
+participant "LCD-Controller (Control)" as Ctrl
+participant "ActuatorController (Model)" as ActCtrl
+participant "ICaDSRoboticArm (Model)" as RobArm
+
+' == Benutzerinteraktion ==
+User -> IOUI: Button "Dreh dich links" klicken
+IOUI-> Ctrl: onButtonRotateLeft()
+
+
+' == Steuerbefehl ==
+Ctrl -> ActCtrl : move("R1A0", NEGATIVE, reqID)
+ActCtrl -> RobArm : setUpDownPercentage(prev-5)
+
+'==Feedback==
+ActCtrl -> Ctrl:response(reqID)
+Ctrl -> IOUI: updateDisplay()
+@enduml
