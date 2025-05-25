@@ -4,9 +4,11 @@ TBD Description
 
 ## Table of Content
 
- - [Client (ITS Board)](/Client/README.md)
- - [Docs (Arc42)](/Docs/README.md)
- - [Robot](/Robot/README.md)
+ - [Client (ITS Board)](/Client/)
+ - [Application (Arc42)](/Docs/Application/)
+ - [Middleware(Arc42)](/Docs/Middleware/)
+ - [Weekly Protocol](/Protocol/)
+ - [Robot](/Robot/)
 
 ## Installation
 
