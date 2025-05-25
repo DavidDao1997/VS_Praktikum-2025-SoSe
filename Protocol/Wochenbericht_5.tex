@@ -11,7 +11,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Titel}
+\title{Wochenbericht V - Praktikum "Verteilte Systeme": Trennung Applikation und Middleware}
 \author{Name Protokollführer}
 \date{\today}
 
@@ -48,9 +48,9 @@ Manh-An David Dao &  & 0\% & 0h & <ok, in review, in progress> \\
 \hline
 Jannik Schön &  & 0\% & 0h & <ok, in review, in progress> \\
 \hline
-Marc Siekmann &  & 0\% & 0h & <ok, in review, in progress> \\
+Marc Siekmann &  Überarbeitung arc42 Chapter 1 - 4 Middleware  & 80\% & 4h & in review \\
 \hline
-Phillip Patt &  & 0\% & 0h & <ok, in review, in progress}>\\
+Phillip Patt &  & 0\% & 0h & <ok, in review, in progress>\\
 
 \bottomrule
 \end{tabular}
@@ -70,8 +70,8 @@ Wesentliche Pull request/commits des Projektes waren: \\ \\
 \subsection{Aufgabe}
 
 
-\subsection{Aufgabe}
-
+\subsection{Aufgabe Überarbeitung arc42 Chapter 1 - 4 Middleware}
+Vorherige Version war zu stark mit Applikation vermischt. Eine komplette Trennung der Middleware als austauschbare Schicht ist erforderlich (TODO QUELLE). Die Kapitel 1 - 4 wurden daher überarbeitet. Die Middleware ist nun als reine Vermittlungsschicht aufgebaut, die sich um die Verteilungstransparenzen und das Marshalling kümmert. Über den Watchdog muss einmal Rücksprache gehalten werden, da dieser unabhängig von Middleware und Applikation existiert (TODO QUELLE) 
 
 \subsection{Aufgabe}
 
@@ -89,35 +89,14 @@ Wesentliche Pull request/commits des Projektes waren: \\ \\
 		\end{itemize}
 \end{itemize}
  
-\section{Zeitaufteeilung}
-
-\begin{itemize}
-\item \textbf{Marc Siekmann} \\
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-...
-
-\item \textbf{Manh-An David Dao}\\
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-...
-
-\item \textbf{Phillip Patt}\\
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-...
-
-\item \textbf{Jannik Schön}\\
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-<Thema Überschrift>: <Zeit> \\ 
-...
-
-\end{itemize}
-
 \section{Nächste Schritte}
+Middleware:\\
+- Blocksicht und Architekturentscheidungen (Proxy und Name Service)\\
+- Verlaufssicht \\
+- Watchdog \\
+
+
+
+
 
 \end{document}
