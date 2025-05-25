@@ -1,0 +1,51 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam componentStyle uml2
+skinparam rectangle {
+  BackgroundColor #FDF6E3
+  BorderColor black
+  FontSize 12
+  RoundCorner 15
+}
+skinparam ArrowColor black
+skinparam ArrowThickness 1.5
+skinparam component {
+  BorderColor black
+  FontSize 11
+  BackgroundColor<<User>> #FFDDCC
+  BackgroundColor<<System>> #DDEEFF
+  BackgroundColor<<Model>> #CCFFCC
+  BackgroundColor<<View>> #FFFFCC
+  BackgroundColor<<Controller>> #FFCCCC
+}
+'=========================
+' Level 2: System intern
+'=========================
+rectangle "Level 2: Whitebox Roboter System" {
+  left to right direction
+  
+  package "View" <<View>> {
+    component "UI" as UI
+    component "IO" as IO
+  }
+
+  package "Controller" <<Controller>> {
+    component "LCDController" as LCD
+  }
+
+  package "Model" <<Model>> {
+    package "ActuatorController" <<Whitebox>> {
+      component "ICaDsRoboticArm" as Arm
+    }
+    component "StateService" as StateService
+  }
+
+  ' Interfaces and relationships
+  LCD -(0- UI : I_UI
+  IO -(0- LCD : I_InputHandler
+  LCD -(0- StateService : I_StateUpdater
+  StateService -(0- LCD : I_StateSubscription
+  ActuatorController -0)- LCD : I_Move
+  ActuatorController -(0- LCD : I_Move_Response
+}
+@enduml 

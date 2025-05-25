@@ -1,0 +1,20 @@
+'=========================
+' Level 1: Blackbox View
+'=========================
+@startuml
+skinparam componentStyle rectangle
+skinparam componentStyle uml2
+skinparam rectangle {
+  BackgroundColor #FDF6E3
+  BorderColor black
+  FontSize 12
+  RoundCorner 15
+}
+rectangle "Level 1: Blackbox" {
+  left to right direction
+  actor "Benutzer" <<User>> as User
+  component "Roboter System" <<Blackbox>> as RobotSystem
+  User --> RobotSystem : benutzt
+  RobotSystem --> User : UI-Feedback
+}
+@enduml
