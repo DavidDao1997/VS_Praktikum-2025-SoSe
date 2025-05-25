@@ -50,7 +50,7 @@ Jannik Schön & Überarbeitung arc42 Chapter 5 & 80\% & 3h & in review \\
 \hline
 Marc Siekmann &  Überarbeitung arc42 Chapter 1 - 4 Middleware  & 80\% & 4h & in review \\
 \hline
-Philipp Patt & arc42 Chapter 4 & 80\% & 4h & in review\\
+Philipp Patt & Überarbeitung arc42 Chapter 4 & 80\% & 4h & in review\\
 
 \bottomrule
 \end{tabular}
@@ -81,10 +81,10 @@ Ziel dieser Anpassungen war es, eine höhere Konsistenz zwischen den verschieden
 
 
 \subsection{Aufgabe Überarbeitung arc42 Chapter 1 - 4 Middleware}
-Vorherige Version war zu stark mit Applikation vermischt. Eine komplette Trennung der Middleware als austauschbare Schicht ist erforderlich (TODO QUELLE). 
+Vorherige Version war zu stark mit Applikation vermischt. Eine komplette Trennung der Middleware als austauschbare Schicht ist erforderlich \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 80 }. 
 Die Kapitel 1 - 4 wurden daher überarbeitet. 
-Die Middleware ist nun als reine Vermittlungsschicht aufgebaut, die sich um die Verteilungstransparenzen und das Marshalling kümmert. 
-Über den Watchdog muss einmal Rücksprache gehalten werden, da dieser unabhängig von Middleware und Applikation existiert (TODO QUELLE)
+Die Middleware ist nun als reine Vermittlungsschicht aufgebaut, die sich um die Verteilungstransparenzen und das Marshalling \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 123 ff. } kümmert. 
+Über den Watchdog muss einmal Rücksprache gehalten werden \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 115 ff. }. Diese Änderungen wurden eingeflegt.
 \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/11}}
 
 
@@ -95,10 +95,16 @@ Die Middleware ist nun als reine Vermittlungsschicht aufgebaut, die sich um die 
  
 \section{Nächste Schritte}
 Middleware:\\
-- Blocksicht und Architekturentscheidungen (Proxy und Name Service)\\
-- Verlaufssicht \\
+- Bausteinsicht mund Architekturentscheidungen (Proxy\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 95 ff. } und Service Discovery \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 212 ff. }, Client-Server \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 118 ff. } )\\
+- Laufzeitsicht \\
 - Watchdog \\
-
+\\
+Applikation:\\
+- Modell Businesslogik ausarbeiten\\
+- Verteilungsschicht \\
+\\
+Generell:\\
+MVP für RPC-Aufrufe erstellen
 
 
 
