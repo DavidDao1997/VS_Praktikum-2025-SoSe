@@ -1,0 +1,168 @@
+\chapter{Lösungsstrategie}
+
+
+\textcolor{red}{TODO: Weitere Funktionen (atomar))}
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{5cm}|}
+	\caption{Funktionsbeschreibungen} \label{tab:loesungsstrategie} \\
+	\hline
+	Funktion & Beschreibung & Vor-Nachbedingungen \\
+	\hline
+	\endfirsthead
+	
+	\hline
+	Funktion & Beschreibung & Vor-Nachbedingungen \\
+	\hline
+	\endhead
+	
+	\hline
+	\endfoot
+	
+	
+	void register(char* name, char* socket) & 
+	\textbf{Schnittstelle zur Applikation} für eine Node (Servo), um sich zu beim System zu registrieren. Identifier ist für jeden Servo einzigartig, socket ist die IPv4 Adresse plus Port der Applikation. 
+	% Funktionsname der Callfunktion der Node als Callback / 3. Argument Callback nötig ?
+	& Jede Node (Servo) muss seinen eigenen Identifier und Socket vor der Registrierung kennen. 
+	\\
+	\hline
+	int registerNewNode(String name, String socket) & 
+	Registriert neuen Empfänger in der Namensauflösung 
+	& Name ist noch nicht vorhanden; return 0 oder -1
+	\\
+	\hline
+	void invoke(String name, String functionName, String[] argTypes, String[] args)
+	& \textbf{Schnittstelle zur Applikation} um RPCs an entfernte Ziele zu senden. 
+	& IDL der Middleware kann den Typen Marshallable der Applikation serialisieren
+	\\
+	\hline
+	int marshal(String functionName, String[] argTypes, String[] args, char* buffer, size bufSize)
+	& Führt Marshalling durch
+	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
+	\\
+	\hline
+	int unmarshal(const char* buffer, String functionName, String[] argTypes, String[] args)
+	& Führt Unmarshalling durch
+	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
+	\\
+	\hline
+	void updateAvailableNodes(List<Node> nodes) \textcolor{red}{TODO: Wie wird die Liste rausgegeben?}
+	& Liste mit allen verfügbaren Nodes, um diese der Applikation mitzuteilen. 
+	& Es existiert eine Liste die auch von der Applikation gelesen werden kann (Liste muss angepasst werden an die )
+	\\
+	\hline
+	void forwardCall( const char* target, String functionName, String[] argTypes, String[] args)
+	& Leitet den ankommenden RPC an das Target weiter
+	& Das Target muss existieren.
+	\\
+	\hline
+	char* resolveName(const String* target)
+	& Löst den eindeutigen Namen zu einem Socket (IPv4:Port) auf.
+	& Vorbedingung: target ungleich NULL; Rückgabe: String mit Socket-Adresse oder NULL bei Fehler.
+	\\
+	\hline
+	\textcolor{red}{TODO: CHECK wegen Watchdog} void heartbeat(Identifier ident)	
+	& Check ob Node verfügbar	
+	& Vor: Node ist registriert; Nach: Timeout-Zähler zurückgesetzt
+	\\
+	\hline
+	void unregister(Identifier ident)
+	& Entfernt eine Node aus dem System, zb wenn nicht mehr erreichbar anhand seines Identifiers
+	& Vor: Node ist registriert; Nach: Node ist aus Liste entfernt
+	\\
+	\hline
+	 
+\end{longtable}
+
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{10cm}|}
+	\caption{Lösungstrategien Ziele} \label{tab:loesungsstrategieZiele} \\
+	\hline
+	Ziel & Strategie \\
+	\hline
+	\endfirsthead
+	
+	\hline
+	Ziel & Strategiee\\
+	\hline
+	\endhead
+	
+	\hline
+	\endfoot
+	
+	Kommunikation &
+	Asynchrones Remote Procedure Call (RPC) als Kommunikationsmechanismus. Registrierungsvorgänge werden persistent gespeichert, während Steuerbefehle transient und zeitkritisch behandelt werden. Kommunikation zwischen entfernten Zielen mithilfe von UDP/TCP nach vorherigem Marshalling.
+	\\
+	\hline
+	Namensauflösung
+	& Flacher Namensraum. Der Name besteht aus eindeutiger Node-ID, und IPv4 Socketinformationen. 
+	\\
+	\hline
+	Fehlerbehandlung
+	& Logging, Timeouts und Wiederholungen von Weiterleitungen. Erkannte Fehler werden der Applikation mitgeteilt \textcolor{red}{TODO: Funktion bestimmen}
+	\\
+	\hline
+	Marshalling
+	& Verwendung eines einheitlichen Marshallable-Typs und einer IDL zur Beschreibung und Serialisierung komplexer Funktionsaufrufe.
+	\\
+	\hline
+	Transparenz
+	& Middleware abstrahiert Verbindungsdetails, Adressierung und Datenformate für die Applikation vollständig (Standort-, Zugriffstransparenz).
+	\\
+	\hline
+	Sicherheit / Safety
+	& \textcolor{red}{TODO: Watchdog }
+	\\
+	\hline
+	
+\end{longtable}
+
+\subsection*{Beispiel-Struktur des \texttt{Marshallable}-Typs}
+
+Der Typ \texttt{Marshallable} dient als generischer Container für entfernte Funktionsaufrufe. Er enthält den Funktionsnamen und eine Liste typisierter Parameter.
+
+\begin{lstlisting}[language=C, caption={Definition des \texttt{Marshallable}-Typs}]
+	typedef enum {
+		TYPE_INT,
+		TYPE_FLOAT,
+		TYPE_STRING
+	} ParamType;
+	
+	typedef struct {
+		ParamType type;
+		union {
+			int i;
+			float f;
+			char* s;
+		} data;
+	} Param;
+	
+	#define MAX_PARAMS 8
+	
+	typedef struct {
+		char function_name[64];
+		int param_count;
+		Param params[MAX_PARAMS];
+	} Marshallable;
+\end{lstlisting}
+
+\noindent Die Felder des Typs werden in folgender Tabelle erläutert:
+
+\begin{table}[h]
+	\centering
+	\caption{Felder der Struktur \texttt{Marshallable}}
+	\begin{tabularx}{\textwidth}{|l|l|X|}
+		\hline
+		\textbf{Feld} & \textbf{Typ} & \textbf{Beschreibung} \\
+		\hline
+		\texttt{function\_name} & \texttt{char[64]} & Name der aufzurufenden Funktion. \\
+		\hline
+		\texttt{param\_count} & \texttt{int} & Anzahl der übergebenen Parameter. \\
+		\hline
+		\texttt{params} & \texttt{Param[]} & Liste der Parameter inklusive Typinformationen. \\
+		\hline
+	\end{tabularx}
+\end{table}
+
+\noindent
+Die Middleware kennt die Struktur von \texttt{Marshallable} und kann sie serialisieren. Die genauen Typinformationen der Parameter (z.\,B. Reihenfolge und Datentypen) sind über eine IDL definiert, die separat gepflegt wird.
+

@@ -1,0 +1,94 @@
+\chapter{Kontextabgrenzung}
+
+
+\section{Fachlicher Kontext}
+
+
+\subsection{Akteure und Rollen}
+
+\begin{tabular}{|p{4cm}|p{10cm}|}
+	\hline
+	\textbf{Akteur / Rolle} & \textbf{Beschreibung} \\
+	\hline
+	Applikation & Externes Steuerungssystem, das über eine Schnittstelle Befehle an die Middleware sendet, z.\,B. zur Auswahl oder Bewegung eines Roboterservos. \\
+	\hline
+	Node (z.\,B. Servo(s)) & Ein einzelner Aktor. Meldet sich eigenständig bei der Middleware an. \\
+	\hline
+\end{tabular}
+
+\subsection{Fachliche Aufgaben (Use Cases)}
+
+\begin{tabular}{|p{1.5cm}|p{4cm}|p{8.5cm}|}
+	\hline
+	\textbf{ID} & \textbf{Name} & \textbf{Beschreibung} \\
+	\hline
+	U1 & Node registrieren & Eine Node registriert sich bei der Middleware mit einem eindeutigen Identifier. Dem Identifier wird dessen IPv4 Adresse zugeordnet. \\
+	\hline
+	U2 & Informationen weiterleiten & Die Middleware leitet RPCs von der Applikation an die entsprechenden Nodes weiter. \\
+	\hline
+	U3 & Verfügbarkeit prüfen & Es wird geprüft, welche Nodes erreichbar sind. \\
+	\hline
+	U4 & Verfügbarkeit propagieren & Die Middleware muss der Applikation mitteilen welche Nodes fehlerfrei erreichbar sind.\\
+	\hline
+	U5 & Marshalling & Die Middleware muss dafür sorgen, dass die Datenstrukturen und Parameter der Funktionsaufrufe korrekt in ein übertragbares Format (Marshalling) umgewandelt und am Zielsystem wieder entpackt (Unmarshalling) werden. \\
+	\hline
+\end{tabular}
+
+\subsection{Fachliche Randbedingungen}
+
+\begin{itemize}
+	\item Es können bis zu 253 Nodes mit unterschiedlichen IPv4-Adressen gleichzeitig betrieben werden.
+	\item Jede Node ghat einen eindeutigen Namen.
+	\item Die Middleware muss mit dem Ausfall oder der Nichterreichbarkeit einzelner Nodes robust umgehen können.
+	\item Die Systemsicherheit hat höchste Priorität: Weiterleitungen an ungültige Nodes müssen verhindert werden. Es muss aber ein Fehlermeldung an den Administrator erfolgen. 
+\end{itemize}
+
+\section{Technischer Kontext}
+
+Die Middleware positioniert sich technisch als Vermittlungsschicht zwischen der Anwendungsebene und den darunterliegenden Betriebssystem- und Kommunikationsdiensten. Sie ist über mehrere Maschinen verteilt, die über ein lokales /24 Netzwerk miteinander verbunden sind.
+Die Middleware nutzt Netzwerkprotokolle, insbesondere TCP und UDP, sowie Betriebssystemfunktionen, um eine zuverlässige Kommunikation zu gewährleisten. Gleichzeitig bietet sie den Anwendungen eine abstrahierte, einheitliche Schnittstelle, die die Heterogenität der zugrundeliegenden Systeme verbirgt.
+Die Middleware stellt darüber hinaus eigene Kommunikationsprotokolle bereit, die speziell auf die Anforderungen der verteilten Steuerung und Koordination der Roboterarme zugeschnitten sind. Hierzu zählen Mechanismen zur Nachrichtenvermittlung, Statusüberwachung und Fehlerbehandlung, um eine hohe Zuverlässigkeit und Fehlertoleranz sicherzustellen.
+Zusammenfassend erfüllt die Middleware folgende technische Aufgaben:
+\begin{itemize}
+	\item Verbergen der Heterogenität der zugrundeliegenden Hardware und Betriebssysteme
+	\item Bereitstellung einer einheitlichen Kommunikationsschnittstelle für die darüber liegenden Anwendungen
+	\item Sicherstellung der zuverlässigen und performanten Kommunikation zwischen verteilten Komponenten
+	\item Implementierung von Mechanismen zur Erkennung und Behandlung von Fehlerzuständen im Netzwerk und auf den Nodes
+	\item Implementierung einer Namensauflösung
+\end{itemize}
+
+\subsection{Technische Anforderungen an die Middleware}
+
+Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische Funktionen bereitstellen:
+
+\begin{itemize}
+	\item \textbf{Registrierungsmanagement (U1):}  
+	Verwaltung und Verarbeitung von Node-Registrierungen mit eindeutigen Identifikatoren und Funktionsbeschreibungen.  
+	Persistenz der Node-Informationen und Zuordnung zu Node-Gruppen.
+	
+	\item \textbf{Weiterleitung (U2):}  
+	Marshalling der zu Versendeten Informationen, korrektes Verteilen an den entsprechenden Empfänger mit abschließenden Unmarshalling.
+	
+	\item \textbf{Verfügbarkeit prüfen (U3):}  
+	Regelmäßiges Abfragen der einzelnen Nodes auf Verfügbarkeit durch einen Heartbeat-Mechanismus \textcolor{red}{TODO: Prüfen, ob Watchdog tatsächlich Teil der Middleware, da applikation im besten Falle erreichbar sein sollte. Watchdog sollte besser ausserhalb von Middleware und Applikation liegen. Aber auch mit und über Middleware kommunizieren}. Fehlerhafte Nodes oder NIchterreichbarkeit sollte der Applikation mitgeteilt werden.
+	
+	\item \textbf{Verfügbarkeit propagieren (U4):}  
+	Die interne Namensliste aller verfügbaren Nodes sollte der Applikation auf anfrage mitgeteilt werden.\textcolor{red}{TODO: Entweder Schnittstelle anbieten und Applikation entscheiden lassen, oder Schnittstelle der Applikation nutzen!?}
+	\item \textbf{Marshalling (U5):}  
+	Einführung einer IDL Definition
+	
+	\item \textbf{Fehlertoleranz und Sicherheit:}  
+	Mechanismen zur Behandlung von Kommunikationsausfällen, erneutes Senden von Nachrichten und Schutz vor Fehlfunktionen einzelner Nodes. Mitteilung an die Applikation zur Fehlertransparenz.
+\end{itemize}
+
+\section{Externe Schnittstellen}
+
+Die Middleware besitzt zwei Schnittstellen:
+
+\begin{itemize}
+	\item \textbf{Schnittstelle zur Anwendungsebene:}  
+	Bietet eine einheitliche API, über die Anwendungen (z.\,B. auf ITS-Board oder Raspberry Pis) verteilte Dienste nutzen, Nachrichten senden und empfangen können, sowie sich als Teilnehmer registrieren können, unabhängig von Netzwerkdetails oder physikalischer Verteilung.
+	
+	\item \textbf{Schnittstelle zu System- und Netzwerkschichten:}  
+	Nutzt Betriebssystem- und Netzwerkdienste (TCP/IP, IPv4) zur Nachrichtenübermittlung und Ressourcenverwaltung. Diese Schnittstelle ist für die Anwendungen verborgen.
+\end{itemize}

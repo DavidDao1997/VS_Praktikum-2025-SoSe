@@ -1,0 +1,18 @@
+@startuml 
+' Level 3 '
+package “GUI-Software" as GUISYSTEM{
+component "GUI" as GUI
+component "IO" as IO
+component "Registrierungsservice" as RS
+component "Watchdog" as WD
+}
+
+
+package "Roboter-Software" as RSSYSTEM{
+component "Roboter-API" as RAPI
+component "Heartbeat" as HB
+}
+
+GUISYSTEM <--> RSSYSTEM : TCP
+
+@enduml

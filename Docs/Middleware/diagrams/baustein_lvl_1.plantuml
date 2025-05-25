@@ -1,0 +1,10 @@
+@startuml
+actor "Benutzer" as User
+
+package "Roboter-System" as System {
+ 
+}
+
+User --> System  : Bedien‑/Steuerbefehle
+System --> User : Feedback
+@enduml
