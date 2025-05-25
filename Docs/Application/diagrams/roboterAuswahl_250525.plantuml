@@ -1,0 +1,19 @@
+@startuml
+title Sequenzdiagramm – "Roboterauswahl"
+
+actor User
+
+participant "IO/UI (View)" as IOUI
+participant "LCD-Controller (Control)" as Ctrl
+participant "stateService (Model)" as state
+
+User -> IOUI: Roboter R1 auswählen
+IOUI  -> Ctrl: onButtonSelect("R1")
+
+'==Select Nodes==
+Ctrl -> state : selectNode("R1")
+
+'==Updates==
+state -> Ctrl: onStateChange()
+Ctrl -> IOUI: updateDisplay()
+@enduml

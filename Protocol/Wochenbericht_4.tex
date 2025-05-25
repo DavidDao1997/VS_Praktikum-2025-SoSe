@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{Wochenbericht IV - Praktikum "Verteilte Systeme": Überarbeitung Lösungsstrategie der Applikations Dokumentation und Überarbeitung Kapitel 1-4 der Middleware Dokumentation}
+\author{Jannik Schön}
+\date{\today}
+
+\lstset{
+    numbers=left,                  
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,                   
+    numbersep=5pt,                 
+    backgroundcolor=\color{white}, 
+    showspaces=false,               
+    showstringspaces=false,         
+    showtabs=false,                
+    frame=single,                 
+    tabsize=4,                      
+    captionpos=b,                   
+    breaklines=true,                
+    breakatwhitespace=true,        
+    title=\lstname,               
+    escapeinside={\%*}{*)},         
+    morekeywords={Integer,IntWritable, Iterable, Text},
+}
+
+\begin{document}
+\maketitle
+\section{Mitglieder des Projektes }
+
+\begin{tabular}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{2cm} >{\centering\arraybackslash}p{2cm} >{\raggedright\arraybackslash}p{3cm}}
+\toprule
+\textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
+\midrule
+Manh-An David Dao & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation & 70\% & 3h & in progress  \\
+\hline
+Jannik Schön & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation  & 70\% & 3h & in progress  \\
+\hline
+Marc Siekmann & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation, Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation & 60\% & 4h & in progress  \\
+\hline
+Philipp Patt & Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation, Roboterarm initialisieren & 80\% & 3,5h & in progress, Roboterarm initialisieren ok  \\
+\bottomrule
+\end{tabular}
+
+\section{Zusammenfassung der Woche}
+Diese Woche wurde unsere aktuelle Architektur mit dem MVC-Pattern vereinigt. Außerdem wurde die Middleware Dokumentation in den Kapiteln 1-4 überarbeitet. Weiterhin wurde ein Roboter initialisiert.\\\\
+Wesentliche pull-requests/commits sind in den Fußnoten hinterlegt. 
+
+\section{Bearbeitete Themen und Schlüssel Erkenntnisse}
+
+
+\subsection{Überarbeitung Lösungsstrategie der Applikations Arc42-Dokumentation}
+Ziel war es die Konsistenz innerhalb der gesamten Architekturdokumentation zu verbessern, speziell zwischen Kapiteln 4, 5 und 6. \\
+\\
+Zunächst wurden unsere existierenden Bausteine in ein MVC Patttern\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 91 ff. }  gemappt und neue erstellt\footnote{\url{https://git.haw-hamburg.de/-/project/4474/uploads/d429cecaa3eb30b172065ca6c1229bea/image.png}}. 
+Hier stellten wir fest, dass es schwer fiel den Weg von Model bis layer mit der aktuellen Lösungsstrategie zu überbrücken.
+Um hier unser Verständnis zu verbessern wurden zwei Sequenzdiagramme erstellt. 
+Eins stellt dabei die Steuerung eines Roboters dar\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/blob/3a3cd16d69ab67245712d5f10c366434ec9fd5d1/Docs/diagrams/sktech_sd.png}}.
+Das Andere das Auswählen eines Roboters\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/blob/6b53d16d246322afd49ace9909ad38c6db589b02/Docs/diagrams/selectRobot.png}}.\\
+Diese beiden Fälle erwiesen sich als besonders geeignet, da sie als Gruppe am leichtesten nachvollziehbar waren. Sie dienten als Grundlage, um darauf weiter aufzubauen und als Referenz für komplexere Abläufe genutzt.\\
+\\
+\subsection{Überarbeitung Kapitel 1 - 4 der Middleware Arc42-Dokumentation} 
+Bei der Überarbeitung der Kapitel 1 - 4\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/11}} der arc42 Dokumentation der Middleware wurde versucht zunächst die Schnittstellen zur Applikation und zur Runtime/OS zu definieren. 
+Bei der Bestimmung der Schnittstelle zum OS hat sich herausgestellt, dass die Middleware die Netzwerkprotokolle, insbesondere IPv4, von TCP/IP unterstützen muss. 
+Die Schnittstelle zur Applikation soll den Verteilungstransparenzen (insbesondere Zugriffstransparenz und Lokaitätstransparenz \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 32/33 }) gerecht werden. 
+Daher werden einzelne Nodes der Applikation nicht bekannt gegeben, sondern nur der Name/die Namen einer zusammenhängenden Gruppe (Roboterarm) von Nodes (Servos). 
+Da Namen vergeben werden und die Verfügbarkeit von Nodes mithilfe eines Watchdogs überprüft wird, müssen Daten über die Nodes persistent sein. 
+Daher wird die Replikationstransparenz \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 34 } noch diskutiert werden müssen. Es muss sich noch auf eine Namesauflösung \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 73 } festgelegt werden, 
+aus der sich dann Datentypen ergeben, die intern genutzt werden. Ebenfalls muss die Fehlerbehandlung (Skript S.34) noch diskutiert werden. Die Middleware kommuniziert via RPC, 
+daher wird in ein Marshalling Prozess benötigt\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 72 }. In einer ersten Iteration wurde sich auf JSON festgelegt. 
+
+\subsection{Roboterarm initialisieren}
+
+Es wurde erstmalig ein Roboterarm angesteuert. Es wurde Beispeilcode getestet, der eine Steuerung der Bewegeungsgeschwindigkeit zulässt.
+
+\section{Nächste Schritte}
+
+Bei der Lösungsstrategie muss zunächst Einigkeit hergestellt werden, um dann auch die Bausteine und Laufzeitsicht anzupassen. \\
+Außerdem müssen die Schnittstellen zwischen Middleware und Applilkation herausgerarbeitet werden. 
+
+\end{document}
+
+
+

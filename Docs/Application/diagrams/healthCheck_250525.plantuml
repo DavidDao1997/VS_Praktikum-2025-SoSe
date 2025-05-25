@@ -1,0 +1,28 @@
+@startuml
+title Sequenzdiagramm – "Verbindungsverlust zum Roboter"
+
+participant "Observer (Control)" as Ob
+participant "HealthCheck (Model)" as HC
+participant "LCD-Controller (Control)" as ctrl
+
+loop check Heartbeat alle 50ms
+  
+  Ob -> HC: check Heartbeat
+  activate Ob
+  activate HC
+  HC -> HC: prüfe Verbindung
+  HC --> Ob: heartbeat: boolean
+  deactivate HC
+
+  alt Roboter antwortet
+    Ob -> Ob: Betrieb fortsetzen / kein Fehler
+  else keine Antwort
+    Ob -> ctrl: Fehler melden
+    activate ctrl
+    ctrl -> ctrl: reagiert auf fehler/bearbeitet fehler
+    ctrl -> Ob: Fehler bestätigen
+    deactivate ctrl
+    deactivate Ob
+  end
+end
+@enduml

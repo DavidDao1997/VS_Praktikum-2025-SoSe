@@ -1,37 +1,19 @@
 \chapter{Einführung und Ziele}
 
-\section{Aufgabenstellung und Anforderungen}
+\section{Aufgabenstellung}
 
-Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen entworfen und implementiert werden. Über ein ITS-Board (bspw. STM32F4) soll ein autonomer Roboter innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher und effizient gesteuert werden. Die verteilte Architektur soll dabei explizit gewährleisten, dass durch Fehlverhalten der Software oder Architektur keine Gefahr für anwesende entstehen kann.
-
-\subsection*{Funktionale Beschreibung}
-
+Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen entworfen und implementiert werden. Über ein ITS-Board (STM32F4) sollen beliebig viele autonome Roboterarme innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher und effizient gesteuert werden. Die verteilte Architektur soll dabei explizit gewährleisten, dass durch Fehlverhalten der Software oder Architektur keine Gefahr für Anwesende entstehen kann. Daraus geht hervor, dass der Benutzer einen zu steuernden Roboterarm auswählt und diesen anschließend mit den folgenden Bewegungen steuern kann:
 
 \begin{itemize}
-	
-	\item \textbf{Betreiber - System}
-		\begin{itemize}
-			\item Nutzer wählt genau einen Roboterarm aus
-			\item Nutzer gibt Steuerbefehl an genau einen Roboterarm
-			\item System zeigt an, ob Roboterarm verfügbar
-			\item Notstop löst sofortigen Stopp des ausgewählten Roboters aus
-		\end{itemize}
-		
-	\item \textbf{System}
-		\begin{itemize}
-			\item Roboterarme stoppen, sobald nicht mehr von aussen kontrollierbar
-			\item automatisches Erkennen von Hinzufügen und Entfernen von Roboterarmen
-			
-		\end{itemize}
+	\item Roboterarm hoch
+	\item Roboterarm runter
+	\item Roboterarm links
+	\item Roboterarm rechts
+	\item Greifer auf
+	\item Greifer zu
 	
 \end{itemize}
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[scale=.5]{diagrams/use_case.png}
-	\caption{Funktionales Use Case Diagramm der Aufgabenstellung}
-	\label{fig:meine-grafik}
-\end{figure}
 
 \newpage
 \section{Qualitätsziele}
@@ -39,33 +21,39 @@ Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter System
 % TODO zu jeden Punkt eine Definition oder entfernen
 % TODO messbar definieren
 
-Das verteilte Steuerungssystem soll eine Reihe von nicht-funktionalen Anforderungen erfüllen, um einen sicheren, wartbaren und erweiterbaren Betrieb im Einsatzumfeld zu gewährleisten. 
-
-\subsection{Ziele für Software Engineering}
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-        \hline
-        \textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
-        \hline
+\begin{longtable}{|>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{5cm}|>{\raggedright\arraybackslash}p{5cm}|}
+	\caption{Qualitätsziele der Software Engineering} \label{tab:seziele} \\
+	\hline
+	Ziel & Beschreibung & Metrik \\
+	\hline
+	\endfirsthead
+	
+	\hline
+	Ziel & Beschreibung & Metrik \\
+	\hline
+	\endhead
+	
+	\hline
+	\endfoot
+   
         Funktionalität &  
-        %Der Roboter muss Steuerbefehle korrekt umsetzen, auf Umgebungsdaten reagieren und vordefinierte Aufgaben zuverlässig erfüllen.
+        Der ausgewählte Roboterarm muss Steuerbefehle korrekt umsetzen
         & Alle Abnahmetests werden erfolgreich bestanden
         \\
         \hline
         Zuverlässigkeit & 
-        %Teilausfälle dürfen den Gesamtsystembetrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
+        Fehler dürfen den Betrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
         & Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h)
         \\
         \hline
         Skalierbarkeit & 
         Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
-        & Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - N)
+        & Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 253)
         \\
         \hline
         Leistung & 
-        %Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
-        & Reaktionszeit max. 250 ms
+        Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
+        & max. 200 ms bis Befehlsausführung
         \\
         \hline
         Sicherheit (Safety) & 
@@ -73,118 +61,92 @@ Das verteilte Steuerungssystem soll eine Reihe von nicht-funktionalen Anforderun
         %Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
         & Reaktionszeit max. 250 ms, bis Roboterarm stoppt
         \\
-        %\hline
-        %Wartbarkeit & 
-        %Der Code muss modular, gut dokumentiert und testbar sein. Fehlerdiagnose und Protokollierung sollen integriert sein. 
-        %& 
-        %\\
+        \hline
+        Wartbarkeit & 
+        Der Code muss übersichtlich sein, gut dokumentiert sein und wenig Komplexität enthalten. 
+        & Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar  
+        
+        \\
         \hline
         %Portabilität & %Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
         %& nicht relevant
         %\\
         %\hline
-        Benutzerfreundlichkeit & %Konfiguration und Überwachung müssen intuitiv bedienbar und gut visualisiert sein. 
+        Benutzerfreundlichkeit & Bedienung ist intuitiv, sodass die Nutzer möglichst wenig Zeit mit der Einarbeitung in die Bedienung benötigen. 
         & Keine Einweisung erforderlich
         \\
         \hline
-        Anpassbarkeit & 
+        %Anpassbarkeit & 
         %Neue Funktionen, Sensoren oder Regeln sollen ohne tiefgreifende Änderungen am System integrierbar sein. 
-        & 
-        \\
-        \hline
-        Kompatibilität & 
+        %& 
+        %\\
+        %\hline
+        %Kompatibilität & 
         %Das System soll mit bestehenden Standards und Protokollen kommunizieren können. 
-        & 
-        \\
+        %& 
+        %\\
+        %\hline
+        Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme sind ansteuerbar \\
         \hline
-    \end{tabular}
-    \caption{Qualitätsziele der Software Engineering}
-    \label{tab:seziele}
-\end{table}
-
-\clearpage
-\subsection{Ziele der Verteilte Systeme}
-    \begin{table}[h!]
-        \centering
-        \begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-            \hline
-            \textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
-            \hline
-            Ressourcenteilung  & ...& \\
-            Offenheit & ...& \\
-            Skalierbarkeit & ...& siehe Tabelle \ref{tab:skalierbarkeit} \\
-            Verteilung Transparenz & ...& siehe Tabelle \ref{tab:transparenzen} \\
-            \hline
-        \end{tabular}
-        \caption{Qualitätsziele der Verteilten Systeme}
-        \label{tab:vsziele}
-    \end{table}
-    
-\subsubsection{Skalierbarkeit}
-    \begin{table}[h!]
-            \centering
-            \begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-                \hline
-                \textbf{Ziel} & \textbf{Metrik} & \textbf{Metrik} \\
-                \hline
-                Vertikale Skalierung   & ... &\\
-                \hline
-                Horizontale Skalierung & ...& \\
-                \hline
-                Räumliche Skalierbarkeit &  & 1 \\
-                \hline
-                Funktionale Skalierbarkeit & ... & \\
-                \hline
-                Administrative-Skalierbarkeit & &1 \\
-                \hline
-            \end{tabular}
-            \caption{Skalierbarkeit von verteilten Systemen}
-            \label{tab:skalierbarkeit}
-        \end{table}
-    
-\newpage
-\subsubsection{Verteilungs-Transparenzen}
-    \begin{table}[h!]
-            \centering
-            \begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-                \hline
-                \textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
-                \hline
-                Zugriffstransparenz   & ...&\\
-                \hline
-                Lokalitäts-Transparenz  & ...&\\
-                \hline
-                Migrationstransparenz & ...&\\
-                \hline
-                Replikationstransparenz &...&\\
-                \hline
-                Fehlertransparenz &... &\\
-                \hline
-                Ortstransparenz & .. &\\
-                \hline
-                Skalierbarkeits-Transparenz & ... & \\
-                %Concurrency
-                %Relocation
-                \hline
-            \end{tabular}
-            \caption{Verteilungs-Transparenzen}
-            \label{tab:transparenzen}
-        \end{table}
+        Offenheit & 
+       	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
+        & Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
+        \hline
+        Zugriffstransparenz   & Die Umsetzung der Roboterarmsteuerung ist für den Benutzer nicht erkennbar und möglichst einfach gehalten & GUI zeigt nur Zustände des ausgewähltem Roboterarms an ( z.B. Verfügbarkeit) und der Roboterarm ist über das ITS-Board so einfach wie möglich steuerbar\\
+        \hline
+        Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist für den Benutzer unsichtbar  & Aus der Sicht der Benutzer sind alle benötigten Ressourcen zu Steuerung direkt und lokal auf dem ITS-Board\\
+       
         
+\end{longtable}
 
 
 
 \clearpage
 \section{Stakeholder}
-Die folgenden Gruppen sind direkt oder indirekt vom System betroffen:
 
-\begin{itemize}
-    \item \textbf{Endnutzer:} Personen, die mit dem Roboter interagieren (z.B. Lehrpersonal, Kinder im Testbereich)
-    \item \textbf{Entwicklerteam:} Zuständig für Entwurf, Umsetzung, Tests und Wartung des Systems
-    \item \textbf{Betreiber:} Verantwortlich für die Überwachung und den sicheren Betrieb des Systems im realen Umfeld
-    \item \textbf{Professor:} Person, die für die Bewertung des Systems verantwortlich ist und Rahmenbedingungen vorgibt.
-
-\end{itemize}
+\begin{table}[h!]
+	\caption{Interessen der Stakeholder}
+	\label{tab:stakeholder}
+	\centering
+	\begin{tabular}{|p{2.5cm}|p{10cm}|}
+		\hline
+		\textbf{Stakeholder} & \textbf{Interesse}  \\
+		\hline
+		Nutzer   
+		& \parbox{10cm}{\begin{itemize}
+			\item vollständige Funktionalität
+			\item Benutzerfreundlichkeit
+			\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
+			\item Reaktionszeit: Die Robotersteuerung reagiert innerhalb eines definierten Zeitfensters
+			\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
+		\end{itemize}}
+		\\
+		\hline
+		Betreiber 
+		&\parbox{10cm}{\begin{itemize}
+			\item Portabilität: Das System kann auf verschiedenen Plattformen betrieben werden.
+			\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
+			\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
+		\end{itemize}}
+		\\
+		\hline
+		Entwicklerteam 
+		&\parbox{10cm}{ \begin{itemize}
+			\item Professor bzw. der \glqq Kunde\grqq{} ist Mittwoch Nachmittag verfügbar. Bis dahin sind alle offenen Fragen zusammenzustellen.
+			\item Wartbarkeit
+			\item Portabilität: Das System kann auf verschiedenen Plattformen betrieben werden (z.B Testen)
+			\item Austauschbarkeit: Softwaremodule können ohne großen Aufwand ersetzt werden
+		\end{itemize}}
+		\\
+		\hline
+		Professor & \parbox{10cm}{\begin{itemize}
+			\item Zugang zu allen Arbeitsmitteln zwecks Bewertung und Kontrolle
+			\item Das Endprodukt besitzt alle geforderten Funktionalitäten
+		\end{itemize}}
+		\\
+		\hline
+	\end{tabular}
+\end{table}
 
 
 

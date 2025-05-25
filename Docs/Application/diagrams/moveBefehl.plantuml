@@ -1,0 +1,15 @@
+@startuml
+actor User
+
+participant "IO/UI" as UI
+participant "LCD-Controller" as Ctrl
+participant "ActuatorProxy" as Proxy
+participant "ActuatorService" as ActCtrl
+participant "ICaDSRoboticArm" as RobArm
+
+User -> UI: Dreh dich Links
+UI -> Ctrl: onButtonRotateLeft()
+Ctrl -> Proxy: move("roboter1",ROTATE,CW)
+Proxy -> ActCtrl: move(cw)
+ActCtrl -> RobArm: setUpDownPercentage(INCREMENT)
+@enduml
