@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package messaging;
+
+// Define the nested content structure
+message Content {
+  int32 field1 = 1;
+  string field2 = 2;
+  bool field3 = 3;
+}
+
+// Define a simple message
+message Message {
+  string sender = 1;
+  repeated Content contents = 2;
+  int64 timestamp = 3;
+}
+
+
+
+
+// Define an RPC service
+service Messenger {
+  // RPC to send a message and get an acknowledgment
+  rpc SendMessage (Message);
+}
