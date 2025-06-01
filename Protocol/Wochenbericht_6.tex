@@ -11,7 +11,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Titel}
+\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Diagramme Middleware und Watchdog}
 \author{Name Protokollführer}
 \date{\today}
 
@@ -48,7 +48,7 @@ Manh-An David Dao & Sequenzdiagramm Watchdog & 80\% & 2h & in review\\
 \hline
 Jannik Schön &  & 0\% & 0h & <ok, in review, in progress> \\
 \hline
-Marc Siekmann &  & 0\% & 0h & <ok, in review, in progress> \\
+Marc Siekmann & Blockdiagramm u. Sequenzdiagramme Middleware  & 60\% & 2h & in progress \\
 \hline
 Philipp Patt &  & 0\% & 0h & <ok, in review, in progress>\\
 
@@ -70,7 +70,8 @@ Diese Darstellung dient als Grundlage für weiterführende Gespräche und die te
 Ziel ist es, ein gemeinsames Verständnis für das Verhalten der beteiligten Applikationen im Falle eines Verbindungsverlusts einer Node zu schaffen.
 \\Das Diagramm bildet initiale Überlegungen zur Überwachung und Reaktion bei Kommunikationsausfällen ab und soll im weiteren Verlauf verfeinert und um spezifische Anwendungsfälle ergänzt werden.
 
-\subsection{Aufgabe}
+\subsection{Blockdiagramm u. Sequenzdiagramm Middleware}
+Auf Basis der Lösungsstrategie wurden die einzelnen Komponente und die Aufgaben der Komponenten bestimmt. Es wurde bestimmt, dass der einfache Forward-Proxy von jedem Client umgesetzt wird. Dafür muss es eine zentrale Namensauflösung geben. Weiterhin wurden Sequenzdiagramme eines einfachen RPC Aufrufs mit Namensauflösung entwickelt, sowie der Verlauf der Registrierung. Ziel ist, keine Applikationsfunktionalitäten einzubinden, um so die Transparenzziele einhalten zu können.
 
 
 \subsection{Aufgabe}
@@ -81,5 +82,6 @@ Ziel ist es, ein gemeinsames Verständnis für das Verhalten der beteiligten App
 
 
 \section{Nächste Schritte}
+- Entwickeln eines MVP der Applikation, um Middleware MVP, insbesondere RPC und Marshalling, ohne Namensauflösung zu testen zwischen 2 Nodes.
 
 \end{document}
