@@ -1,26 +1,35 @@
 @startuml
 title Sequenzdiagramm – "Watchdog"
 
-actor Applikation
+actor "Applikationteilnehmer" as Applikation
+participant Middleware
 participant Watchdog
-participant "Name Service" as NS
+'participant "Name Service" as NS
 
 == Registrierung ==
-'Applikation -> NS : Register(name)
+Applikation -> Middleware : Register(name)
+'Middleware -> NS : Register(name)
+Middleware -> Watchdog : Register(name)
+Watchdog -> Applikation : newNode(name)
+'== Initiale Knotenliste ==
+'Middleware -> Watchdog : SendNodeList()
+'Watchdog -> Middleware : getNodeList()
+'Watchdog -> Watchdog : Vergleiche mit interner Liste
+'Watchdog -> Applikation : SendAvailableNodesList()
 
-== Initiale Knotenliste ==
-'Watchdog -> NS : GetNodeList()
-Watchdog -> Watchdog : Vergleiche mit interner Teilnehmerliste
-Watchdog -> Applikation : SendAvailableNodesList()
-
-== Überwachungsphase ==
+== Überwachungsphase Applikation ==
 loop Regelmäßige Heartbeats
+' Heartbeat empfangen
     Applikation -> Watchdog : Heartbeat(name) von allen Nodes
 
 == Ausfallerkennung ==
-    alt Heartbeat nicht empfangen (Timeout)
-       Watchdog -> Applikation : NotifyFailure(name)
-       Applikation -> Applikation : Teilnehmer deaktivieren
-    end
+alt Heartbeat nicht empfangen (Timeout)
+    Watchdog -> Applikation : NotifyFailure(name) an das Modell
+    Applikation -> Applikation : Teilnehmer deaktivieren
+end
+end
+== Überwachungsphase Watchdog ==
+loop Regelmäßige Heartbeats
+  Watchdog -> Applikation: Heartbeat(Watchdog) an allen Nodes
 end
 @enduml
