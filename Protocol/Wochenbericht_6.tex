@@ -11,8 +11,8 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Diagramme Middleware und Watchdog}
-\author{Name Protokollführer}
+\title{Wochenbericht VI - Praktikum "Verteilte Systeme": Middleware und Watchdog}
+\author{Phillip Patt}
 \date{\today}
 
 \lstset{
@@ -46,42 +46,57 @@
 \midrule
 Manh-An David Dao & Sequenzdiagramm Watchdog & 80\% & 2h & in review\\
 \hline
-Jannik Schön &  & 0\% & 0h & <ok, in review, in progress> \\
+Jannik Schön & Einarbeitung Namensauflösung und Service Discovery & 60\% & 2h & in progress \\
 \hline
 Marc Siekmann & Blockdiagramm u. Sequenzdiagramme Middleware  & 60\% & 2h & in progress \\
 \hline
-Philipp Patt &  & 0\% & 0h & <ok, in review, in progress>\\
+Philipp Patt & Proof of concept des middleware interfaces & 20\% & 2h & in progress \\
 
 \bottomrule
 \end{tabular}
 
 \section{Zusammenfassung der Woche}
 
-In dieser Woche fand die Bearbeitung 
+Diese Woche fand die Ausarbeitung der Bausteinsicht und die erste Implementierung der Laufzeitsicht der Middeware statt. Ausserdem wurde sich mit Watchdog, Namensauflösung und Proof of concept bzgl RPC auseinandergesetzt.
 \\\\
-Wesentliche pull-requests/commits sind in den Fußnoten hinterlegt. \\ \\
-
+Wesentliche pull-requests/commits sind in den Fußnoten hinterlegt. \\
 
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
 
 \subsection{Sequenzdiagramm Watchdog}
-Eine erste Version des Sequenzdiagramms für den Watchdog wurde entworfen. 
-Diese Darstellung dient als Grundlage für weiterführende Gespräche und die technische Abstimmung. 
-Ziel ist es, ein gemeinsames Verständnis für das Verhalten der beteiligten Applikationen im Falle eines Verbindungsverlusts einer Node zu schaffen.
-\\Das Diagramm bildet initiale Überlegungen zur Überwachung und Reaktion bei Kommunikationsausfällen ab und soll im weiteren Verlauf verfeinert und um spezifische Anwendungsfälle ergänzt werden.
+Eine erste Version des Sequenzdiagramms für den Watchdog wurde entworfen\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/23}}. Dabei wurde festgestellt, dass der Watchdog außerhalb des überwachten Systems sein muss \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 115}. Hierbei ist uns aufgefallen, dass geklärt werden muss, an welchen Stellen der Watchdog in dem Gesamtsystem implementiert werden muss.
+Diese Darstellung dient als Grundlage für weiterführende Gespräche und die technische Abstimmung \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/blob/7121a6166e17963d88de5c1cf893c6a51036d4e5/Docs/diagrams/Watchdog_01062025.png}}. 
+Ziel ist es, ein gemeinsames Verständnis für das Verhalten der beteiligten Applikationen im Falle eines Verbindungsverlusts einer Node zu schaffen.\\
+Das Diagramm bildet initiale Überlegungen zur Überwachung und Reaktion bei Kommunikationsausfällen ab und soll im weiteren Verlauf verfeinert und um spezifische Anwendungsfälle ergänzt werden.
+
 
 \subsection{Blockdiagramm u. Sequenzdiagramm Middleware}
-Auf Basis der Lösungsstrategie wurden die einzelnen Komponente und die Aufgaben der Komponenten bestimmt. Es wurde bestimmt, dass der einfache Forward-Proxy von jedem Client umgesetzt wird. Dafür muss es eine zentrale Namensauflösung geben. Weiterhin wurden Sequenzdiagramme eines einfachen RPC Aufrufs mit Namensauflösung entwickelt, sowie der Verlauf der Registrierung. Ziel ist, keine Applikationsfunktionalitäten einzubinden, um so die Transparenzziele einhalten zu können.
+Auf Basis der Lösungsstrategie wurden die einzelnen Komponente und die Aufgaben der Komponenten für die Middleware bestimmt \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/21}}. Es wurde bestimmt, dass der einfache Forward-Proxy von jedem Client umgesetzt wird.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 95}
+Dafür wird es zunächst eine zentrale Namensauflösung geben.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 213} Weiterhin wurden Sequenzdiagramme eines einfachen RPC Aufrufs mit Namensauflösung entwickelt\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/22}}, sowie der Verlauf der Registrierung. 
+Hierfür werden die Funktionen in der Lösungsstrategie angepasst. Das Marshalling wird überarbeitet und insofern vereinfacht, dass es zukünftig keinen dedizierten Datentypen mehr gibt, sondern eine Listenstruktur übergeben wird, 
+sodass nur primitive Datentypen gemarshallt werden.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.124 f.} 
 
 
-\subsection{Aufgabe}
+\subsection{Einarbeitung Namensauflösung und Service-Discovery}
+Es wurde sich mit den verschiedenen Möglichkeiten der Namensauflösung beschäftigt. \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S. 212 ff.} \footnote{Maarten van Steen, Andrew S. Tanenbaum: \textit{Distributed Systems}, January 2025, p. 347 ff.}
+Ziel dabei war es ein grundlegendes Verständnis der Namensauflösung, aber auch der Service Discovery zu erhalten.
+Dabei sollen in der nächsten Woche die verschiedenen Möglichkeiten diskutiert werden, um die passende Lösung für unsere Aufgabenstellung zu finden.
+\\
+In der Bearbeitung wurde der Bereich der Namensauflösung und von der Service Discovery vermischt, in der nächsten Woche soll hier wieder genauer getrennt werden.
 
-
-\subsection{Aufgabe}
-
-
+\subsection{Proof of concept des middleware interfaces}
+Um besser einschätzen zu können inwiefern die Schnittstelle zwischen Applikation und Middleware Sinnvoll gewählt ist wollten wir einen RPC mit den entsprechenden interfaces exemplarisch programmieren.
+Für diese haben wir uns, um weniger selbst implementiren zu müssen, überlegt grpc zu verwenden und in Wrapper zu hüllen die unseren Interfaces entpsrechen.
+Auch wollten wir im Rahmen dessen mehere Sprachen (java \& c)\footnote{\url{https://grpc.io/docs/languages/}} verwenden, um sprachspezifische Problem frühstmöglich festzustellen. 
+\\
+Das Verwenden von grpc hat sich in C als aufwändiger als gedacht herausgestellt da bspw. das Serialisieren von protobuf Formaten selbst implementiert werden müsste\footnote{\url{https://stackoverflow.com/questions/50953651/how-to-write-a-grpc-client-server-in-c}}. 
+Inwiefern der Umfang des Proof of Concept Sinnvoll gewählt ist
+oder ob er zu umfangreich ist sollte in den kommenden Wochen nochmal hinterfragt werden. Die Umsetzung in mehreren Sprachen erhöht bspw. den Aufwand massiv und bringt geringen Mehrwert.
 
 \section{Nächste Schritte}
-- Entwickeln eines MVP der Applikation, um Middleware MVP, insbesondere RPC und Marshalling, ohne Namensauflösung zu testen zwischen 2 Nodes.
+- Konsens über den Watchdog \\
+- Entwickeln eines MVP der Applikation, um Middleware MVP, insbesondere RPC und Marshalling, ohne Namensauflösung zu testen zwischen 2 Nodes.\\
+- Diskussion Service Discovery und Namensauflösung
+
 
 \end{document}
