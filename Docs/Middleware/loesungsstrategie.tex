@@ -94,7 +94,13 @@
 	\\
 	\hline
 	Namensauflösung
-	& Flacher Namensraum. Der Name besteht aus eindeutiger Node-ID, und IPv4 Socketinformationen. 
+	& In unserer Architektur setzen wir auf eine zentrale Service Discovery mit einer serverseitigen Struktur, bei der alle Dienste zentral über eine Service Registry verwaltet werden. Diese Architektur ermöglicht es, Services dynamisch zu registrieren, auffindbar zu machen und bei Bedarf wieder aus der Registry zu entfernen – ohne dass der aufrufende Client die genaue Netzwerkadresse des Dienstes kennen muss.
+	Die einzelnen Services registrieren sich selbstständig bei der zentralen Registry, sobald sie gestartet werden. Gleichzeitig implementieren sie eine Deregistrierung beim kontrollierten Herunterfahren, um veraltete Einträge zu vermeiden. Zusätzlich wird ein Watchdog-Mechanismus eingesetzt, der regelmäßig den Gesundheitszustand der registrierten Services überprüft. Sollte ein Dienst unerwartet ausfallen (z. B. durch einen Absturz oder einen Netzwerkfehler), erkennt der Watchdog dies automatisch und entfernt den Dienst aus der Registry. Dadurch bleibt die Registry konsistent und Clients laufen nicht ins Leere.
+	Die Namensgebung der Services folgt einem flachen Namensraum, was bedeutet, dass es keine hierarchische Struktur gibt. Stattdessen bestehen die Servicenamen aus einem kompakten Format nach dem Schema RxAx, wobei:
+	•	R für Roboter
+	•	A für Actuator
+	steht. Diese einheitliche Benennung unterstützt die klare Trennung und Identifikation verschiedener Serviceklassen und erleichtert sowohl die automatische Verarbeitung als auch die manuelle Wartung der Registry.
+	Durch diese Architektur stellen wir sicher, dass Services zuverlässig auffindbar, leicht wartbar und gegen Ausfälle abgesichert sind – mit minimalem Aufwand auf Client-Seite und hoher Transparenz im System.
 	\\
 	\hline
 	Fehlerbehandlung
