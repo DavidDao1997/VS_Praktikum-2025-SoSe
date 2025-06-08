@@ -1,0 +1,20 @@
+[build]
+target = "thumbv7em-none-eabihf"
+rustflags = ["-C", "link-arg=-Tlink.x"]
+
+[unstable]
+build-std = ["core", "alloc"]
+
+[profile.dev]
+codegen-units = 1
+debug = true
+overflow-checks = true
+opt-level = "z"
+
+[profile.release]
+opt-level = "z"
+lto = true
+debug = true
+
+[target.thumbv7em-none-eabihf]
+runner = "probe-rs run"
