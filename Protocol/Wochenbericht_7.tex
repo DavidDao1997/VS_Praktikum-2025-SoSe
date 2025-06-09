@@ -6,12 +6,13 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{listings}
+\usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Titel}
+\title{Wochenbericht VII - Praktikum "Verteilte Systeme": Implementierung MVP der Applikation und gRPC}
 \author{Name Protokollführer}
 \date{\today}
 
@@ -44,51 +45,64 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao &  & 0\% & 0h & <ok, in review, in progress> \\
+Manh-An David Dao & Implementierung MVP Controller& 60\% & 3h & in progress \\
 \hline
-Jannik Schön &  & 0\% & 0h & <ok, in review, in progress> \\
+Jannik Schön & Implementierung MVP Model & 25\% & 2.5h & in progress \\
 \hline
-Marc Siekmann &  & 0\% & 0h & <ok, in review, in progress> \\
+Marc Siekmann & Implementierung MVP View & 50\% & 4h & in progress \\
 \hline
-Philipp Patt &  & 0\% & 0h & <ok, in review, in progress>\\
+Philipp Patt & Implementierung gRPC & 0\% & 0h & <ok, in review, in progress>\\
 
 \bottomrule
 \end{tabular}
 
 \section{Zusammenfassung der Woche}
 
-In dieser Woche fand die Bearbeitung 
+In dieser Woche fand die Bearbeitung eines MVP der Applikation statt. Damit ist sichergestellt, dass wir eine funktioniernde Applikation haben. 
+Damit können wir Probleme, die die spätere Verteilung mit sich bringt, schneller erkennen und verstehen. Zudem wurde auch ein erster gRPC Ansatz implementiert, um eine Verteilung auf verschiedenen Programmiersprachen zu lernen.
 \\\\
 Wesentliche pull-requests/commits sind in den Fußnoten hinterlegt. \\ \\
 
 
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
 
-\subsection{Aufgabe}
+\subsection{Implementierung MVP Controller} 
+Diese Woche wurde ein kleines Beispiel für den Controller erstellt, der Informationen an die View weiterleitet \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/tree/hello-grpc-rust/Examples/grpcController?ref_type=heads}}. 
+Dabei wurde eine Funktionssignatur definiert(Siehe Abschnitt Implementierung MVP View), damit der Controller die View aktualisieren kann. 
+Das Beispiel wurde zudem mit gRPC erweitert, um zu veranschaulichen, wie RPC abläuft, da in unterschiedlichen Sprachen geschrieben wird.
+Ziel ist es, ein frühzeitiges Grundverständnis zu schaffen und potenzielle Probleme so schnell wie möglich zu identifizieren.
 
 
-\subsection{Aufgabe}
+
+\subsection{Implementierung MVP Model}
+In dieser Woche wurde ein Wrapper für den Roboter implementiert. 
+Ziel des Wrappers ist es, die Steuerung der einzelnen Aktoren zu kapseln und zu vereinfachen. 
+Dabei wurde sichergestellt, dass jede gestartete Instanz des Wrappers genau einen Aktor steuert. 
+So können mehrere Instanzen gleichzeitig betrieben werden, wobei jede Instanz unabhängig jeweils für einen spezifischen Aktor (z.B. Links/Rechts, Hoch/Runter, Vor/Zurück, Greifer) zuständig ist.
 
 
-\subsection{Aufgabe}
+
+\subsection{Implementierung MVP View}
+Es wurde festgelegt, dass das View aus dem Komponenten "UI" (Anzeige) und "IO" (Steuerung) besteht. Sie haben keine gemeinsamen Schnittstellen.
+Damit konnte eine MVP UI für eine Browser Implementierung fertig implementiert werden (\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/tree/mvp/view/Application/View?ref_type=heads}}). Die UI implementiert eine Schnittstelle, die von dem Controller aufgerufen wird:
 
 
-\subsection{Aufgabe}
+\begin{lstlisting}
+updateView(AvailableRobots: String[], SelectedRobotIdx: int, Error: bool, Confirmation: bool);
+\end{lstlisting}
+Eine Prototyp IO auf dem ITS-Board wurde zunächst in RUST geschrieben (\footnote{\url{ https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/tree/hello-grpc-rust/Examples/hello-grpc-rust_itsBoard}}), um die Herausforderungen zu finden, die eine Embedded-Implementierung mit sich bringt. Die RUST Implementierung wurde abgebrochen, als festgestellt wurde, 
+dass die RPC-Kommunikation mit RUST nicht hergestellt werden konnte. Deshalb wird die IO Komponente auf dem ITS-Board zukünftig mit der Sprache C umgesetzt. Zudem wurde festgelegt, dass die UI zunächst nicht auf dem ITS-Board umgesetzt wird, 
+da es hier nur einen Prozess gibt, sodass UI und IO sychronisiert werden müssten. 
 
 
-\section{Bezug zum Skript}
+\subsection{Implementierung gRPC}
+- embedded rpc nur mit minimal proto
 
-\begin{itemize}
-	\item \textbf{Skript Abschnitt}
-		\begin{itemize}
-			\item 
-		\end{itemize}
-	\item \textbf{Skript Abschnitt}
-		\begin{itemize}
-			\item 
-		\end{itemize}
-\end{itemize}
+
+
  
 \section{Nächste Schritte}
+\textbf{Dringend:} Überarbeitung der arc42 Dokumentation auf den aktuellen Stand (insbesondere Schnittstellen, Komponenten der Applikation, Implementierung der Applikation (bisher nur als Skizzen (\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/tree/notes/Notes}}) vorhanden))
+\\\\\textbf{Fertigstellung des MVP:} (Festlegen Architektur-Patterns innerhalb der Applikation)
 
 \end{document}
