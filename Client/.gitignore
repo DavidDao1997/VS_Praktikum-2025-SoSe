@@ -1,0 +1,17 @@
+# Ignore everything
+*
+
+!.gitignore
+!README.md
+
+# Allow directories
+!ITS-Board/
+!ITS-Board/Inc/
+!ITS-Board/Src/
+
+# Allow specific files
+!ITS-Board/Inc/rest_lvl0.h
+!ITS-Board/Inc/udp_server.h
+#!ITS-Board/Src/main.c
+!ITS-Board/Src/rest_lvl0.c
+!ITS-Board/Src/udp_server.c
