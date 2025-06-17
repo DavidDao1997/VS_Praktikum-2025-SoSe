@@ -1,94 +1,196 @@
 \chapter{Lösungsstrategie}
 
-fooi
+\subsection{Controller}
+Der Controller fungiert als Observer. 
+Er empfängt Benachrichtigungen vom Modell, wenn Änderungen oder Aktualisierungen erfolgen, und leitet diese Informationen an die View weiter, um sie zu aktualisieren. 
+Der Controller speichert keine Zustände und sendet keine Eingaben von der View an das Modell.
 
-\subsection*{Grafische Darstellung}
+%Eventuell später parametertype hinzufügen und genauer definieren.
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+        \hline
+       void update() & Modell hat Änderungen & Benachrichtigt den Controller, der die View aktualisiert. \\
+        \hline
+        void updateView(AvailableRobots: String[], SelectedRobotIdx: int, Error: bool, Confirmation: bool) & Gültige Modell-Daten vorhanden & Aktualisiert die View mit den neuesten Daten und Fehlerstatus. \\
+        \hline
+        void init() & Controller mit Modell verbunden & Registriert den Controller als Observer. \\
+        \hline
+    \end{tabular}
+    \caption{Funktionen des Controllers}
+    \label{tab:Controller}
+\end{table}
 
-Ein Qualitätsziel ist die Intuitive Benutzbarkeit der Software. Dies ausschließlich mit Lichtern und Knöpfen darzustellen scheint unrealistisch. Folgende Funktionalität wird unsere Grafische darstellung benötigen:
+\clearpage
+\subsection{Modell}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+        \hline
+        ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung; Aktuator A1–A4 & Initialisiert Roboterarm mit Host, Port und Aktuator. \\
+        \hline
+        increase() & Aktuator gesetzt; Verbindung besteht & Erhöht den Steuerwert um 1 und ruft applyValue() auf. \\
+        \hline
+        decrease() & Aktuator gesetzt; Verbindung besteht & Verringert den Steuerwert um 1 und ruft applyValue() auf. \\
+        \hline
+        applyValue() & Aktuator gültig; Wert im Bereich [0,100] & Wendet den aktuellen Wert auf den Aktuator an. \\
+        \hline
+        addListener() & Listener gültig & Fügt einen Listener hinzu, der bei Zustandsänderung benachrichtigt wird. \\
+        \hline
+        removeListener() & Listener gültig & Entfernt den angegebenen Listener. \\
+        \hline
+        setSelectedRobot(String) & Roboter in availableRobots & Setzt den aktuellen Roboter und benachrichtigt alle Listener. \\
+        \hline
+        getSelectedRobot() & Objekt initialisiert & Gibt den aktuell ausgewählten Roboter zurück. \\
+        \hline
+        getActuator() & Objekt initialisiert & Gibt den aktuellen Aktuator zurück. \\
+        \hline
+        getValue() & Objekt initialisiert & Gibt den aktuellen Steuerwert zurück. \\
+        \hline
+        addAvailableRobot(String) & Gültige Roboter-ID & Fügt einen Roboter zur Liste verfügbarer Roboter hinzu. \\
+        \hline
+        removeAvailableRobot(String) & Gültige Roboter-ID & Entfernt einen Roboter aus der Liste verfügbarer Roboter. \\
+        \hline
+        getAvailableRobots() & Keine & Gibt alle bekannten Roboter zurück. \\
+        \hline
+    \end{tabular}
+    \caption{Funktionen des Modells}
+    \label{tab:Methodenbeschreibung}
+\end{table}
 
-**Schnittstelle (Interface):**
-\begin{Java}[caption={Utility Types}]
-class Position {
-	int rotation;   // Values in range [0-100]
-	int joint1;     // Values in range [0-100]
-	int joint2;     // Values in range [0-100]
-	int claw;       // Values in range [0-100]
-}
+\clearpage
+\subsection{View}
+Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine Softwareschnittstelle an, die IO keine.
 
-class RobotArm {
-	String name;    // Identifier to display to user
-	int id;         // Actual identifier 
-}
+\subsubsection{IO Funktionen}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+        \hline
+        void readInputs() & Eingabe durch den Benutzer erfolgt & Überprüft die Benutzereingaben und löst entsprechende Aktionen aus. \\
+        \hline
+        int initIO() & IO-Hardware verfügbar & Initialisiert und überprüft die IO-Hardwareschnittstellen und gibt einen Fehlercode bei Problemen zurück. \\
+        \hline
+    \end{tabular}
+    \caption{IO Funktionen}
+    \label{tab:IOFunktionen}
+\end{table}
 
-enum Movement {
-	// Rotation
-	ROTATE_CLOCKWISE,
-	ROTATE_COUNTERCLOCKWISE,
-	// First Joint
-	JOINT1_OPEN,
-	JOINT1_CLOSE,
-	// Second Joint
-	JOINT2_OPEN,
-	JOINT2_CLOSE,
-	//Claw
-	CLAW_OPEN,
-	CLAW_CLOSE
-}
-\end{Java}
+\subsubsection{UI Funktionen}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+        \hline
+        void updateView(AvailableRobots: String[],SelectedRobotIdx: int, Error: bool, Confirmation: bool) & Gültige Modell-Daten vorhanden & View-Schnittstelle. Aktualisiert die UI mit den neuesten Roboter-Daten und Statusinformationen (Fehler, Bestätigung). \\ 
+        \hline
+    \end{tabular}
+    \caption{UI Funktionen}
+    \label{tab:UIFunktionen}
+\end{table}
 
-\newpage
 
-\begin{Java}[caption={Interfaces}]
-// UI is about user feedback
-interface UI {
-	void displaySelectOptions(RobotArm[] robotArms);
-    // Update display of selected Robot
-	void displaySelected(RobotArm robotArm);
-    // Update display of arm status
-	void displayArmStatus(Position position);
-    // Update display of error message
-	void displayError(String message);
-}
 
-// IO is about user input
-interface IO {
-    // Callback signature: void callback(Movement movement) 
-	void onMoveCommand(Function<Movement> callback);
-	// Callback signature: void callback(RobotArm robotArm) 
-    void onSelect(Function<RobotArm> callback);
-}
 
-// ActuatorController is about Interacting with the Robot
-// Wrapper for ICaDSRoboticArm
-interface ActuatorController {
-    /**
-     * Moves the actuator incrementally.
-     * 
-     * This method performs an incremental movement for the actuator 
-     * and returns the duration of the movement in milliseconds. If the 
-     * robot cannot be reached, a {@link CouldNotReachRobotException}  
-     * is thrown to indicate the failure.
-     * @return the duration of the movement in milliseconds
-     * @throws CouldNotReachRobotException if the robot cannot be 
-     *      reached or moved (e.g., due to connectivity issues or 
-     *      other reasons)
-     */
-    int move(Movement movement) throws CouldNotReachRobotException;
-    /**
-     * Gets the current position of the actuators.
-     * 
-     * If the robot cannot be reached, a 
-     * {@link CouldNotReachRobotException} is thrown to indicate the 
-     * failure.
-     * @return the current position of the actuators.
-     * @throws CouldNotReachRobotException if the robot cannot be 
-     *      reached or moved (e.g., due to connectivity issues or 
-     *      other reasons)
-     */
-    Position getPosition() throws CouldNotReachRobotException;
-}
-\end{Java}
 
+
+
+
+%\subsection*{Grafische Darstellung}
+
+%Ein Qualitätsziel ist die Intuitive Benutzbarkeit der Software. Dies ausschließlich mit Lichtern und Knöpfen darzustellen scheint unrealistisch. Folgende Funktionalität wird unsere Grafische darstellung benötigen:
+%
+%**Schnittstelle (Interface):**
+%
+%\begin{Java}[caption={Utility Types}]
+%class Position {
+%	int rotation;   // Values in range [0-100]
+%	int joint1;     // Values in range [0-100]
+%	int joint2;     // Values in range [0-100]
+%	int claw;       // Values in range [0-100]
+%}
+%
+%class RobotArm {
+%	String name;    // Identifier to display to user
+%	int id;         // Actual identifier 
+%}
+%
+%enum Movement {
+%	// Rotation
+%	ROTATE_CLOCKWISE,
+%	ROTATE_COUNTERCLOCKWISE,
+%	// First Joint
+%	JOINT1_OPEN,
+%	JOINT1_CLOSE,
+%	// Second Joint
+%	JOINT2_OPEN,
+%	JOINT2_CLOSE,
+%	//Claw
+%	CLAW_OPEN,
+%	CLAW_CLOSE
+%}
+%%\end{Java}
+%%
+%\newpage
+%
+%\begin{Java}[caption={Interfaces}]
+%// UI is about user feedback
+%interface UI {
+%	void displaySelectOptions(RobotArm[] robotArms);
+%    // Update display of selected Robot
+%	void displaySelected(RobotArm robotArm);
+%    // Update display of arm status
+%	void displayArmStatus(Position position);
+%    // Update display of error message
+%	void displayError(String message);
+%}
+%
+%// IO is about user input
+%interface IO {
+%    // Callback signature: void callback(Movement movement) 
+%	void onMoveCommand(Function<Movement> callback);
+%	// Callback signature: void callback(RobotArm robotArm) 
+%    void onSelect(Function<RobotArm> callback);
+%}
+%
+%// ActuatorController is about Interacting with the Robot
+%// Wrapper for ICaDSRoboticArm
+%interface ActuatorController {
+%    /**
+%     * Moves the actuator incrementally.
+%     * 
+%     * This method performs an incremental movement for the actuator 
+%    * and returns the duration of the movement in milliseconds. If the 
+%     * robot cannot be reached, a {@link CouldNotReachRobotException}  
+%     * is thrown to indicate the failure.
+%     * @return the duration of the movement in milliseconds
+%     * @throws CouldNotReachRobotException if the robot cannot be 
+%     *      reached or moved (e.g., due to connectivity issues or 
+%     *      other reasons)
+%     */
+%    int move(Movement movement) throws CouldNotReachRobotException;
+%    /**
+%     * Gets the current position of the actuators.
+%     * 
+%     * If the robot cannot be reached, a 
+%     * {@link CouldNotReachRobotException} is thrown to indicate the 
+%     * failure.
+%    * @return the current position of the actuators.
+%     * @throws CouldNotReachRobotException if the robot cannot be 
+%     *      reached or moved (e.g., due to connectivity issues or 
+%     *      other reasons)
+%     */
+%    Position getPosition() throws CouldNotReachRobotException;
+%}
+%\end{Java}
+%--------------------------------Comments--------------------------------
 % // ICaDSRoboticArm is the given interface
 % interface ICaDSRoboticArm {
 % 	// Is in Range: [0 - 100] Forth := 100 Back := 0
