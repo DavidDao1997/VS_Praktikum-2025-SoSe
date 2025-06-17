@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{Wochenbericht 08 - Praktikum "Verteilte Systeme": Überarbeitung Applikation}
+\author{David Dao}
+\date{\today}
+
+\lstset{
+    language=Java,                
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,                  
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,                   
+    numbersep=5pt,                 
+    backgroundcolor=\color{white}, 
+    showspaces=false,               
+    showstringspaces=false,         
+    showtabs=false,                
+    frame=single,                 
+    tabsize=4,                      
+    captionpos=b,                   
+    breaklines=true,                
+    breakatwhitespace=true,        
+    title=\lstname,               
+    escapeinside={\%*}{*)},         
+    morekeywords={Integer,IntWritable, Iterable, Text},
+}
+
+\begin{document}
+\maketitle
+\section{Mitglieder des Projektes }
+
+\begin{tabular}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{2cm} >{\centering\arraybackslash}p{2cm} >{\raggedright\arraybackslash}p{3cm}}
+\toprule
+\textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
+\midrule
+Manh-An David Dao & Lösungsstrategie Applikation überarbeitet & 80\% & 2h & in review\\
+\hline
+Jannik Schön & Lösungsstrategie Applikation überarbeitet & 80\% & 2h & in review \\
+\hline
+Marc Siekmann & Implementierung MVP View & 70\% & 4h & in progress \\
+\hline
+Philipp Patt & - & 0\% & 0h & \\
+
+\bottomrule
+\end{tabular}
+
+
+
+\section{Zusammenfassung der Woche}
+
+In dieser Woche fand die Bearbeitung der Lösungsstrategie der Applikation statt, außerdem wurde das MVP der View implementiert.
+\\\\
+Wesentliche pull-requests/commits sind in den Fußnoten hinterlegt. \\ \\
+
+
+\section{Bearbeitete Themen und Schlüssel Erkenntnisse}
+
+\subsection{Lösungsstrategie Applikation überarbeitet}
+Die Lösungsstrategie der Applikation wurde überarbeitet. Dabei wurden allen bekannten Methoden von dem Model, View und dem Controller beschrieben\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/blob/arc42/application/chapter_4/update/Docs/loesungsstrategie.tex}} . 
+Das Model speichert dabei den ausgewählten Roboter und die anderen verfügbaren Roboter im System. Das Model besitzt dabei Methoden, um Beobachter hinzuzufügen, zu entfernen und zu benachrichtigen. \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.91} 
+Dafür wird ein Observable implementiert, um ressourcen zu schonen, da Polling vermieden wird.  
+Das Model implementiert außerdem die Geschäftslogik, so dass keine ungültigen Roboter ausgewählt werden können. Außerdem wird der Controller benachrichtigt, falls es zu einer Zustandsänderung kommt.
+\\\\
+Der Controller folgt dem Observer-Pattern, bei dem er Änderungen vom Modell empfängt und die View aktualisiert. 
+Das Observer-Pattern sorgt für eine lose Kopplung zwischen den Komponenten und fördert die Modularität.
+\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.98 f.}.
+Er ist stateless, der Nachrichtenfluss ist unidirektional, und der Controller verarbeitet keine Eingaben von der View.
+Stateless fördert Austauschbarkeit und Fehlerreduzierung durch reduzierte Komplexität\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.179}.
+Unidirektional sorgt für Klarheit und Einfachheit, indem es die Verantwortlichkeiten klar trennt.
+
+\subsection{Implementierung MVP View}
+Das View besteht aus den IO und UI. Auf dem ITS-Board wird das IO implementiert. Der Block IO besteht aus einer Funktion, die die Eingabe überwacht. Die Eingabe löst einen Funktionsaufruf aus.
+Daher wurde auf dem ITS-Board ein UDP-Server implementiert. Es wurde sich für das Transportprotokoll UDP entschieden, da uns in der Middleware schnelle Übertragungen (footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.173 Abs. 2}), in Bezug auf die
+geforderte Safety und Echtzeitfähigkeit, als wichtig eingestuft wird. Für die Delayoptimierung muss HTTP/3 oder QUIC auf Umsetzung geprüft werden(footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.173 Abs. 3}).
+Um die Funktionalität zu testen wird zunächst jeder Funktionsaufruf mit einem, an das Richard Maturity Model Level 0 angelegte, RPC-Stil übertragen ((footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.181 ff.})). Dies muss noch ausgearbeitet werden, da hierbei noch kein HTTP Standard verwendet wird, sondern nur der Aufruf als String.
+Das das ITS-Board ein Embedded System ist, wurde hauptsächlich die Zeit in das Versenden und Empfangen von UDP-Paketen getestet und erfolgreich durchgeführt.
+\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/tree/mvp/view/Client/ITS-Board}} 
+
+ 
+\section{Nächste Schritte}
+- vollständige Implementierung der View auf dem ITS-Board
+- Einrichtung eines REDIS Namensserver, der eine hierarchische Namensauflösung beinhaltet ()
+
+\end{document}
