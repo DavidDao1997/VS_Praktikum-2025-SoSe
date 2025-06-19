@@ -8,7 +8,8 @@ import (
 
 	"time"
 
-	pb "hello-grpc-go/gen/move"
+	"hello-grpc-go/gen/moveAdapter"
+	"hello-grpc-go/gen/stateService"
 
 	"github.com/gdamore/tcell/v2"
 	"google.golang.org/grpc"
@@ -20,8 +21,9 @@ const (
 )
 
 var (
-	addr = flag.String("addr", "localhost:50051", "the address to connect to")
-	name = flag.String("name", defaultName, "Name to greet")
+	addr1 = flag.String("addr1", "localhost:50051", "The first port to connect to")
+	addr2 = flag.String("addr2", "localhost:50052", "The second port to connect to")
+	name  = flag.String("name", defaultName, "Name to greet")
 )
 
 // func main() {
@@ -44,27 +46,50 @@ var (
 // 	log.Printf("Greeting: %s", r.GetMessage())
 // }
 
-var arrowPositions = map[string]struct {
-	X, Y int
-	Sym  rune
-}{
-	"up":    {10, 2, '↑'},
-	"down":  {10, 6, '↓'},
-	"left":  {6, 4, '←'},
-	"right": {14, 4, '→'},
+type KeyButton struct {
+	X, Y  int
+	Sym   rune
+	Label string
+}
+
+var keyPositions = map[string]KeyButton{
+	// Movement
+	"up":    {30, 2, 'w', "Up"},
+	"left":  {24, 4, 'a', "Left"},
+	"down":  {30, 4, 's', "Down"},
+	"right": {36, 4, 'd', "Right"},
+
+	// Forward / Backward
+	"backward": {24, 6, 'q', "Backward"},
+	"forward":  {36, 6, 'e', "Forward"},
+
+	// Open / Close
+	"open":  {24, 8, '1', "Open"},
+	"close": {36, 8, '2', "Close"},
+
+	// Select up/down
+	"select_up":   {24, 10, '3', "Select↑"},
+	"select_down": {36, 10, '4', "Select↓"},
 }
 
 func drawArrows(s tcell.Screen, highlight string) {
 	s.Clear()
 
-	for name, pos := range arrowPositions {
+	for name, btn := range keyPositions {
 		style := tcell.StyleDefault.Foreground(tcell.ColorWhite).Background(tcell.ColorBlack)
 		if name == highlight {
 			style = tcell.StyleDefault.Foreground(tcell.ColorBlack).Background(tcell.ColorGreen)
 		}
-		s.SetContent(pos.X, pos.Y, pos.Sym, nil, style)
-	}
+		// Draw the key character in a box-like format
+		s.SetContent(btn.X, btn.Y, '[', nil, style)
+		s.SetContent(btn.X+1, btn.Y, btn.Sym, nil, style)
+		s.SetContent(btn.X+2, btn.Y, ']', nil, style)
 
+		labelX := btn.X + 2 - len(btn.Label)/2
+		for i, r := range btn.Label {
+			s.SetContent(labelX+i, btn.Y+1, r, nil, style)
+		}
+	}
 	s.Show()
 }
 
@@ -98,12 +123,19 @@ func main() {
 	defer ticker.Stop()
 
 	// setup grpc
-	conn, err := grpc.NewClient(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(*addr1, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewMoverClient(conn)
+	c := moveAdapter.NewMoveAdapterClient(conn)
+
+	conn2, err := grpc.NewClient(*addr2, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn2.Close()
+	c2 := stateService.NewStateServiceClient(conn2)
 
 	for {
 		select {
@@ -116,18 +148,41 @@ func main() {
 				switch tev.Key() {
 				case tcell.KeyEscape, tcell.KeyCtrlC:
 					return
-				case tcell.KeyUp:
-					highlight = "up"
-					_, err = c.Move(ctx, &pb.MoveRequest{Direction: pb.Direction_JOINT1_CW})
-				case tcell.KeyDown:
-					highlight = "down"
-					_, err = c.Move(ctx, &pb.MoveRequest{Direction: pb.Direction_JOINT1_CCW})
-				case tcell.KeyLeft:
-					highlight = "left"
-					_, err = c.Move(ctx, &pb.MoveRequest{Direction: pb.Direction_ROTATION_CW})
-				case tcell.KeyRight:
-					highlight = "right"
-					_, err = c.Move(ctx, &pb.MoveRequest{Direction: pb.Direction_ROTATION_CCW})
+				case tcell.KeyRune:
+					switch tev.Rune() {
+					case 'w':
+						highlight = "up"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_UP})
+					case 's':
+						highlight = "down"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_DOWN})
+					case 'a':
+						highlight = "left"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_LEFT})
+					case 'd':
+						highlight = "right"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_RIGHT})
+					case 'q':
+						highlight = "backward"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_BACKWARD})
+					case 'e':
+						highlight = "forward"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_FORWARD})
+					case '1':
+						highlight = "open"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_OPEN})
+					case '2':
+						highlight = "close"
+						_, err = c.Move(ctx, &moveAdapter.MoveRequest{Direction: moveAdapter.RobotDirection_CLOSE})
+					case '3':
+						highlight = "select_up"
+						_, err = c2.Select(ctx, &stateService.SelectRequest{SelectDirection: stateService.SelectDirection_UP})
+					case '4':
+						highlight = "select_down"
+						_, err = c2.Select(ctx, &stateService.SelectRequest{SelectDirection: stateService.SelectDirection_DOWN})
+					default:
+						continue
+					}
 				default:
 					continue
 				}

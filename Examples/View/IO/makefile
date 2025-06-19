@@ -26,6 +26,7 @@ generate:
 		echo "Error: protoc-gen-go or protoc-gen-go-grpc not found in PATH."; \
 		exit 1; \
 	fi
+	mkdir -p gen
 	$(PROTOC) -I $(PROTO_DIR) $(GO_OUT) $(GO_GRPC_OUT) $(PROTO_FILES)
 
 # Clean generated files
