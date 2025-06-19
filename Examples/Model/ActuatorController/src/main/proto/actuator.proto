@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "vs.grpc";
+option java_outer_classname = "ActuatorProto";
+
+service ActuatorControlService {
+  rpc move(ActuatorRequest) returns (MoveResponse);
+}
+
+message ActuatorRequest {
+  Direction direction = 1;
+}
+message MoveResponse {
+  bool ok          = 1;  // true if the command made it to the actuator
+  string error_msg = 2;  // optional human-readable info
+}
+enum Direction {
+  INCREASE = 0;
+  DECREASE = 1;
+}
