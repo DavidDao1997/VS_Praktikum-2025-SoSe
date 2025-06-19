@@ -1,6 +1,11 @@
+package com.start;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 public class StateService {
 	
 	public enum SelectDirection{
@@ -129,14 +134,14 @@ public class StateService {
 	// TODO REMOVE LATER BECAUSE THIS IS THE CONTROLLER IMPLEMENTAION
 	public void update(String[] robots, int selected, boolean error, boolean confirm) {
 		// updateView(robots, selected, error, confirm);
-		System.out.println("--------------------------------------------------");
-		for (int i = 0; i < robots.length; i++) {
-			System.out.printf("Robot %d: %s\n", i,robots[i]);
-		}
-		System.out.println(selected);
-		System.out.println(error);
-		System.out.println(confirm);
-		System.out.println("--------------------------------------------------");
+		// System.out.println("--------------------------------------------------");
+		// for (int i = 0; i < robots.length; i++) {
+		// 	System.out.printf("Robot %d: %s\n", i,robots[i]);
+		// }
+		// System.out.println(selected);
+		// System.out.println(error);
+		// System.out.println(confirm);
+		// System.out.println("--------------------------------------------------");
 	}
 		
 
