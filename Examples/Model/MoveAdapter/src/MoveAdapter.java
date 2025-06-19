@@ -31,6 +31,7 @@ public class MoveAdapter {
 			case CLOSE:		
 				// TODO NOT FOR RPC
 				acm.move(ActuatorControllerMock.ActuatorDirection.DECREASE);
+				setError(false, true);
 				break;
 			case RIGHT:
 			case UP:
@@ -38,6 +39,7 @@ public class MoveAdapter {
 			case OPEN:
 				// TODO NOT FOR RPC
 				acm.move(ActuatorControllerMock.ActuatorDirection.INCREASE);
+				setError(false, true);
 				break;
 
 			default:
@@ -45,7 +47,7 @@ public class MoveAdapter {
 				setError(true, false);
 				break;
 		}
-		setError(false, true);
+		
 		
 	}
 
@@ -61,11 +63,7 @@ public class MoveAdapter {
 	void setError (boolean err, boolean conf) {
 		System.out.printf("Error: %s Confirm: %s\n", err, conf);
 	}
-	
-	
-	
-	
-	
+		
 	//-----------------------------------------------------------
 	
 }
