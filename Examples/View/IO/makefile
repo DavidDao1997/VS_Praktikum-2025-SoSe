@@ -35,6 +35,8 @@ clean:
 
 build:
 	GOOS=darwin GOARCH=arm64 go build -o bin/client-mac-arm64 client/main.go;
+	chmod +x bin/client-mac-arm64;
 	GOOS=darwin GOARCH=arm64 go build -o bin/server-mac-arm64 server/main.go;
-	GOOS=darwin GOARCH=amd64 go build -o bin/client-win-amd64 client/main.go;
-	GOOS=darwin GOARCH=amd64 go build -o bin/server-win-amd64 server/main.go;
+	chmod +x bin/server-mac-arm64;
+	GOOS=windows GOARCH=amd64 go build -o bin/client-win-amd64.exe client/main.go;
+	GOOS=windows GOARCH=amd64 go build -o bin/server-win-amd64.exe server/main.go;
