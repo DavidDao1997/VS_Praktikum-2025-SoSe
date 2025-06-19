@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package movement;
+
+option go_package = "/move";
+
+// Define the direction enum
+enum Direction {
+    DIRECTION_UNSPECIFIED = 0;
+    ROTATION_CW = 1;
+    ROTATION_CCW = 2;
+    JOINT1_CW = 3;
+    JOINT1_CCW = 4;
+    JOINT2_CW = 5;
+    JOINT2_CCW = 6;
+    CLAW_CW = 7;
+    CLAW_CCW = 8;
+}
+
+// Request message with direction
+message MoveRequest {
+    Direction direction = 1;
+}
+
+// Response message
+message MoveResponse {
+    string result = 1;
+}
+
+// gRPC service
+service Mover {
+    rpc Move(MoveRequest) returns (MoveResponse);
+}
