@@ -41,3 +41,7 @@ build:
 	chmod +x bin/server-mac-arm64;
 	GOOS=windows GOARCH=amd64 go build -o bin/client-win-amd64.exe client/main.go;
 	GOOS=windows GOARCH=amd64 go build -o bin/server-win-amd64.exe server/main.go;
+	GOOS=linux GOARCH=amd64 go build -o bin/client-linux-amd64 client/main.go;
+	chmod +x bin/client-linux-amd64;
+	GOOS=linux GOARCH=amd64 go build -o bin/server-linux-amd64 server/main.go;
+	chmod +x bin/server-linux-amd64;

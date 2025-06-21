@@ -1,0 +1,20 @@
+syntax = "proto3";
+package controller;
+
+option java_package = "com.start";
+option java_outer_classname = "ControllerProto";
+
+message RobotStatusRequest {
+  repeated string robots = 1;
+  string command = 2;
+  bool is_error = 3;
+  bool is_confirmed = 4;
+}
+
+message RobotStatusAck {
+  bool received = 1;
+}
+
+service RobotController {
+  rpc UpdateRobotStatus (RobotStatusRequest) returns (RobotStatusAck);
+}

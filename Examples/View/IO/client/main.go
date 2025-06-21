@@ -94,6 +94,8 @@ func drawArrows(s tcell.Screen, highlight string) {
 }
 
 func main() {
+	flag.Parse()
+	
 	s, err := tcell.NewScreen()
 	if err != nil {
 		panic(err)
@@ -187,7 +189,11 @@ func main() {
 					continue
 				}
 				if err != nil {
-					log.Fatalf("Fatal Error: %s", err)
+					printError(s, err.Error())
+					// Wait for user to press a key before exiting
+					s.PollEvent()
+					return
+
 				}
 
 				highlightUntil = time.Now().Add(150 * time.Millisecond)
@@ -206,4 +212,18 @@ func main() {
 			}
 		}
 	}
+}
+
+func printError(s tcell.Screen, msg string) {
+	s.Clear() // Clear the screen
+
+	// Set style (red text on default background)
+	style := tcell.StyleDefault.Foreground(tcell.ColorRed).Background(tcell.ColorReset)
+
+	// Print the error message at (0,0)
+	for i, r := range msg {
+		s.SetContent(i, 0, r, nil, style)
+	}
+
+	s.Show() // Refresh the screen to display changes
 }
