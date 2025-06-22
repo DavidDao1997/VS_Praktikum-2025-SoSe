@@ -12,4 +12,5 @@ void rest_send_function(const ip_addr_t *dest_ip, uint16_t dest_port, const char
         snprintf(buffer, sizeof(buffer), "%s", function);
     }
     udp_send_ping(dest_ip, dest_port, buffer);
+    
 }
