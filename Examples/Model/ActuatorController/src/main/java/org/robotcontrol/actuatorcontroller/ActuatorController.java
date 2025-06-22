@@ -1,6 +1,6 @@
 package org.robotcontrol.actuatorcontroller;
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
-import org.cads.vs.roboticArm.hal.real.CaDSRoboticArmReal;
+import org.robotcontrol.actuatorcontroller.roboticarm.RoboticArmMock;
 
 public class ActuatorController {
     public static void main(String[] args) {
@@ -20,8 +20,9 @@ public class ActuatorController {
     private ICaDSRoboticArm real;
 
     public ActuatorController(String host, int port, String actuator) {
-        this.real = new CaDSRoboticArmReal(host, port);
+        // this.real = new CaDSRoboticArmReal(host, port);
         // this.real = new CaDSRoboticArmSimulation();
+        this.real = new RoboticArmMock();
         this.actuator = actuator;
     }
 
