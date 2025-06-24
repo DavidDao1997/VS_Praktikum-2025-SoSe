@@ -1,0 +1,58 @@
+@startuml
+' ------------------------------------------------------------
+' Model Component – White-Box Diagramm (refined)
+' ------------------------------------------------------------
+
+' Visuelle Einstellungen (zugleich passend zum View-Diagramm)
+skinparam componentStyle uml2
+skinparam roundCorner 15
+skinparam shadowing true
+skinparam lollipopSize 18
+skinparam ArrowColor #0A84FF
+skinparam ArrowThickness 2
+
+' *** Größeres White-Box-Padding, damit nichts den Titel überlappt ***
+skinparam ComponentPadding 60
+
+' Stereotyp‐Stile
+skinparam component<<BlackBox>> {
+  BackgroundColor #333333
+  BorderColor White
+  FontColor White
+}
+
+skinparam component<<WhiteBox>> {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+left to right direction
+
+' ------------------------------------------------------------
+' Model – White-Box
+component "Model\n\n" as M <<WhiteBox>> {
+    ' Eingehende Schnittstellen (Sockets)
+    portin "move()"   as IMove
+    portin "select()" as ISelect
+
+    ' Innere Komponenten (vertikal angeordnet)
+    component MoveAdapter
+    component StateService
+    component ActuatorController
+
+    ' Unsichtbare Layout-Hilfspfeile, damit die Reihenfolge fixiert bleibt
+    MoveAdapter -[hidden]down-> StateService
+    StateService -[hidden]down-> ActuatorController
+}
+
+' ------------------------------------------------------------
+' Schnittstellen-Verdrahtung
+IMove   --> MoveAdapter      
+ISelect --> StateService     
+
+MoveAdapter       --> ActuatorController : move()
+MoveAdapter       --> StateService       : getSelected(), setError()
+ActuatorController --> StateService       : heartbeat(), register()
+
+@enduml

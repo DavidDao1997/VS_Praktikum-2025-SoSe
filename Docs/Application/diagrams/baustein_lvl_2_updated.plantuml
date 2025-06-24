@@ -1,0 +1,21 @@
+@startuml
+' Moderner UML-2-Style für Komponenten
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor #333333
+  BorderColor White
+  FontColor White
+}
+
+' Baue die MVC-Komponenten auf
+left to right direction
+component "Model"       as M <<blackbox>>
+component "Controller"  as C <<blackbox>>
+component "View"        as V <<blackbox>>
+
+' Methodenaufrufe zwischen den Komponenten
+M -(0- C : void update()
+C-(0-V : updateView()
+V-(0-M : move()
+V-(0-M : select()
+@enduml
