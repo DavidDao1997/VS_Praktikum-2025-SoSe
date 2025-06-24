@@ -1,4 +1,4 @@
-#include "rpc_client.h" // enthält rpc_invoke(...)
+#include "rpc_client.h" 
 #include <stdint.h>
 #include <string.h>
 #include "lwip/udp.h"
@@ -29,23 +29,17 @@ const char* sdir_to_str(SDirection dir) {
     }
 }
 
-// Zielserver festlegen (vllt global)
-static ip_addr_t rpc_server_ip;
-static uint16_t rpc_server_port = 0xAFFE;
 
-void app_stub_set_server_ip(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
-    IP4_ADDR(&rpc_server_ip, a, b, c, d);
-}
 
 // Exponierte Funktionen zur App
 void move(Direction dir) {
-    rpc_invoke("move", "d", dir_to_str(dir), &rpc_server_ip, rpc_server_port);
+    rpc_invoke("move", "d", dir_to_str(dir));
 }
 
 void register_node(const char* name) {
-    rpc_invoke("register", "n", name, &rpc_server_ip, rpc_server_port);
+    rpc_invoke("register", "n", name);
 }
 
 void select(SDirection dir) {
-    rpc_invoke("select", "d", sdir_to_str(dir), &rpc_server_ip, rpc_server_port);
+    rpc_invoke("select", "d", sdir_to_str(dir));
 }
