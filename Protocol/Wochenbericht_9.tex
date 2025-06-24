@@ -12,7 +12,7 @@
 \usepackage{array}
 
 \title{Wochenbericht 09 - Praktikum "Verteilte Systeme": Abschluss MVP}
-\author{David Dao}
+\author{Philipp Patt}
 \date{\today}
 
 \lstset{
@@ -55,12 +55,6 @@ Philipp Patt & MVP & 80\% & 6h & in progress \\
 \bottomrule
 \end{tabular}
 
-
-
-\section{Zusammenfassung der Woche}
-
-
-
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
 
 \subsection{ITS-Board View und RPC Übertragung}
@@ -69,7 +63,7 @@ Auf dem ITS-Board wird das IO des Views implementiert. Dazu wurde ein Vorlage er
 Für RPC wurde sich folgendes überlegt und muss noch in das arc42 Dokument der Middleware übertragen werden:\\
 - Ein UDP Paket hat eine Standardgröße von 512 Byte \footnote{Van Steen, Tanenbaum(2025): Distributed Systems; 4th Edition, S. 366}. Daher wird pro Paket genau ein RPC-Aufruf durchgeführt.
 Das hat den Vorteil, dass jedes einzelnes Paket als vollständige Information gilt. Das Ziel Safety ist somit mit einem Zeitstempel oder eindeutigen Token realisierbar \footnote{\url{https://www.rfc-editor.org/rfc/rfc5531\#section-5}}. Sollte der Zeitstempel bzw. Token ungültig sein, wird das Paket verworfen und dem User im UI mitgeteilt, dass ein Fehler vorliegt (Fehlertransparenz).\\
-- Wir verwenden zunächst ein JSON Format, um die Daten vor dem Versenden zu Marshallen \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.124 Abschnitt Copy In, Copy out}. Sollte das Paket zu groß sein, wird zusätzlich mit Base64 kodiert.\\
+- Wir verwenden zunächst ein JSON Format, um die Daten vor dem Versenden zu Marshallen \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.124 Abschnitt Copy In, Copy out}. \\
 - Die Namensauflösung wird mit einem zentralen Server durchgeführt. Dies wird ebenfalls mit RPC durchgeführt. Der Client wartet dann auf eine Antwort. Diese ist ebenfalls ein RPC-Aufruf vom Nameserver mittels einer Callback-Funktion, mit der IP-Adresse:Port als Antwort. Um häufige Anfragen zu vermeiden, muss gecached werden. 
 
 \subsection{MVP Abschluss}
@@ -80,9 +74,9 @@ Die Kommunikation zwischen MVP-IO und Core wurde getestet. Die Anbindung der Act
 
 
 \section{Nächste Schritte}
-- Gelerntes aus MVP in entsprechendes arc42 Dokument überführen\\
+- Gelerntes aus MVP in entsprechendes arc42 Dokument überführen (\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}},\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/28}})\\
 - Einrichtung eines REDIS Namensserver mit RPC, der eine hierarchische Namensauflösung beinhaltet \\
-- MVP Komponenten miteinander verbinden und funktional testen \\
+- grpc durch eigenes rpc ersetzen \\
 
 
 \end{document}
