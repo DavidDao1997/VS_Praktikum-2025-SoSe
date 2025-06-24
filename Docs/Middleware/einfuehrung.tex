@@ -9,10 +9,11 @@ Zu den Kernfunktionen, die eine Middleware typischerweise bereitstellt und die h
 
 \begin{itemize}
 	\item Zuständig für die Verteilungstransparenz	
-	\item Bereitstellung der Kommunikation mittels standardisierter Protokolle. Dies wird (asynchrone) Kommunikation-Pattern umfassen, wie z.B. Remote Procedure Calls (RPC) oder Nachrichtenübertragung (Message-Oriented Middleware, MOM).
+	\item Bereitstellung der Kommunikation mittels standardisierter Protokolle. Dies wird (asynchrone) Kommunikation-Pattern umfassen, wie z.B. Remote Procedure Calls (RPC).
 	\item Unterstützung zur Konvertierung von Datenformaten zwischen Systemen.
 	\item Bereitstellung von Protokollen zur Namensauflösung (Service Discovery), um Ressourcen einfach zu identifizieren und zu referenzieren.
 	\item Mechanismen der Skalierbarkeit, wie z.B. Replikation
+	\item Security Mechanismus, dass nicht akzeptierte Nachrichten verworfen werden. Feedback muss stattfinden.
 \end{itemize}
 
 Die Middleware dient als Vermittler, der zwischen der Applikation und der Runtime/OS Schicht Daten- und Informationsaustausch ermöglicht.
@@ -43,13 +44,13 @@ Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines
 	
 	Zuverlässigkeit & 
 	Fehler dürfen den Betrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
-	& Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h)
+	& Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h).Definiert aufgetretene Fehler werden kommuniziert.
 	\\
 	\hline
 	Skalierbarkeit & 
 	Zusätzliche Nodes oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
 	% Die Middleware muss Mechanismen (z.B. Replikation, Caching) bieten, um mit zunehmender Anzahl von Teilnehmern oder der Datenmenge zurechtzukommen.
-	& Es können beliebig viele Nodes hinzugefügt und entfernt werden (0 - 253)
+	& Es können bis zu 253 Nodes hinzugefügt und entfernt werden
 	\\
 	\hline
 	%Leistung & 
@@ -88,9 +89,10 @@ Zusammengefasst soll die Middleware Steuerung der einzelnen Nodes (Servos) eines
 	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
 	& Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
 	\hline
-	Zugriffstransparenz & Die Umsetzung Kommunikation zwischen den Nodes ist für den Benutzer nicht erkennbar & Die Applikation kommuniziert über Namen\\
+	Zugriffstransparenz & Die Umsetzung Kommunikation zwischen den Nodes ist für den Benutzer nicht erkennbar & Die Applikation kommuniziert über Namen. Die eigentliche Kommunikation bleibt versteckt.\\
 	\hline
 	Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist nach außen unsichtbar  & Das Interface nach außen ist eineiheitlich und verschleiert die Implementierung\\
+	
 	
 	
 	

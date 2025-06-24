@@ -10,9 +10,13 @@
 	\hline
 	\textbf{Akteur / Rolle} & \textbf{Beschreibung} \\
 	\hline
-	Applikation & Externes Steuerungssystem, das über eine Schnittstelle Befehle an die Middleware sendet, z.\,B. zur Auswahl oder Bewegung eines Roboterservos. \\
+	Server (Applikation) & Ein einzelner Teilnehmer. Meldet sich eigenständig bei der Middleware mit seinen Diensten an. \\
 	\hline
-	Node (z.\,B. Servo(s)) & Ein einzelner Aktor. Meldet sich eigenständig bei der Middleware an. \\
+	Client (Applikation) & Ein einzelner Teilnehmer. Kann die Dienste der anderen Teilnehmern aufrufen. \\
+	\hline
+	Health-Observable (Applikation) & Teilnehmer, der Lebenszeichen schickt \\
+	\hline
+	Health-Observer (Applikation) & Teilnehmer, der bei ausbleibenden Lebenszeichen benachrichtigt wird  \\
 	\hline
 \end{tabular}
 
@@ -22,46 +26,120 @@
 	\hline
 	\textbf{ID} & \textbf{Name} & \textbf{Beschreibung} \\
 	\hline
-	U1 & Node registrieren & Eine Node registriert sich bei der Middleware mit einem eindeutigen Identifier. Dem Identifier wird dessen IPv4 Adresse zugeordnet. \\
+	U1 & Informationen weiterleiten & Die Middleware leitet RPCs von der Applikation an die entsprechenden Nodes weiter. \\
 	\hline
-	U2 & Informationen weiterleiten & Die Middleware leitet RPCs von der Applikation an die entsprechenden Nodes weiter. \\
+	U2 & Node registrieren & Ein Server registriert seine Dienste bei der Middleware mit einem eindeutigen Identifier. Dem Identifier wird dessen Socket-Adresse zugeordnet. \\
 	\hline
-	U3 & Verfügbarkeit prüfen & Es wird geprüft, welche Nodes erreichbar sind. \\
+	U3 & Namen auflösen & Die Middleware ermittelt, welche Dienste bei welcher Socket-Adresse zu finden sind.\\
 	\hline
-	U4 & Verfügbarkeit propagieren & Die Middleware muss der Applikation mitteilen welche Nodes fehlerfrei erreichbar sind.\\
+	U4 & Schnittstellen zur Applikation & Dienste werden der Applikation als Client-Stubs bereitgestellt. Die Applikation ruft die entfernten Dienste wie lokale Dienste auf. Interner Aufrufe werden vor der Applikation versteckt. \\
 	\hline
-	U5 & Marshalling & Die Middleware muss dafür sorgen, dass die Datenstrukturen und Parameter der Funktionsaufrufe korrekt in ein übertragbares Format (Marshalling) umgewandelt und am Zielsystem wieder entpackt (Unmarshalling) werden. \\
+	U5 & Marshalling & Die Middleware definiert eine IDL. Diese muss dafür sorgen, dass die Datenstrukturen und Parameter der Funktionsaufrufe via RPC korrekt in ein übertragbares Format (Marshalling) umgewandelt und am Zielsystem wieder entpackt (Unmarshalling) werden. \\
 	\hline
+	U6 & Transport & Die RPCs werden via UDP über die Netzwerkschicht transportiert. Das ist durch die Echtzeitanforderung bedingt. Kommunikation findet asynchron statt. Synchronizität wird durch mehrere asynchrone RPCs umgesetzt.\\
+	\hline 
+	U7 & Sicherheit & Versendete RPCs haben (zwischen Client und Server) Echtzeitanforderungen. \\
+	\hline
+	U8 & Fehlertransparenz & Fehlerhafte Übertragung eines RPCs müssen ggf. der Applikation mitgeteilt werden. \\
+	\hline
+	U9 & Watchdog & Für überwachte Health-Observables werden Watchdogs angelegt. Diese überwachen die Verfügbarkeit der Teilnehmer, wenn Lebenszeichen ausbleiben werden Health-Observer benachrichtigt.  \\
+	\hline
+	
 \end{tabular}
 
 \subsection{Fachliche Randbedingungen}
 
 \begin{itemize}
 	\item Es können bis zu 253 Nodes mit unterschiedlichen IPv4-Adressen gleichzeitig betrieben werden.
-	\item Jede Node ghat einen eindeutigen Namen.
-	\item Die Middleware muss mit dem Ausfall oder der Nichterreichbarkeit einzelner Nodes robust umgehen können.
-	\item Die Systemsicherheit hat höchste Priorität: Weiterleitungen an ungültige Nodes müssen verhindert werden. Es muss aber ein Fehlermeldung an den Administrator erfolgen. 
+	\item Es wird IPv4 gefordert, daher muss das TCP/IP-Modell für den Transport genutzt werden. 
+	%\item Jeder Server hat einen eindeutigen Namen. Dieser gruppiert Dienste.
+	%\item Die Middleware muss mit dem Ausfall oder der Nichterreichbarkeit einzelner Nodes robust umgehen können.
+	%\item Die Systemsicherheit hat höchste Priorität: Weiterleitungen ungültiger RPCs an die Applikation müssen verhindert werden. Es muss eine Fehlermeldung an die Applikation erfolgen. 
 \end{itemize}
 
 \section{Technischer Kontext}
 
-Die Middleware positioniert sich technisch als Vermittlungsschicht zwischen der Anwendungsebene und den darunterliegenden Betriebssystem- und Kommunikationsdiensten. Sie ist über mehrere Maschinen verteilt, die über ein lokales /24 Netzwerk miteinander verbunden sind.
-Die Middleware nutzt Netzwerkprotokolle, insbesondere TCP und UDP, sowie Betriebssystemfunktionen, um eine zuverlässige Kommunikation zu gewährleisten. Gleichzeitig bietet sie den Anwendungen eine abstrahierte, einheitliche Schnittstelle, die die Heterogenität der zugrundeliegenden Systeme verbirgt.
-Die Middleware stellt darüber hinaus eigene Kommunikationsprotokolle bereit, die speziell auf die Anforderungen der verteilten Steuerung und Koordination der Roboterarme zugeschnitten sind. Hierzu zählen Mechanismen zur Nachrichtenvermittlung, Statusüberwachung und Fehlerbehandlung, um eine hohe Zuverlässigkeit und Fehlertoleranz sicherzustellen.
-Zusammenfassend erfüllt die Middleware folgende technische Aufgaben:
-\begin{itemize}
-	\item Verbergen der Heterogenität der zugrundeliegenden Hardware und Betriebssysteme
-	\item Bereitstellung einer einheitlichen Kommunikationsschnittstelle für die darüber liegenden Anwendungen
-	\item Sicherstellung der zuverlässigen und performanten Kommunikation zwischen verteilten Komponenten
-	\item Implementierung von Mechanismen zur Erkennung und Behandlung von Fehlerzuständen im Netzwerk und auf den Nodes
-	\item Implementierung einer Namensauflösung
-\end{itemize}
+Die Middleware positioniert sich technisch als Vermittlungsschicht zwischen der Anwendungsebene und den darunterliegenden Betriebssystem- und Kommunikationsdiensten. Sie ist über mehrere Teilnehmer verteilt, die über ein lokales /24 Netzwerk miteinander verbunden sind.
+Die Middleware nutzt Netzwerkprotokolle, insbesondere UDP, sowie Betriebssystemfunktionen, um eine zuverlässige Kommunikation zu gewährleisten. Gleichzeitig bietet sie den Anwendungen eine abstrahierte, einheitliche Schnittstelle, die die Heterogenität der zugrundeliegenden Systeme verbirgt.
 
 \subsection{Technische Anforderungen an die Middleware}
 
 Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische Funktionen bereitstellen:
 
 \begin{itemize}
+	\item \textbf{Informationen weiterleiten U1:}\\
+	\begin{itemize}
+		\item Schnittstelle zur Applikation zum entfernten Funktionsaufruf und dessen Parameter.
+		\item Einheitliche Übersetzung und Serialisierung. 
+		\item Namensauflösung, ggf. aus Cache.
+		\item Transport der Nachricht über Netzwerk. 
+		\item Deserialisierung der empfangenen Aufrufs.
+		\item Schnittstelle zur Applikation, um lokalen Funktionsaufruf auszuführen.  
+	\end{itemize}
+	
+	\item \textbf{Node registrieren U2:}\\
+	\begin{itemize}
+		\item Schnittstelle zur Applikation mit Gruppen Name, Funktionsname und seiner Socket-Adresse via RPC
+		\item Einheitliche Übersetzung und Serialisierung 
+		\item Senden an bekannten Namensserver
+		\item Deserialisierung der empfangenen Aufrufs am Namensserver
+		\item Eintragen der Informationen
+	\end{itemize}
+	
+	\item \textbf{Namen auflösen U3:}\\
+	\begin{itemize}
+		\item Senden der Anfrage mit Parameter (Gruppen Name, Funktionsname, eigener Gruppenname, Funktionsname der Antwort) via RPC
+		\item (Einheitliche Übersetzung und Serialisierung)
+		\item Senden an bekannten Namensserver
+		\item Warten auf Antwort
+		\item (Deserialisierung des empfangenen Aufrufs am Namensserver)
+		\item Auflösen der Socket-Adresse zum Funktions- und Gruppennamen
+		\item Aufruf der Antwortsfunktion anhand Gruppenname mit Parameter(Socketadresse)
+		\item (Einheitliche Übersetzung und Serialisierung )
+		\item Senden an vorherigen Sender
+		\item (Deserialisierung der empfangenen Aufrufs)
+		\item Einsetzen der Socketadresse im Cache
+	\end{itemize}
+	
+	\item \textbf{Schnittstellen zur Applikation U4:}\\
+	\begin{itemize}
+		\item Schnittstelle zum Registrieren
+		\item Schnittstelle zum Versenden von Funktionen
+		\item Schnittstelle zum Empfangen von Funktionen
+	\end{itemize}
+	
+	\item \textbf{Marshalling U5:}\\
+	\begin{itemize}
+		\item Aufruf des Marshallings mit Parameter (Funktionsname, Liste von Typisierten Parameter)
+		\item Übersetzen der Funktion und der Parameter mittels IDL in ein serialisierbaren Typen (char-array)
+		\item (Versenden der Nachricht)
+		\item Aufruf des Unmarshallings mit Parameter (serialisierter Funktionsaufruf)
+		\item Übersetzen serialisierter Funktionsaufruf in eine Funktion und der Parameter (Funktionsname, Liste von Typisierten Parameter) mittels IDL
+	\end{itemize}
+	
+	\item \textbf{Transport U6:}\\
+	\begin{itemize}
+		\item Aufruf der Netzwerkschicht mit Parameter (Serialisierter Funktionsaufruf)
+		\item Empfang des serialisierten Funktionsaufrufs
+		\item Deserialisierung der Serialisierung
+	\end{itemize}
+	
+	\item \textbf{Sicherheit U7:}\\
+	\begin{itemize}
+		\item 
+	\end{itemize}
+	
+	\item \textbf{Fehlertransparenz U8:}\\
+	\begin{itemize}
+		\item 
+	\end{itemize}
+	
+	\item \textbf{Watchdog U9:}\\
+	\begin{itemize}
+		\item 
+	\end{itemize}
+	
+
 	\item \textbf{Registrierungsmanagement (U1):}  
 	Verwaltung und Verarbeitung von Node-Registrierungen mit eindeutigen Identifikatoren und Funktionsbeschreibungen.  
 	Persistenz der Node-Informationen und Zuordnung zu Node-Gruppen.
@@ -69,21 +147,19 @@ Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische 
 	\item \textbf{Weiterleitung (U2):}  
 	Marshalling der zu Versendeten Informationen, korrektes Verteilen an den entsprechenden Empfänger mit abschließenden Unmarshalling.
 	
-	\item \textbf{Verfügbarkeit prüfen (U3):}  
-	Regelmäßiges Abfragen der einzelnen Nodes auf Verfügbarkeit durch einen Heartbeat-Mechanismus \textcolor{red}{TODO: Prüfen, ob Watchdog tatsächlich Teil der Middleware, da applikation im besten Falle erreichbar sein sollte. Watchdog sollte besser ausserhalb von Middleware und Applikation liegen. Aber auch mit und über Middleware kommunizieren}. Fehlerhafte Nodes oder NIchterreichbarkeit sollte der Applikation mitgeteilt werden.
+	\item \textbf{Namen auflösen (U3):}  
+	Einrichtung einer hierarischen Namensauflösung, die in der Lage ist, die Adresse eines Dienstes (einer Funktion) auf einem Node zu verschicken. Diese werden in Gruppen aus Nodes sortiert.
 	
-	\item \textbf{Verfügbarkeit propagieren (U4):}  
-	Die interne Namensliste aller verfügbaren Nodes sollte der Applikation auf anfrage mitgeteilt werden.\textcolor{red}{TODO: Entweder Schnittstelle anbieten und Applikation entscheiden lassen, oder Schnittstelle der Applikation nutzen!?}
-	\item \textbf{Marshalling (U5):}  
-	Einführung einer IDL Definition
+	\item \textbf{Marshalling (U4):}  
+	Einführung einer IDL Definition, sodass die Sprachne C und JAVA unterstützt werden.
 	
 	\item \textbf{Fehlertoleranz und Sicherheit:}  
-	Mechanismen zur Behandlung von Kommunikationsausfällen, erneutes Senden von Nachrichten und Schutz vor Fehlfunktionen einzelner Nodes. Mitteilung an die Applikation zur Fehlertransparenz.
+	Mechanismen zur Behandlung von Kommunikationsausfällen oder Unterbrechungen. Mitteilung an die Applikation zur Fehlertransparenz.
 \end{itemize}
 
 \section{Externe Schnittstellen}
 
-Die Middleware besitzt zwei Schnittstellen:
+Die Middleware besitzt folgende Schnittstellen:
 
 \begin{itemize}
 	\item \textbf{Schnittstelle zur Anwendungsebene:}  

@@ -6,7 +6,7 @@ Dieses Kapitel beschreibt die Rahmenbedingungen, unter denen die Middleware entw
 
 \section{Technische Randbedingungen}
 
-TODO Zeichnung
+%TODO Zeichnung
 
 \begin{itemize}
     \item \textbf{Betriebsumgebung:}  Die Middleware muss auf einer heterogenen Umgebung aus verschiedenen Hardware-Plattformen und Betriebssystemen laufen können. Im spezifischen Projektkontext umfasst dies mindestens ein ITS-Board (STM32F4) und mehrere Raspberry Pis.
@@ -14,9 +14,11 @@ TODO Zeichnung
     \item \textbf{Netzwerk:}  
     \begin{itemize}
         \item Die Kommunikation findet innerhalb eines begrenzten Netzwerks statt, im Projektkontext ein /24 Netzwerk. Die Middleware baut auf den grundlegenden Kommunikationsdiensten des Betriebssystems und Netzwerks auf.
+        \item Es wird mit IPv4 kommuniziert.
     \end{itemize}
     \item \textbf{Hardware:} Die Middleware muss auf der Hardware laufen, die für das Steuerungssystem verwendet wird: ITS-Board und Raspberry Pis. 
     \item \textbf{Anbindung:} Die Middleware muss in der Lage sein, mit der Anwendungsschicht und den System-/Netzwerkschichten zu interagieren.
+    \item \textbf{Sprachen:} Die Middleware muss in den Sprachen C und JAVA umgesetzt werden.
 
     
 \end{itemize}
