@@ -11,9 +11,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>Core</module>
         <module>Middleware</module>
-        <module>ActuatorController</module>
+        <module>Core</module>
     </modules>
 
 </project>

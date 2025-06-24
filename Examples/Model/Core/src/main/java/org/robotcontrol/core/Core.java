@@ -1,5 +1,6 @@
 package org.robotcontrol.core;
 
+import io.grpc.BindableService;
 import org.robotcontrol.middleware.Server;
 import org.robotcontrol.middleware.services.MoveAdapterServer;
 import org.robotcontrol.middleware.services.StateServiceServer;
@@ -26,9 +27,9 @@ public class Core {
 
 
         Server server = new Server(
-            50052, 
-            new StateServiceServer(stateService), 
-            new MoveAdapterServer(moveAdapter)
+            50052,
+                (BindableService) new StateServiceServer(stateService),
+                (BindableService) new MoveAdapterServer(moveAdapter)
         );
 
         server.Listen();
