@@ -36,8 +36,8 @@ component "View\\n" as V <<WhiteBox>> {
   portin  "move()"   as IMove
   portin  "select()" as ISelect
 
-  component UI
-  component IO
+  component UI <<Blackbox>>
+  component IO <<Blackbox>>
 }
 
 ' Verkabelung

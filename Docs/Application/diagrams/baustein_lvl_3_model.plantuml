@@ -37,9 +37,9 @@ component "Model\n\n" as M <<WhiteBox>> {
     portin "select()" as ISelect
 
     ' Innere Komponenten (vertikal angeordnet)
-    component MoveAdapter
-    component StateService
-    component ActuatorController
+    component MoveAdapter <<Blackbox>>
+    component StateService <<Blackbox>>
+    component ActuatorController <<Blackbox>>
 
     ' Unsichtbare Layout-Hilfspfeile, damit die Reihenfolge fixiert bleibt
     MoveAdapter -[hidden]down-> StateService

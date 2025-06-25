@@ -14,8 +14,6 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
         \hline
         void update(AvailableRobots: String[], SelectedRobotIdx: int, Error: bool, Confirmation: bool) & Modell hat Änderungen & Benachrichtigt den Controller, der die View aktualisiert. \\
         \hline
-        void updateView(AvailableRobots: String[], SelectedRobotIdx: int, Error: bool, Confirmation: bool) & Gültige Modell-Daten vorhanden & Aktualisiert die View mit den neuesten Daten und Fehlerstatus. \\
-        \hline
     \end{tabular}
     \caption{Funktionen des Controllers}
     \label{tab:Controller}
@@ -29,7 +27,7 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
         \hline
         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
         \hline
-        ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung; Aktuator A1–A4 & Initialisiert Roboterarm mit Host, Port und Aktuator. \\
+        ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung & Initialisiert ein Aktuator mit Host, Port. \\
         \hline
         Void move(Enum Robotdirection) & Verbindung zwischen IO und MoveAdapter besteht &  Gibt an in welche Richtung sich der Roboter bewegen soll. \\
         \hline

@@ -8,7 +8,7 @@ Die zur Zerlegung benutzte Dekompistionsstrategie ist funktional.
 
 \begin{figure}[h] % [h] = here
     \centering
-    \includegraphics[width=0.6\textwidth]{diagrams/bausteinsicht_lvl_1_system_name_change.png}
+    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_1_updated.png}
     \caption{Bausteinsicht Level 1}
 \end{figure}
 
@@ -17,7 +17,7 @@ Die zur Zerlegung benutzte Dekompistionsstrategie ist funktional.
 \begin{tabular}{|p{4cm}|p{9cm}|}
 \hline
 \textbf{Komponente} & \textbf{Beschreibung} \\ \hline
-Robotic System & Gesamtsystem, das alle internen Steuer-, Safety- und Kommunikations­funktionen kapselt. Empfängt Bedien-/Steuerbefehle vom Benutzer, verarbeitet sie und liefert Feedback. \\ \hline
+Roboter-System & Gesamtsystem, das alle internen Steuer-, Safety- und Kommunikations­funktionen kapselt. Empfängt Bedien-/Steuerbefehle vom Benutzer, verarbeitet sie und liefert Feedback. \\ \hline
 \end{tabular}
 \caption{Bausteinsicht Level 1}
 \label{tab:lvl1}
@@ -36,19 +36,20 @@ Robotic System & Gesamtsystem, das alle internen Steuer-, Safety- und Kommunikat
 \begin{tabular}{|p{4cm}|p{9cm}|}
 \hline
 \textbf{Komponente} & \textbf{Beschreibung} \\ \hline
-GUI-Software (ITS) & Bietet die Benutzeroberfläche, nimmt Steuerbefehle entgegen, zeigt den Zustand des ausgewählten Roboters an und leitet Befehle an die Roboter-Software weiter. \\ \hline
-Roboter-Software (RS) & Führt Bewegungs- und Greifbefehle aus, steuert Hardware, registriert sich bei der GUI-Software und sendet Status­meldungen zurück. \\ \hline
+Model & Beinhält die Geschäftslogik. Sendet Zustandsänderungen an den Controller. \\ \hline
+Controller & Der Controller fungiert als Observer vom Model und gibt Zustandsänderungen des Models an die View weiter. \\ \hline
+View & Bietet Interaktionsmöglichkeiten für den Nutzer und stellt dem Benutzer Informationen dar. 
 \end{tabular}
 \caption{Bausteinsicht Level 2}
 \label{tab:lvl2}
 \end{table}
 \newpage
 
-\section{Bausteinsicht Level 3}
+\section{Bausteinsicht Level 3 Model}
 \begin{figure}[h] % [h] = here
     \centering
-    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3.png}
-    \caption{Bausteinsicht Level 3}
+    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_model.png}
+    \caption{Bausteinsicht Level 3 Model}
 \end{figure}
 
 \begin{table}[h!]
@@ -56,14 +57,29 @@ Roboter-Software (RS) & Führt Bewegungs- und Greifbefehle aus, steuert Hardware
 \begin{tabular}{|p{4cm}|p{9cm}|}
 \hline
 \textbf{Komponente} & \textbf{Beschreibung} \\ \hline
-GUI & Frontend zur Eingabe von Befehlen und Anzeige von Status-/Fehler­meldungen. \\ \hline
-IO  & Schnittstelle für Ein-/Ausgabe­geräte; leitet Steuerbefehle an die Roboter-API und empfängt Rückmeldungen. \\ \hline
-Registrierungsservice & Authentifiziert und registriert Roboter-Software-Instanzen bei der GUI-Software. \\ \hline
-Watchdog & Überwacht Laufzeit- und Funktions­fähigkeit der GUI-Software; löst Neustarts bei Fehlern aus. \\ \hline
-Roboter-API & Abstraktionsschicht zur physischen Roboter­hardware; stellt Bewegungs- und Sensor­befehle bereit. \\ \hline
-Heartbeat & Sendet periodische Lebenszeichen der Roboter-Software an die GUI-Software zur Überwachungs­zwecken. \\ \hline
+StateService & Speichert den  ausgewählten und die verfügbaren Roboter. Bei Zustandsänderungen informiert er den Controller. \\ \hline
+MoveAdapter  & Empängt einen Steuerungsbefehl vom View übersetzt den mithilfe des Stateservices, um den passenden Aktuator anzusprechen. \\ \hline
+ActuatorController & Empfängt einen Steuerwert, überprüft die Gültigkeit und setzt diesen mithilfe der ICadsRoboticArm API. \\ \hline
 \end{tabular}
 \caption{Bausteinsicht Level 3}
 \label{tab:lvl3}
 \end{table}
 
+\section{Bausteinsicht Level 3 View}
+\begin{figure}[h] % [h] = here
+    \centering
+    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_view.png}
+    \caption{Bausteinsicht Level 3 View}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{4cm}|p{9cm}|}
+\hline
+\textbf{Komponente} & \textbf{Beschreibung} \\ \hline
+IO & Leitet die Eimgaben des Benutzers an den MoveAdapter weiter. \\ \hline
+UI  & Stellt dem Nutzer dar welche Roboter verfügbar sind, welcher ausgewählt ist und informiert über Fehler.\\ \hline
+\end{tabular}
+\caption{Bausteinsicht Level 3}
+\label{tab:lvl3}
+\end{table}
