@@ -7,6 +7,50 @@
 	\label{fig:deployment-prod-grafik}
 \end{figure}
 
+\section{Begründung}
+
+Die Verteilung der Software-Bausteine auf verschiedene Hardware-Komponenten (PC, ITS-BRD, Raspberry Pi, Cloud) wurde gewählt, um folgende Systemanforderungen zu erfüllen:
+
+\begin{itemize}
+    \item \textbf{Echtzeitnahe Verarbeitung:} Die Verwendung von UDP ermöglicht eine schnelle, verbindungslose Übertragung von Sensor- und Steuerdaten mit minimaler Latenz.
+    \item \textbf{Lastverteilung:} Durch die Verlagerung von Steuerungs- und Zustandsdiensten in die Cloud wird die Last von den lokalen Geräten genommen und die Systemarchitektur bleibt flexibel und erweiterbar.
+    \item \textbf{Hardware-Nähe:} Die IO-Module sowie der ActuatorController laufen auf Geräten in unmittelbarer Nähe zu den physischen Sensoren und Aktoren, um direkte Ansteuerung ohne zusätzliche Kommunikationsverzögerung zu ermöglichen.
+    \item \textbf{Flexibilität:} Die Nutzung von RPC ermöglicht modulare, verteilte Anwendungsarchitekturen, bei denen die Services flexibel auf verschiedenen Knoten bereitgestellt werden können.
+\end{itemize}
+
+\section{Qualitäts- und Leistungsmerkmale}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Merkmal} & \textbf{Beschreibung} \\ \hline
+Latenz & Geringe Latenz durch den Einsatz des verbindungslosen UDP-Protokolls. \\ \hline
+Verfügbarkeit & Die Cloud-Dienste können redundant und hochverfügbar ausgelegt werden. \\ \hline
+Zuverlässigkeit & UDP bietet keine Garantie für die Paketübertragung. Fehlerbehandlung und Wiederholungsmechanismen müssen von der Anwendung sichergestellt werden. \\ \hline
+Echtzeitfähigkeit & Die Übertragung über UDP ermöglicht schnelle Reaktionszeiten bei der Steuerung, ist jedoch aufgrund der Verbindungsfreiheit potentiell paketverlustanfällig. \\ \hline
+Skalierbarkeit & Die Cloud-Komponenten sind horizontal skalierbar und können bei steigendem Datenaufkommen erweitert werden. \\ \hline
+\end{tabular}
+\caption{Qualitäts- und Leistungsmerkmale der Verteilungssicht}
+\end{table}
+
+\section{Zuordnung von Bausteinen zu Infrastruktur}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Software-Baustein} & \textbf{Hardware-Komponente} \\ \hline
+UI & PC/Rechner \\ \hline
+IO & ITS-BRD \\ \hline
+ActuatorController & Raspberry Pi \\ \hline
+StateService & Cloud \\ \hline
+MoveAdapter & Cloud \\ \hline
+Controller & Cloud \\ \hline
+\end{tabular}
+\caption{Zuordnung der Software-Bausteine zu den Infrastrukturkomponenten}
+\end{table}
+
 % Notizen zu https://docs.arc42.org/section-7/
 
 % - Geografische Orte
