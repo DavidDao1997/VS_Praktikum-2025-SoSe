@@ -85,12 +85,7 @@ public class MoveAdapter extends ServerStub {
 
 		ActuatorController acm = new ActuatorControllerClient();
 		acm.move(direction);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		stateService.setError(false, true);
 		
 	}

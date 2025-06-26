@@ -23,6 +23,8 @@
         <!-- required for JDK 8 -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>     
+        <javafx.version>22.0.1</javafx.version>
+        <javafx.platform>linux-aarch64</javafx.platform>
     </properties>
 
     <dependencyManagement>
@@ -38,26 +40,28 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.cads.vs</groupId>
             <artifactId>robotic-arm-lib</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/CaDSRoboticArmInterface.jar</systemPath>
-        </dependency>
+        </dependency> -->
 
        
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>${javafx.platform}</classifier>
+            <version>17.0.10</version> 
+            <!-- <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier> use these for mac-->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>${javafx.platform}</classifier>
+            <version>17.0.10</version> 
+            <!-- <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier> use these for mac-->
         </dependency> 
 
         <dependency>

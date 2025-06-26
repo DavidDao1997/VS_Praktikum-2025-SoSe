@@ -1,12 +1,14 @@
 syntax = "proto3";
 package actuatorController;
 
-//option java_multiple_files = true;
-//option java_package = "vs.grpc";
-//option java_outer_classname = "ActuatorProto";
-
 service ActuatorControlService {
-  rpc move(ActuatorRequest) returns (Empty);
+  // Ändere Empty → MoveResponse, um eine nicht-leere Antwort zu ermöglichen
+  rpc move(ActuatorRequest) returns (ActuatorMoveResponse);
+}
+
+// Neue Nachricht für Antwort mit Inhalten
+message ActuatorMoveResponse {
+  bool success = 1;           // Erfolg der Bewegung
 }
 
 message Empty {}
