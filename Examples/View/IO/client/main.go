@@ -144,7 +144,7 @@ func main() {
 		case ev := <-eventChan:
 			switch tev := ev.(type) {
 			case *tcell.EventKey:
-				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 				defer cancel()
 				var err error
 				switch tev.Key() {
