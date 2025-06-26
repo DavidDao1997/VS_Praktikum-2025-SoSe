@@ -1,11 +1,21 @@
 package org.robotcontrol.actuatorcontroller;
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 import org.robotcontrol.actuatorcontroller.roboticarm.RoboticArmMock;
+import org.robotcontrol.middleware.ServerStub;
+import org.robotcontrol.middleware.Server;
+import io.grpc.BindableService;
+import movementAdapter.MoveAdapterOuterClass.RobotDirection;
 
-public class ActuatorController {
+import org.robotcontrol.middleware.services.ActuatorControllerServer;
+
+
+
+public class ActuatorController extends ServerStub {
     public static void main(String[] args) {
         ActuatorController ac = new ActuatorController("foo", 123, "A1");
-        ac.move(Direction.INCREASE);
+        Server server = new Server(50050,(BindableService) new ActuatorControllerServer(ac));
+        server.Listen();
+        server.awaitTermination();
     }
 
     public enum Direction {
@@ -13,7 +23,7 @@ public class ActuatorController {
         DECREASE
     }
 
-    private int value = 0;
+    private int value = 50;
     private final int MIN_VALUE = 0;
     private final int MAX_VALUE = 100;
     private String actuator;
@@ -25,7 +35,13 @@ public class ActuatorController {
         this.real = new RoboticArmMock();
         this.actuator = actuator;
     }
-
+    public void move(int md) {
+		Direction[] values = Direction.values();
+		if (md < 0 || md >= values.length) {
+			throw new IllegalArgumentException("Invalid RobotDirection index: " + md);
+		}
+		move(values[md]);
+	}
     public void move(Direction direction) {
         if (direction == Direction.INCREASE) {
             if (value < MAX_VALUE) {

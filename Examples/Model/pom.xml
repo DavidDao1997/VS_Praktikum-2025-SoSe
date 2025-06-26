@@ -13,6 +13,7 @@
     <modules>
         <module>Middleware</module>
         <module>Core</module>
+        <module>ActuatorController</module>
     </modules>
 
 </project>

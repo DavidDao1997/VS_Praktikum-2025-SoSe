@@ -23,11 +23,8 @@
             "name": "ActuatorController",
             "request": "launch",
             "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",
-            "projectName": "ActuatorController",
-            "vmArgs": "--module-path /opt/javafx/lib --add-modules javafx.controls,javafx.fxml",
-            "env": {
-                "DISPLAY": ":99"
-            }
+            "projectName": "ActuatorController"
+            
         },
         {
             "type": "java",

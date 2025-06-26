@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.robotcontrol.actuatorcontroller</groupId>
+    <groupId>org.robotcontrol</groupId>
     <artifactId>ActuatorController</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -22,7 +22,7 @@
         <protoc.version>3.25.5</protoc.version>
         <!-- required for JDK 8 -->
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.target>1.8</maven.compiler.target>     
     </properties>
 
     <dependencyManagement>
@@ -46,20 +46,22 @@
             <systemPath>${project.basedir}/lib/CaDSRoboticArmInterface.jar</systemPath>
         </dependency>
 
-        <!-- JavaFX for Java 17 -->
+       
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.10</version>
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.10</version>
-        </dependency>
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier>
+        </dependency> 
 
         <dependency>
-            <groupId>org.robotcontrol.middleware</groupId>
+            <groupId>org.robotcontrol</groupId>
             <artifactId>Middleware</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

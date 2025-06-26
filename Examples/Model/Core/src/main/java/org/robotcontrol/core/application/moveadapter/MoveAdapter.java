@@ -1,10 +1,13 @@
 package org.robotcontrol.core.application.moveadapter;
 
 import org.robotcontrol.middleware.ServerStub;
-import org.robotcontrol.core.application.moveadapter.ActuatorControllerMock.ActuatorDirection;
+import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController;
+import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController.ActuatorDirection;
+import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorControllerClient;
 import org.robotcontrol.core.application.stateservice.StateService_I;
 
 import lombok.AllArgsConstructor;
+
 
 @AllArgsConstructor
 public class MoveAdapter extends ServerStub {
@@ -79,9 +82,15 @@ public class MoveAdapter extends ServerStub {
 				stateService.setError(true, false);
 				return;
 		}
-		
-		ActuatorControllerMock acm = new ActuatorControllerMock(selectedRobot+"A"+actuatorId);
+
+		ActuatorController acm = new ActuatorControllerClient();
 		acm.move(direction);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		stateService.setError(false, true);
 		
 	}
