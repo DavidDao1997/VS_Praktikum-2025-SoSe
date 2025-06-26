@@ -1,17 +1,13 @@
 @startuml
-
 actor User
 participant "IO (View)" as IO
 participant "moveAdapter (Model)" as mA
-participant "StateService (Model)" as StS
 participant "ActuatorController (Model)" as ActCtrl
 participant "ICaDSRoboticArm" as RobArm
 
 
 User -> IO: will Roboter RX nach links bewegen
 IO -> mA: move(RobotDirections: LEFT)
-mA -> StS: getSelected()
 mA -> ActCtrl: move(ActuatorDirections: DECREASE)
 ActCtrl -> RobArm: SetLeftRightPercentageTo(Integer)
-
 @enduml

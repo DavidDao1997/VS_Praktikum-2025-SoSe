@@ -1,6 +1,6 @@
 \chapter{Lösungsstrategie}
 
-\subsection{Controller}
+\section{Controller}
 Der Controller fungiert als Observer. 
 Er empfängt Benachrichtigungen vom Modell, wenn Änderungen oder Aktualisierungen erfolgen, und leitet diese Informationen an die View weiter, um sie zu aktualisieren. 
 Der Controller speichert keine Zustände und sendet keine Eingaben von der View an das Modell.
@@ -19,8 +19,8 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
     \label{tab:Controller}
 \end{table}
 
-\clearpage
-\subsection{Modell}
+
+\section{Modell}
 \begin{table}[h!]
     \centering
     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
@@ -63,10 +63,10 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
 \end{table}
 
 \clearpage
-\subsection{View}
+\section{View}
 Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine Softwareschnittstelle an, die IO keine.
 
-\subsubsection{IO Funktionen}
+\subsection{IO Funktionen}
 \begin{table}[h!]
     \centering
     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
@@ -82,7 +82,7 @@ Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine So
     \label{tab:IOFunktionen}
 \end{table}
 
-\subsubsection{UI Funktionen}
+\subsection{UI Funktionen}
 \begin{table}[h!]
     \centering
     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}

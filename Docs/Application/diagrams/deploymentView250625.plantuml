@@ -23,7 +23,7 @@ frame "Verteilungssicht" {
 }
 
 ' Kommunikationsbeziehungen
-brd --> cloud : UDP\nRPC Call
-pi <--> cloud : UDP\nRPC Call
-cloud --> pc : UDP\nRPC Call
+brd --> cloud 
+pi <--> cloud 
+cloud --> pc 
 @enduml

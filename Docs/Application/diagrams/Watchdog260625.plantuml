@@ -1,0 +1,26 @@
+@startuml
+participant "View (HealthObserver)" as V
+participant "Controller (HealthObservable)" as C
+participant WatchDog as W
+
+V -> W: subscribe("Controller")
+W --> V: healthState: unhealthy
+C -> W: checkIn("Controller")
+W -> W: resetWatchdogTimeout()
+
+alt health succes
+
+loop
+  C -> W: checkIn("Controller")
+  W -> W: resetWatchdogTimeout()
+  W --> V: healthState: healthy
+
+end
+
+else health fail
+ 
+C -x W: checkIn("Controller")
+W --> V: healthState: unhealthy
+
+end
+@enduml

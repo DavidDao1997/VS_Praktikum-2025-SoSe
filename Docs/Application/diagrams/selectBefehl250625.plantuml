@@ -3,12 +3,14 @@ actor User
 
 participant "IO (View)" as IO
 participant "StateService (Model)" as StS
+participant "MoveAdapter (Model)" as MA
 participant "Controller (Controller)" as Ctrl
 participant "UI (View)" as UI
 
 
 User -> IO: wählt Roboter
 IO -> StS: select(SelectDirection)
+StS -> MA: setSelected()
 StS -> Ctrl: update(String [],Int,Bool,Bool)
 Ctrl -> UI: updateView(String [],Int,Bool,Bool)
 @enduml
