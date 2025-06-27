@@ -39,9 +39,13 @@ public class StateServiceServer extends StateServiceGrpc.StateServiceImplBase {
 
     @Override
     public void register(RegisterRequest request, StreamObserver<Empty> responseObserver) {
-        System.out.printf("StateServiceServer.register() was called with: %\n", request.getMotorName());
-        stateService.call("register", new RpcValue.StringValue(request.getMotorName()));
-
+       // System.out.printf("StateServiceServer.register() was called with: %s,%s,&d  %\n", request.getMotorName(),request.getHost(),request.getPort());
+        stateService.call(
+            "register",
+            new RpcValue.StringValue(request.getMotorName()), // "R1A1"
+            new RpcValue.StringValue(request.getHost()),      // "192.168.4.17"
+            new RpcValue.IntValue   (request.getPort())       // 50050
+);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }

@@ -83,8 +83,8 @@ public class MoveAdapter extends ServerStub {
 				return;
 		}
 
-		ActuatorController acm = new ActuatorControllerClient();
-		acm.move(direction);
+		//ActuatorController acm = new ActuatorControllerClient();
+		//acm.move(direction);
 
 		stateService.setError(false, true);
 		

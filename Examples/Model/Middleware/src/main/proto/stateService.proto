@@ -23,9 +23,18 @@ enum SelectDirection {
 }
 
 message RegisterRequest {
-    string motorName = 1;
+  string motorName = 1;  // "R1A1"
+  string host      = 2;  // "192.168.4.12"
+  int32  port      = 3;  // 50050
 }
- 
+
 message HeartbeatRequest {
-    string motorName = 1;
+  string motorName = 1;
+}
+
+message RobotInfo {
+  string motorName = 1;
+  string host      = 2;
+  int32  port      = 3;
+  bool   available = 4;  // true sobald alle 4 Achsen da
 }

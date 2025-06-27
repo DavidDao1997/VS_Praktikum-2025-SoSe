@@ -1,36 +1,119 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
+  "version": "0.2.0",
+  "configurations": [
+
+
+    /* ───────────── Core & Middleware unverändert ───────────── */
+    {
+      "type": "java",
+      "name": "Core",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.core.Core",
+      "projectName": "Core"
+    },
+    {
+      "type": "java",
+      "name": "Middleware",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.middleware.Main",
+      "projectName": "Middleware"
+    },
+
+    /* ───────────── Vier Aktor-Instanzen ───────────── */
+    {
+      "type": "java",
+      "name": "Aktor R1A1",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R1A1 localhost 50060"
+    },
+    {
+      "type": "java",
+      "name": "Aktor R1A2",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R1A2 localhost 50061"
+    },
+    {
+      "type": "java",
+      "name": "Aktor R1A3",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R1A3 localhost 50062"
+    },
+    {
+      "type": "java",
+      "name": "Aktor R1A4",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R1A4 localhost 50063"
+    },
+
+    {
+      "type": "java",
+      "name": "Aktor R2A1",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R2A1 localhost 50064"
+    },
+    {
+      "type": "java",
+      "name": "Aktor R2A2",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R2A2 localhost 50065"
+    },
+    {
+      "type": "java",
+      "name": "Aktor R2A3",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R2A3 localhost 50066"
+    },
+    {
+      "type": "java",
+      "name": "Aktor R2A4",
+      "request": "launch",
+      "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorControllerMain",
+      "projectName": "ActuatorController",
+      "args": "localhost 50052 R2A4 localhost 50067"
+    },
+    /* ───────────── Fallback: aktuelle Datei ───────────── */
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    }
+  ],
+
+  /* ───────────── Alles zusammen auf einen Klick ───────────── */
+  "compounds": [
+    {
+      "name": "Roboter R1 komplett",
+      "configurations": [
+        "Aktor R1A1",
+        "Aktor R1A2",
+        "Aktor R1A3",
+        "Aktor R1A4"
+      ]
+    },
+    {
+    "name": "Roboter R2 komplett",
     "configurations": [
-        {
-            "type": "java",
-            "name": "Core",
-            "request": "launch",
-            "mainClass": "org.robotcontrol.core.Core",
-            "projectName": "Core"
-        },
-        {
-            "type": "java",
-            "name": "Middleware",
-            "request": "launch",
-            "mainClass": "org.robotcontrol.middleware.Main",
-            "projectName": "Middleware"
-        },
-        {
-            "type": "java",
-            "name": "ActuatorController",
-            "request": "launch",
-            "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",
-            "projectName": "ActuatorController"
-            
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        }
+        "Aktor R2A1",
+        "Aktor R2A2",
+        "Aktor R2A3",
+        "Aktor R2A4"
     ]
+      
+  }
+  ]
 }

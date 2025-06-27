@@ -18,10 +18,10 @@ import org.robotcontrol.core.application.stateservice.StateService;
 public class Core {
     public static void main(String[] args) {
         StateService stateService = new StateService(new ControllerMock());
-        stateService.register("R1A1");
-        stateService.register("R1A2");
-        stateService.register("R1A3");
-        stateService.register("R1A4");
+        // stateService.register("R1A1");
+        // stateService.register("R1A2");
+        // stateService.register("R1A3");
+        // stateService.register("R1A4");
 
         MoveAdapter moveAdapter = new MoveAdapter(stateService);
 
