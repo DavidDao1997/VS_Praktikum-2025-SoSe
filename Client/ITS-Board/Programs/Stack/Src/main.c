@@ -34,10 +34,48 @@
 #define S6 0x06
 #define S7 0x07
 
-
 extern void initITSboard(void);
 
-bool isButtonPressed(uint16_t s);
+typedef enum {
+  STATE_SELECT_MENU,
+  STATE_MOVE_MENU,
+  STATE_CLAW_MENU,
+  STATE_COUNT
+} State;
+
+State currentState = STATE_SELECT_MENU;
+State lastState = STATE_SELECT_MENU;
+
+bool isButtonPressed(uint16_t s) {
+  return (0x01U << s) != ((0x01U << s) & GPIOF -> IDR); 
+ }
+
+typedef struct {
+  bool S0_pressed;
+  bool S1_pressed; // NOT NEEDED YET
+  bool S2_pressed;
+  bool S3_pressed;
+  bool S4_pressed;
+  bool S5_pressed;
+  bool S6_pressed;
+  bool S7_pressed;
+} ButtonState;
+
+
+void readButtons(ButtonState *buttons) {
+  buttons->S0_pressed = isButtonPressed(S0);
+  buttons->S1_pressed = isButtonPressed(S1);
+  buttons->S2_pressed = isButtonPressed(S2);
+  buttons->S3_pressed = isButtonPressed(S3);
+  buttons->S4_pressed = isButtonPressed(S4);
+  buttons->S5_pressed = isButtonPressed(S5);
+  buttons->S6_pressed = isButtonPressed(S6);
+  buttons->S7_pressed = isButtonPressed(S7);
+}
+
+void toggleState() {
+  currentState = (currentState + 1) % STATE_COUNT;
+}
 
 
 int main(void) {
@@ -61,48 +99,103 @@ int main(void) {
 
   lcdPrintlnS("../done");
 
-  // MENUE HERE
+
+   ButtonState btn;
+
+  // INITIAL MENUE HERE
+  lcdPrintlnS("SELECT MENU");
 
   while (1) {
     
-    if (isButtonPressed(S0)) { 
-      toggleGPIO(&led_pins[0]);
-      move(DIR_UP);
-      //select(SELECT_UP);
-    } else if (isButtonPressed(S1)) {
-      toggleGPIO(&led_pins[1]);
-      move(DIR_DOWN);
-      //select(SELECT_DOWN);
-    } else if (isButtonPressed(S2)) {
-      toggleGPIO(&led_pins[2]);
-      move(DIR_FORWARD);
-    } else if (isButtonPressed(S3)) {
-      toggleGPIO(&led_pins[3]);
-      move(DIR_BACKWARD);
-    } else if (isButtonPressed(S4)) {
-      toggleGPIO(&led_pins[4]);
-      move(DIR_LEFT);
-    } else if (isButtonPressed(S5)) {
-      toggleGPIO(&led_pins[5]);
-      move(DIR_RIGHT);
-    } else if (isButtonPressed(S6)) {
-      toggleGPIO(&led_pins[6]);
-      move(DIR_OPEN);
-    } else if (isButtonPressed(S7)) {
-      toggleGPIO(&led_pins[7]);
-      move(DIR_CLOSE);
-    } else {
-      // SHOW ERR
-      // SELECTION ?
+    //
+    // === READ ===
+    //
+    readButtons(&btn);
+
+    //
+    // === MODIFY ===
+    //
+    if (btn.S0_pressed) {
+      toggleState();  // FSM-State Wechsel bei S0
     }
 
+    //
+    // === WRITE ===
+    //
+    if (currentState != lastState) {
+      // Zustandswechsel erkannt → ggf. Statusanzeige
+      switch (currentState) {
+        case STATE_SELECT_MENU:
+          lcdPrintlnS("SELECT MENU");
+          lcdPrintlnS("S7 -> UP");
+          lcdPrintlnS("S6 -> DOWN");
+          lcdPrintlnS("S0 -> NEXT MENU");
+          break;
+        case STATE_MOVE_MENU:
+          lcdPrintlnS("MOVE MENU");
+          lcdPrintlnS("S7 -> UP");
+          lcdPrintlnS("S6 -> DOWN");
+          lcdPrintlnS("S5 -> FORWARD");
+          lcdPrintlnS("S4 -> BACKWARD");
+          lcdPrintlnS("S3 -> LEFT");
+          lcdPrintlnS("S2 -> RIGHT");
+          lcdPrintlnS("S0 -> NEXT MENU");
+          break;
+        case STATE_CLAW_MENU:
+          lcdPrintlnS("CLAW MENU");
+          lcdPrintlnS("S7 -> OPEN");
+          lcdPrintlnS("S6 -> CLOSE");
+          lcdPrintlnS("S0 -> NEXT MENU");
+          break;
+        default:
+          break;
+      }
+
+      lastState = currentState;  // Aktuellen Zustand merken
+    }
+
+    switch (currentState) {
+      case STATE_SELECT_MENU:
+        if (btn.S7_pressed) {
+          select(SELECT_UP);
+        } else if (btn.S6_pressed) {
+          select(SELECT_DOWN);
+        }
+        break;
+
+      case STATE_MOVE_MENU:
+        if (btn.S7_pressed) {
+          move(DIR_UP);
+        } else if (btn.S6_pressed) {
+          move(DIR_DOWN);
+        } else if (btn.S5_pressed) {
+          move(DIR_FORWARD);
+        } else if (btn.S4_pressed) {
+          move(DIR_BACKWARD);
+        } else if (btn.S3_pressed) {
+          move(DIR_LEFT);
+        } else if (btn.S2_pressed) {
+          move(DIR_RIGHT);
+        } 
+        break;
+
+      case STATE_CLAW_MENU:
+        if (btn.S7_pressed) {
+          move(DIR_OPEN);
+        } else if (btn.S6_pressed) {
+          move(DIR_CLOSE);
+        }        
+        break;
+
+      default:
+        break;
+    }
   }
+
 }
 
 
-bool isButtonPressed(uint16_t s) {
-  return (0x01U << s) != ((0x01U << s) & GPIOF -> IDR); 
- }
+
 
 
 // EOF

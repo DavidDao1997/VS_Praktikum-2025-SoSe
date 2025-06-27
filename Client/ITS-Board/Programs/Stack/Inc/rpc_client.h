@@ -6,10 +6,11 @@
 #include "lwip/pbuf.h"
 #include <string.h>
 #include <stdio.h>
+#include "marshall.h"
 
 void rpc_client_init(void);
-void rpc_invoke(const char* func, const char* key, const char* value,
-                const ip_addr_t* dest_ip, uint16_t dest_port);
+void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
+                const int numOfParam);
 
 
 #endif // RPC_CLIENT_H

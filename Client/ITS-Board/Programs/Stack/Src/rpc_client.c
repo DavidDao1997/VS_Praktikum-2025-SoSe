@@ -1,5 +1,9 @@
 #include "rpc_client.h"
 
+
+
+
+
 // Zielserver festlegen 
 static ip_addr_t rpc_server_ip;
 static uint16_t rpc_server_port = 0xAFFE;
@@ -11,6 +15,7 @@ static uint16_t rpc_server_port = 0xAFFE;
 // RPC-Client-Port (dynamisch)
 static struct udp_pcb* udp_client_pcb = NULL;
 static uint16_t rpc_id_counter = 1;
+
 
 // Initialisierung des Client-PCB
 void rpc_client_init(void) {
@@ -33,22 +38,12 @@ static void rpc_send(const char* payload) {
 }
 
 // Kompakte JSON-Kodierung der Funktionsaufrufe
-void rpc_invoke(const char* func, const char* key, const char* value) {
+void rpc_invoke(const char* func, const char* paramTypes, const char* param,
+                const int numOfParam){
     char payload[256];
-    char method_char;
+    
 
-    if (strcmp(func, "move") == 0) method_char = 'm';
-    else if (strcmp(func, "register") == 0) method_char = 'r';
-    else if (strcmp(func, "select") == 0) method_char = 's';
-    else return;
-
-    // ID erhöhen, einfache Überlaufbehandlung
-    if (rpc_id_counter == 0) rpc_id_counter = 1;
-
-    // Erzeuge kompaktes JSON
-    snprintf(payload, sizeof(payload),
-             "{\"m\":\"%c\",\"p\":{\"%s\":\"%s\"},\"i\":%d}",
-             method_char, key, value, rpc_id_counter++);
+    marshall(&func, &paramTypes, &param, &numOfParam, &payload);
 
     rpc_send(payload);
 }
