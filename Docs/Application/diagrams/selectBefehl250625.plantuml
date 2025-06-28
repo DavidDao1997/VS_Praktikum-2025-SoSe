@@ -10,7 +10,7 @@ participant "UI (View)" as UI
 
 User -> IO: wählt Roboter
 IO -> StS: select(SelectDirection)
-StS -> MA: setSelected()
+StS -> MA: setSelected(Int)
 StS -> Ctrl: update(String [],Int,Bool,Bool)
 Ctrl -> UI: updateView(String [],Int,Bool,Bool)
 @enduml

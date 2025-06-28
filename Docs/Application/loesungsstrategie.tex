@@ -20,47 +20,127 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
 \end{table}
 
 
-\section{Modell}
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
-        \hline
-        \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
-        \hline
-        ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung & Initialisiert ein Aktuator mit Host, Port. \\
-        \hline
-        Void move(Enum Robotdirection) & Verbindung zwischen IO und MoveAdapter besteht &  Gibt an in welche Richtung sich der Roboter bewegen soll. \\
-        \hline
-        Void move(Enum ActuatorDirection ) & Verbindung zwischen MoveAdapter und ActuatorController besteht & Erhöht oder verringert den Steuerwert um 1 und ruft applyValue() auf. \\
-        \hline
-        Void applyValue() & Aktuator gültig; Wert im Bereich [0,100] & Wendet den aktuellen Wert auf den Aktuator an. \\
-		\hline
-		Void notify() & StateService initialisiert & Teilt Änderungen im Modell den Listener mit \\
-        \hline
-        Void addListener() & Listener gültig & Fügt einen Listener hinzu, der bei Zustandsänderung benachrichtigt wird. \\
-        \hline
-        Void removeListener() & Listener gültig & Entfernt den angegebenen Listener. \\
-        \hline
-		Int register(ActuatorName) & StateService initialisiert, Verbindung zwischen ActuatorController und StateService besteht& registriert einen ActuatorController beim StateService \\
-		\hline
-		setError(boolean, boolean)& & \\
-		\hline
-        Void setSelectedRobot(Enum SelectDirection) & Roboter in availableRobots & Setzt den aktuellen Roboter und benachrichtigt alle Listener. \\
-        \hline
-        String getSelectedRobot() & StateService initialisiert & Gibt den aktuell ausgewählten Roboter zurück. \\
-        \hline
-        Int getValue() & ActuatorController initialisiert & Gibt den aktuellen Steuerwert zurück. \\
-        \hline
-        Void addAvailableRobot(String) & StateService initialisiert, Gültige Roboter-ID & Fügt einen Roboter zur Liste verfügbarer Roboter hinzu. \\
-        \hline
-        Void removeAvailableRobot(String) & StateService initialisiert, Gültige Roboter-ID & Entfernt einen Roboter aus der Liste verfügbarer Roboter. \\
-        \hline
-        String[] getAvailableRobots() & StateService initialisiert & Gibt alle bekannten Roboter zurück. \\
-        \hline
-    \end{tabular}
-    \caption{Funktionen des Modells}
-    \label{tab:Methodenbeschreibung}
-\end{table}
+\section{Model}
+
+    \subsection{StateService}
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+            \hline
+            \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+            \hline
+            void select(SelectDirection selectDirection) & keine & Wählt einen Roboter aus \\
+            \hline
+            void setError(Boolean error) & Fehler ist aufgetreten & Setzt den Fehlerstatus. \textbf{(Beschreibung ergänzen)} \\
+            \hline
+            %void register(ActuatorName actuator) & Verbindung zwischen ActuatorController und StateService besteht & Registriert einen ActuatorController beim StateService. \\
+            %\hline
+            %void heartbeat(ActuatorName actuator) & In regelmäßigen Zeitfenstern & Benachrichtigt den StateService über den aktuellen Status der Aktoren.
+            %\hline
+            void reportHealth(String [] actuatorNames) & In regelmäßigen Zeitfenstern und wenn subscribed wurde & Benachrichtigt den StateService über den aktuellen Gesundheitsstatus der Aktoren. \\
+            \hline
+            private void notify() & StateService erfasst für Controller relevante Änderung & Benachrichtigt den Controller über Änderungen im StateServices. \\
+            \hline
+        \end{tabular}
+        \caption{Funktionen des StateService}
+        \label{tab:StateService}
+    \end{table}
+
+
+\clearpage
+    \subsection{MoveAdapter}
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+            \hline
+            \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+            \hline
+            void move(Enum RobotDirection) & Verbindung zwischen IO und MoveAdapter besteht & Gibt die Richtung an, in die sich der Roboter bewegen soll. \\
+            \hline
+            void setSelectedRobot(String robotName) & In regelmäßigen Zeitfenstern & Setzt den aktuell ausgewählten Roboter.\\
+            \hline
+        \end{tabular}
+        \caption{Funktionen des MoveAdapter}
+        \label{tab:MoveAdapter}
+    \end{table}
+
+    \subsection{ActuatorController}
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+            \hline
+            \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+            \hline
+            void move(Enum ActuatorDirection) & Verbindung zwischen MoveAdapter und ActuatorController besteht & Erhöht oder verringert den Steuerwert um 1 und ruft \texttt{applyValue()} auf. \\
+            \hline
+            %void ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung & Initialisiert einen Aktuator mit dem angegebenen Host und Port. \\
+            %\hline
+        \end{tabular}
+        \caption{Funktionen des ActuatorController}
+        \label{tab:ActuatorController}
+    \end{table}
+
+    \subsection{Watchdog}
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+            \hline
+            \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+            \hline
+            void checkIn(String serviceName) & service ist verfügbar & Sendet ein Signal an den Watchdog, um die Verfügbarkeit zu kommunizieren. \\
+            \hline
+            void subscribe(String serviceName) & Die Verfügbarkeit eines Services soll kommuniziert werden & Abonniert den Watchdog, um Benachrichtigungen über den Gesundheitsstatus zu erhalten. \\
+            \hline
+        \end{tabular}
+        \caption{Watchdog Funktionen}
+        \label{tab:WatchdogFunktionen}
+    \end{table}
+
+
+
+
+
+    %\begin{table}[h!]
+        %\centering
+        %\begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+        %    \hline
+       %     \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+            %\hline
+            %ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung & Initialisiert einen Aktuator mit dem angegebenen Host und Port. \\
+            %\hline
+            %void move(Enum RobotDirection) & Verbindung zwischen IO und MoveAdapter besteht & Gibt die Richtung an, in die sich der Roboter bewegen soll. \\
+            %\hline
+            %void move(Enum ActuatorDirection) & Verbindung zwischen MoveAdapter und ActuatorController besteht & Erhöht oder verringert den Steuerwert um 1 und ruft \texttt{applyValue()} auf. \\
+            %\hline
+            %%void applyValue() & Aktuator gültig; Wert im Bereich [0,100] & Wendet den aktuellen Steuerwert auf den Aktuator an. \\
+            %\hline
+            %void notify() & StateService initialisiert & Benachrichtigt alle Listener über Änderungen im Modell. \\
+            %\hline
+            %void addListener() & Listener gültig & Fügt einen Listener hinzu, der bei Zustandsänderungen benachrichtigt wird. \\
+            %\hline
+            %void removeListener() & Listener gültig & Entfernt den angegebenen Listener. \\
+            %\hline
+            %void register(ActuatorName) & StateService initialisiert, Verbindung zwischen ActuatorController und StateService besteht & Registriert einen ActuatorController beim StateService. \\
+            %\hline
+            %void setError(boolean, boolean) & -- & Setzt den Fehlerstatus. \textbf{(Beschreibung ergänzen)} \\
+            %\hline
+            %void setSelectedRobot(Enum SelectDirection) & Roboter in \texttt{availableRobots} vorhanden & Setzt den aktuell ausgewählten Roboter und benachrichtigt alle Listener. \\
+            %\hline
+            %String getSelectedRobot() & StateService initialisiert & Gibt den aktuell ausgewählten Roboter zurück. \\
+            %\hline
+            %int getValue() & ActuatorController initialisiert & Gibt den aktuellen Steuerwert zurück. \\ Muss updateValue() sein, aber wie?
+            %\hline
+            %void addAvailableRobot(String []) & StateService initialisiert, gültige Roboter-ID & Fügt einen Roboter zur \textbf{internen Liste} (\texttt{ArrayList<String>}) verfügbarer Roboter hinzu. \\
+            %\hline
+            %void removeAvailableRobot(String) & StateService initialisiert, gültige Roboter-ID & Entfernt einen Roboter aus der \textbf{internen Liste} (\texttt{ArrayList<String>}) verfügbarer Roboter. \\
+            %\hline
+            %String[] getAvailableRobots() & StateService initialisiert & Gibt alle bekannten Roboter zurück, die in der \textbf{internen Liste} (\texttt{ArrayList<String>}) gespeichert sind. \\
+            %\hline
+       % \end{tabular}
+      %  \caption{Funktionen des Modells}
+     %   \label{tab:Methodenbeschreibung}
+    %\end{table}
+
 
 \clearpage
 \section{View}
@@ -95,5 +175,7 @@ Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine So
     \caption{UI Funktionen}
     \label{tab:UIFunktionen}
 \end{table}
+\clearpage
+
 
 

@@ -1,26 +1,69 @@
+
+
+================================================== Version 1 with name and bool =====================================
 @startuml
 participant "View (HealthObserver)" as V
 participant "Controller (HealthObservable)" as C
 participant WatchDog as W
 
-V -> W: subscribe("Controller")
-W --> V: healthState: unhealthy
-C -> W: checkIn("Controller")
-W -> W: resetWatchdogTimeout()
+' View abonniert Controller (asynchron sinnvoll)
+V ->> W: subscribe("Controller")
 
-alt health succes
+' View fragt den aktuellen Health-Status aktiv ab
+W ->> V: reportHealth([{name: "Controller",healthy: false}])
 
-loop
-  C -> W: checkIn("Controller")
+alt health success
+
+loop Controller meldet sich regelmäßig
+  C ->> W: checkIn("Controller")
   W -> W: resetWatchdogTimeout()
-  W --> V: healthState: healthy
 
+  ' View fragt regelmäßig den Health-Status ab
+  W ->> V: reportHealth([{name: "Controller",healthy: true}])
 end
 
 else health fail
- 
-C -x W: checkIn("Controller")
-W --> V: healthState: unhealthy
 
+  ' Check-In schlägt fehl
+  C -x W: checkIn("Controller")
+ loop Controller meldet sich regelmäßig
+  ' View fragt erneut den Health-Status ab
+  W ->> V: reportHealth([{name: "Controller",healthy: false}])
+ end
+end
+@enduml
+
+
+================================================== Version 1 with a list with healthy components =====================================
+
+@startuml
+participant "View (HealthObserver)" as V
+participant "Controller (HealthObservable)" as C
+participant WatchDog as W
+
+' View abonniert Controller (asynchron sinnvoll)
+V ->> W: subscribe("Controller")
+
+' View fragt den aktuellen Health-Status aktiv ab
+W ->> V: reportHealthy(["Controller"])
+
+alt health success
+
+loop Controller meldet sich regelmäßig
+  C ->> W: checkIn("Controller")
+  W -> W: resetWatchdogTimeout()
+
+  ' View fragt regelmäßig den Health-Status ab
+  W ->> V: reportHealthy(["Controller"])
+end
+
+else health fail
+
+  ' Check-In schlägt fehl
+  C -x W: checkIn("Controller")
+ loop Controller meldet sich regelmäßig
+  ' View fragt erneut den Health-Status ab
+  W ->> V: reportHealthy([])
+ end
 end
 @enduml
