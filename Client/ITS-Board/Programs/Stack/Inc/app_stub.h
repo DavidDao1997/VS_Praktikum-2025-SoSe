@@ -19,7 +19,7 @@ typedef enum {
 
 
 void move(Direction dir);
-void register_node(const char* name);
+void register_node( char* name, char* functionName);
 void select(SDirection dir);
 
 #endif //APP_STUB_H

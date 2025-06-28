@@ -33,17 +33,17 @@ static void rpc_send(const char* payload) {
     if (!p) return;
 
     memcpy(p->payload, payload, strlen(payload));
-    udp_sendto(udp_client_pcb, p, rpc_server_ip, rpc_server_port);
+    udp_sendto(udp_client_pcb, p, &rpc_server_ip, rpc_server_port);
     pbuf_free(p);
 }
 
 // Kompakte JSON-Kodierung der Funktionsaufrufe
-void rpc_invoke(const char* func, const char* paramTypes, const char* param,
+void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
                 const int numOfParam){
     char payload[256];
     
 
-    marshall(&func, &paramTypes, &param, &numOfParam, &payload);
+    marshall(func, paramTypes, param, numOfParam, payload);
 
     rpc_send(payload);
 }

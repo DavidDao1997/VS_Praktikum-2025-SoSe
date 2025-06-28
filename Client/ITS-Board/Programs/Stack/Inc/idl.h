@@ -2,6 +2,8 @@
 #define RPC_IDL_H
 
 #include <stdint.h>
+#include <string.h>
+#include "stdlib.h"
 
 // Funktionsdefinition
 typedef struct {

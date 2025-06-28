@@ -1,9 +1,10 @@
 
+
+#include "marshall.h"
     
     
-    
-  void marshall(const char* func, const char* paramTypes, const char* param,
-                const int numOfParam, const char* payload ) {  
+  void marshall(const char* func, const char* paramTypes[], const char* param[],
+                const int numOfParam, char* payload ) {  
     
     payload[0] = '\0';
 

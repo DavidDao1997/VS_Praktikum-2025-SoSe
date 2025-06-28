@@ -6,7 +6,8 @@
 #include "idl.h"
 
 
-void marshall();
+void marshall(const char* func, const char* paramTypes[], const char* param[],
+                const int numOfParam, char* payload );
 
 void unmarshall();
 

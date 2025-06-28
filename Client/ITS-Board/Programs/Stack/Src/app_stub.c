@@ -33,23 +33,23 @@ const char* sdir_to_str(SDirection dir) {
 
 // Exponierte Funktionen zur App
 void move(Direction dir) {
-    char* paramTypes[] = { "int" };
-    char* param[] = {dir_to_str(dir)};
+    const char* paramTypes[] = { "int" };
+    const char* param[] = {dir_to_str(dir)};
     int numOfParam = 1;
 
-    rpc_invoke("move", &paramTypes, &param, numOfParam);
+    rpc_invoke("move", paramTypes, param, numOfParam);
 }
 
 void register_node( char* name, char* functionName) {
-    char* paramTypes[] = { "String", "String" };
-    char* param[] = {name, functionName};
+    const char* paramTypes[] = { "String", "String" };
+    const char* param[] = {name, functionName};
     int numOfParam = 2;
-    rpc_invoke("register_node", &paramTypes, &param, numOfParam);
+    rpc_invoke("register_node", paramTypes, param, numOfParam);
 }
 
 void select(SDirection dir) {
-    char* paramTypes[] = { "int" };
-    char* param[] = {dir_to_str(dir)};
+    const char* paramTypes[] = { "int" };
+    const char* param[] = {sdir_to_str(dir)};
     int numOfParam = 1;
-    rpc_invoke("select", &paramTypes, &param, numOfParam);
+    rpc_invoke("select", paramTypes, param, numOfParam);
 }
