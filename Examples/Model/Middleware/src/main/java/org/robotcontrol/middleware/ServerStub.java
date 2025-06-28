@@ -3,6 +3,7 @@ package org.robotcontrol.middleware;
 import java.lang.reflect.Method;
 
 public class ServerStub {
+    
     public void call(String fnName, RpcValue... args) {
         Method method = findMethodByNameAndArgs(fnName, args);
         if (method == null) {

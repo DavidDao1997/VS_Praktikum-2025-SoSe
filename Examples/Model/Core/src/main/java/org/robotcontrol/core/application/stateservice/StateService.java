@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.robotcontrol.middleware.ServerStub;
-import org.robotcontrol.core.application.controller.rpc.Controller;
+import org.robotcontrol.core.application.controller.rpc.IController;
+
 
 @Getter
 public class StateService extends ServerStub implements StateService_I{
@@ -16,15 +17,14 @@ public class StateService extends ServerStub implements StateService_I{
 		DOWN		
 	}
 	
-	Controller controller;
+	IController controller;
 	int selectedRobot;
 	boolean error;
 	boolean confirm;
 	private List<Robot> registeredRobots;
 	private List<Robot> availableRobots;
-	
-	
-	public StateService(Controller controller) {
+
+	public StateService(IController controller) {
 		registeredRobots = new ArrayList<Robot>();
 		availableRobots = new ArrayList<Robot>();
 		selectedRobot = 0;
