@@ -16,7 +16,7 @@ ITS-Board/Programs/Stack/README.md
 ITS-Board/README.md
 
 # Allow specific files
-!ITS-Board/Programs/Stack/Inc/udp_server.h
+#!ITS-Board/Programs/Stack/Inc/udp_server.h
 !ITS-Board/Programs/Stack/Inc/rpc_client.h
 !ITS-Board/Programs/Stack/Inc/app_stub.h
 !ITS-Board/Programs/Stack/Inc/idl.h
@@ -27,5 +27,5 @@ ITS-Board/README.md
 !ITS-Board/Programs/Stack/Src/rpc_client.c
 !ITS-Board/Programs/Stack/Src/marshall.c
 
-!ITS-Board/Programs/Stack/Src/rest_lvl0.c
-!ITS-Board/Programs/Stack/Src/udp_server.c
+#!ITS-Board/Programs/Stack/Src/rest_lvl0.c
+#!ITS-Board/Programs/Stack/Src/udp_server.c

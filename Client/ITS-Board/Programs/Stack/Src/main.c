@@ -6,6 +6,7 @@
  ******************************************************************************
  */
 /* Includes ------------------------------------------------------------------*/
+#include "delay.h"
 #include <ctype.h>
 #include <stdbool.h>
 #define STM32F429xx
@@ -77,6 +78,11 @@ void toggleState() {
   currentState = (currentState + 1) % STATE_COUNT;
 }
 
+void resetScreen() {
+   GUI_clear(WHITE);
+  lcdGotoXY(1, 1);
+}
+
 
 int main(void) {
   initITSboard(); // Initialisierung des ITS Boards
@@ -100,10 +106,16 @@ int main(void) {
   lcdPrintlnS("../done");
 
 
+  resetScreen();
+ 
+
    ButtonState btn;
 
   // INITIAL MENUE HERE
   lcdPrintlnS("SELECT MENU");
+  lcdPrintlnS("S7 -> UP");
+  lcdPrintlnS("S6 -> DOWN");
+  lcdPrintlnS("S0 -> NEXT MENU");
 
   while (1) {
     
@@ -123,6 +135,7 @@ int main(void) {
     // === WRITE ===
     //
     if (currentState != lastState) {
+      resetScreen();
       // Zustandswechsel erkannt → ggf. Statusanzeige
       switch (currentState) {
         case STATE_SELECT_MENU:
@@ -190,6 +203,8 @@ int main(void) {
       default:
         break;
     }
+    check_input(); // Check for incoming packets
+    delay(300); 
   }
 
 }

@@ -17,7 +17,7 @@ static const RpcFunction rpcFunctionTable[] = {
     { "move",          { "int" },                         1 },
     { "register_node", { "String", "String" },            2 },
     { "select",        { "int" },                         1 },
-    { "updateView",    { "bitmap256", "int", "bool", "bool" }, 4 }
+    //{ "updateView",    { "bitmap256", "int", "bool", "bool" }, 4 }
     // TODO ADD ALL FUNCTIONS
 
 };

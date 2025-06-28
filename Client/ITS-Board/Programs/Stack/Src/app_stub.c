@@ -9,23 +9,23 @@
 // Hilfsfunktion: Enum zu String
 const char* dir_to_str(Direction dir) {
     switch (dir) {
-        case DIR_UP: return "DIR_UP";
-        case DIR_DOWN:  return "DIR_DOWN";
-        case DIR_LEFT: return "DIR_LEFT";
-        case DIR_RIGHT:  return "DIR_RIGHT";
-        case DIR_FORWARD: return "DIR_FORWARD";
-        case DIR_BACKWARD:  return "DIR_BACKWARD";
-        case DIR_OPEN: return "DIR_OPEN";
-        case DIR_CLOSE:  return "DIR_CLOSE";
-        default:        return "UNKNOWN";
+        case DIR_UP: return "0";
+        case DIR_DOWN:  return "1";
+        case DIR_LEFT: return "2";
+        case DIR_RIGHT:  return "3";
+        case DIR_FORWARD: return "4";
+        case DIR_BACKWARD:  return "5";
+        case DIR_OPEN: return "6";
+        case DIR_CLOSE:  return "7";
+        default:        return "99";
     }
 }
 
 const char* sdir_to_str(SDirection dir) {
     switch (dir) {
-        case SELECT_UP: return "SELECT_UP";
-        case SELECT_DOWN: return "SELECT_DOWN";
-        default:     return "UNKNOWN";
+        case SELECT_UP: return "0";
+        case SELECT_DOWN: return "1";
+        default:     return "99";
     }
 }
 
@@ -49,6 +49,7 @@ void register_node( char* name, char* functionName) {
 
 void select(SDirection dir) {
     const char* paramTypes[] = { "int" };
+
     const char* param[] = {sdir_to_str(dir)};
     int numOfParam = 1;
     rpc_invoke("select", paramTypes, param, numOfParam);
