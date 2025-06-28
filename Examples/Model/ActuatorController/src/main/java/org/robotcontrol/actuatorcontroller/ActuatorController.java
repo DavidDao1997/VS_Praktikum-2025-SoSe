@@ -2,22 +2,15 @@ package org.robotcontrol.actuatorcontroller;
 //import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 import org.robotcontrol.actuatorcontroller.roboticarm.RoboticArmMock;
 import org.robotcontrol.middleware.ServerStub;
-import org.robotcontrol.middleware.Server;
-import io.grpc.BindableService;
 import javafx.scene.robot.Robot;
-import movementAdapter.MoveAdapterOuterClass.RobotDirection;
-import org.robotcontrol.actuatorcontroller.roboticarm.RoboticArmMock;
-
-import org.robotcontrol.middleware.services.ActuatorControllerServer;
-
-
 
 public class ActuatorController extends ServerStub {
     public static void main(String[] args) {
-        ActuatorController ac = new ActuatorController("foo", 123, "A1");
-        Server server = new Server(50050,(BindableService) new ActuatorControllerServer(ac));
-        server.Listen();
-        server.awaitTermination();
+        // FIXME use new RPC
+        // ActuatorController ac = new ActuatorController("foo", 123, "A1");
+        // Server server = new Server(50050,(BindableService) new ActuatorControllerServer(ac));
+        // server.Listen();
+        // server.awaitTermination();
     }
 
     public enum Direction {

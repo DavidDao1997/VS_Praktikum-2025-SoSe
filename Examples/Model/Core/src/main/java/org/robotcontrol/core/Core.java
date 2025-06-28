@@ -1,9 +1,8 @@
 package org.robotcontrol.core;
 
-import io.grpc.BindableService;
-import org.robotcontrol.middleware.Server;
-import org.robotcontrol.middleware.services.MoveAdapterServer;
-import org.robotcontrol.middleware.services.StateServiceServer;
+import org.robotcontrol.middleware.udp.MoveAdapterServer;
+import org.robotcontrol.middleware.udp.StateServiceServer;
+import org.robotcontrol.middleware.udp.UdpServer;
 import org.robotcontrol.core.application.controller.rpc.ControllerMock;
 import org.robotcontrol.core.application.moveadapter.MoveAdapter;
 import org.robotcontrol.core.application.stateservice.StateService;
@@ -17,6 +16,7 @@ import org.robotcontrol.core.application.stateservice.StateService;
  */
 public class Core {
     public static void main(String[] args) {
+        // FIXME use client
         StateService stateService = new StateService(new ControllerMock());
         stateService.register("R1A1");
         stateService.register("R1A2");
@@ -25,12 +25,9 @@ public class Core {
 
         MoveAdapter moveAdapter = new MoveAdapter(stateService);
 
-
-        Server server = new Server(
-            50052,
-                (BindableService) new StateServiceServer(stateService),
-                (BindableService) new MoveAdapterServer(moveAdapter)
-        );
+        UdpServer server = new UdpServer();
+        server.addService(45054, new MoveAdapterServer(moveAdapter));
+        server.addService(45055, new StateServiceServer(stateService));
 
         server.Listen();
         server.awaitTermination();

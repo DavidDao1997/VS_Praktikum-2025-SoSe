@@ -24,7 +24,6 @@
             "request": "launch",
             "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",
             "projectName": "ActuatorController"
-            
         },
         {
             "type": "java",

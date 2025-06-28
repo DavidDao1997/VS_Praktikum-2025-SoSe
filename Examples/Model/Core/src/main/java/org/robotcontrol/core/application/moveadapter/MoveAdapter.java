@@ -3,7 +3,7 @@ package org.robotcontrol.core.application.moveadapter;
 import org.robotcontrol.middleware.ServerStub;
 import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController;
 import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController.ActuatorDirection;
-import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorControllerClient;
+import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorControllerMock;
 import org.robotcontrol.core.application.stateservice.StateService_I;
 
 import lombok.AllArgsConstructor;
@@ -83,7 +83,8 @@ public class MoveAdapter extends ServerStub {
 				return;
 		}
 
-		ActuatorController acm = new ActuatorControllerClient();
+		// FIXME use client
+		ActuatorControllerMock acm = new ActuatorControllerMock("R1A1");
 		acm.move(direction);
 
 		stateService.setError(false, true);
