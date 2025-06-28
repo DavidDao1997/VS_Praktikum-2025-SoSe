@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
-import java.util.Iterator;
-
 
 public class Marshaller {
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -26,9 +24,7 @@ public class Marshaller {
             valueArray.add(serializeValue(val));
         }
 
-        ObjectNode paramsNode = objectMapper.createObjectNode();
-        paramsNode.set("values", valueArray);
-        root.set("params", paramsNode);
+        root.set("params", valueArray);
 
         try {
             return objectMapper.writeValueAsString(root);

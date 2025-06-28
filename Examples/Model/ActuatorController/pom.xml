@@ -25,13 +25,13 @@
     </properties>
 
     <dependencies>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.cads.vs</groupId>
             <artifactId>robotic-arm-lib</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/CaDSRoboticArmInterface.jar</systemPath>
-        </dependency>
+        </dependency> -->
 
        
         <dependency>
