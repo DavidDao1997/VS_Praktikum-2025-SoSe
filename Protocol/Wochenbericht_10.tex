@@ -11,8 +11,8 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht 10 - Praktikum "Verteilte Systeme": Abschluss MVP}
-\author{Philipp Patt}
+\title{Wochenbericht 10 - RPC Übertragung, Watchdog}
+\author{David Dao}
 \date{\today}
 
 \lstset{
@@ -44,39 +44,52 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao & MVP  & 80\% & 2h & in review\\
+Manh-An David Dao & Controller RPC Übertragung, Arc42 Überarbeitung  & 80\% & 4h & in review\\
 \hline
-Jannik Schön & MVP  & 80\% & 4h & in review \\
+Jannik Schön & Watchdog, Arc42 Überarbeitung  & 80\% & 4h & in progress \\
 \hline
-Marc Siekmann & ITS-Board View und RPC Übertragung & 80\% & 5h & in progress \\
+Marc Siekmann & ITS-Board View, RPC Übertragung in C & 90\% & 5h & in progress \\
 \hline
-Philipp Patt & MVP & 80\% & 6h & in progress \\
+Philipp Patt & RPC Übertragung in JAVA, DNS & 80\% & 6h & in progress \\
 
 \bottomrule
 \end{tabular}
 
+
 \section{Bearbeitete Themen und Schlüssel Erkenntnisse}
+\subsection{Arc42 Überarbeitung}
+Die Kapitel 4-7 wurden Überarbeitet\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}}. 
 
-\subsection{ITS-Board View und RPC Übertragung}
+\subsection{Controller RPC Übertragung}
+Der Controller wurde implementiert, und erste Schritte zur RPC-Übertragung wurden durchgeführt.
+Ursprünglich war gRPC geplant, jedoch stellte sich heraus, dass es auf TCP basiert, welches verbindungsorientiert ist.\footnote{\url{https://grpc.io/blog/grpc-load-balancing/}}.
+Diese Eigenschaft führt zu Problemen bei der Echtzeitkommunikation.
+Daher haben wir uns entschieden, eine eigene RPC-Lösung zu entwickeln, die speziell auf Echtzeitkommunikation ausgerichtet ist und UDP nutzt.
 
-Auf dem ITS-Board wird das IO des Views implementiert. Dazu wurde ein Vorlage erstellt, die noch vervollständigt werden muss\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/26}}.
-Für RPC wurde sich folgendes überlegt und muss noch in das arc42 Dokument der Middleware übertragen werden:\\
-- Ein UDP Paket hat eine Standardgröße von 512 Byte \footnote{Van Steen, Tanenbaum(2025): Distributed Systems; 4th Edition, S. 366}. Daher wird pro Paket genau ein RPC-Aufruf durchgeführt.
-Das hat den Vorteil, dass jedes einzelnes Paket als vollständige Information gilt. Das Ziel Safety ist somit mit einem Zeitstempel oder eindeutigen Token realisierbar \footnote{\url{https://www.rfc-editor.org/rfc/rfc5531\#section-5}}. Sollte der Zeitstempel bzw. Token ungültig sein, wird das Paket verworfen und dem User im UI mitgeteilt, dass ein Fehler vorliegt (Fehlertransparenz).\\
-- Wir verwenden zunächst ein JSON Format, um die Daten vor dem Versenden zu Marshallen \footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.124 Abschnitt Copy In, Copy out}. \\
-- Die Namensauflösung wird mit einem zentralen Server durchgeführt. Dies wird ebenfalls mit RPC durchgeführt. Der Client wartet dann auf eine Antwort. Diese ist ebenfalls ein RPC-Aufruf vom Nameserver mittels einer Callback-Funktion, mit der IP-Adresse:Port als Antwort. Um häufige Anfragen zu vermeiden, muss gecached werden. 
+\subsection{Watchdog/Heartbeat}
+In der ersten Iteration wurde sich auf einen zentralen Hotspot, bzw. eine zentralisiertes Heartbeat Protokoll verständigt\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/31}}.
+Nach weiter Disskussion sind wir zu dem Schluss gekommen, dass ein solcher Ansatz ein zu großes Risiko in Hinsicht auf einem Single Point of Failure bietet\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf}S.198 }.
+Um dieses Risiko zu mindern, soll im nächsten Schritt eine Hierarchisches Heartbeat Protokoll\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf}S.199} implementiert werden. Dabei soll eine Out-of-Band Kommunikation genutzt werden. 
+Jeder Prozess bekommt seinen eigenen Watchdog.  
 
-\subsection{MVP Abschluss}
+\subsection{Fertigstellung der Applikation}
+Die Applikation wurde nach dem arc42 \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}} fertiggestellt.
 
-Der MVP ist kurz vor Abschluss \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/27}}.
-Der StateService, MoveAdapter und Controller wurden in einem neuen Baustein namens Core gruppiert. 
-Die Kommunikation zwischen MVP-IO und Core wurde getestet. Die Anbindung der ActuatorController wurde vorerst gemockt und gilt es noch via grpc umzusetzen.
+\subsection{RPC Übertragung in C und JAVA}
 
+Für das ITS-Board wurde das IO nach der vorgeschriebenen FSM im arc42 Dokument \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}} implementiert. Ebenfalls wurde ein Client der Middleware in C implementiert und beispielhaft eine JAVA Implementierung des Modells via RPC beispielhaft angesprochen. 
+Bzgl. Watchdog muss noch ein Server implementiert werden. 
+Zudem wurde ein Client und ein Server in JAVA umgesetzt. Dieses soll für die Applikationsstubs eingesetzt werden, die in JAVA umgesetzt sind. Das Marshalling wird mit JSON umgesetzt und mit UDP versendet.
+
+\subsection{DNS}
+
+DNS ist nach dem konzept der Service-Registrierung\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.213} implementiert. 
+Das Naming\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.214} gruppiert mehrere RPCs in Services und der DNS löst die Kombination Service \& Funtionsname auf.
+Als nächstes gilt es diesen in den diversen clients einzubinden.
 
 \section{Nächste Schritte}
-- Gelerntes aus MVP in entsprechendes arc42 Dokument überführen (\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}},\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/28}})\\
-- Einrichtung eines REDIS Namensserver mit RPC, der eine hierarchische Namensauflösung beinhaltet \\
-- grpc durch eigenes rpc ersetzen \\
-
+- Vervollständigung arc42 Applikation und Middleware\\
+- Fertigstellung Watchdog und DNS\\
+- Testen der Applikation mit RPC
 
 \end{document}
