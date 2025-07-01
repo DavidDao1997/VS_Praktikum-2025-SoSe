@@ -31,6 +31,8 @@ public class WatchDogServer implements ServerStub_I{
                 System.out.printf("WatchDogService.checkIn() was called with: %s \n", args[0]);
                 watchDogService.call(fnName, args);
                 break;
+            default:
+                break;
         }
         
         throw new UnsupportedOperationException("Unimplemented method 'call'");

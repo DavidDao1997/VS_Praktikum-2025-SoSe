@@ -143,5 +143,10 @@ public class StateService extends ServerStub implements StateService_I{
 		//update(availRobots, selectedRobot, error, confirm);
 		controller.update(availRobots,selectedRobot,error,confirm);
 	}
+
+	@Override
+	public void reportHealthy(String component) {
+		
+	}
 	
 }

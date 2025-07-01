@@ -16,6 +16,8 @@ public class MoveAdapterServer implements ServerStub_I {
         call(request.function(), request.values().toArray(new RpcValue[0]));
     }
 
+
+
     @Override
     public void call(String fnName, RpcValue... args) {
         switch (fnName) {
