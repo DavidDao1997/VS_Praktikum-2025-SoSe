@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 import java.util.List;
 
-import org.robotcontrol.middleware.RpcUtils;
-import org.robotcontrol.middleware.RpcValue;
-import org.robotcontrol.middleware.ServerStub;
 import org.robotcontrol.middleware.ServerStub_I;
+import org.robotcontrol.middleware.rpc.RpcUtils;
+import org.robotcontrol.middleware.rpc.RpcValue;
 import org.robotcontrol.websocket.RobotWebSocketServer;
 
 public class WebSocketView implements IView,ServerStub_I {

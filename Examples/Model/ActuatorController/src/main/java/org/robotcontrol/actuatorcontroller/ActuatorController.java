@@ -2,24 +2,18 @@ package org.robotcontrol.actuatorcontroller;
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 import org.cads.vs.roboticArm.hal.real.CaDSRoboticArmReal;
 import org.robotcontrol.actuatorcontroller.roboticarm.RoboticArmMock;
-import org.robotcontrol.middleware.ServerStub;
-import org.robotcontrol.middleware.udp.ActuatorControllerServer;
-import org.robotcontrol.middleware.udp.UdpServer;
+import org.robotcontrol.middleware.actuatorcontroller.ActuatorControllerServer;
+import org.robotcontrol.middleware.rpc.RpcServer;
 
 
-public class ActuatorController extends ServerStub {
+public class ActuatorController implements org.robotcontrol.middleware.idl.ActuatorController {
     public static void main(String[] args) {
         ActuatorController ac = new ActuatorController("localhost", 50055 , "A1");
 
-        UdpServer server = new UdpServer();
-        server.addService(45067, new ActuatorControllerServer(ac));
+        RpcServer server = new RpcServer();
+        server.addService(new ActuatorControllerServer(ac), "R1A1", "move");
         server.Listen();
         server.awaitTermination();
-    }
-
-    public enum Direction {
-        INCREASE,
-        DECREASE
     }
 
     private int value = 50;
@@ -34,19 +28,14 @@ public class ActuatorController extends ServerStub {
         this.real = new RoboticArmMock();
         this.actuator = actuator;
     }
-    public void move(int md) {
-		Direction[] values = Direction.values();
-		if (md < 0 || md >= values.length) {
-			throw new IllegalArgumentException("Invalid RobotDirection index: " + md);
-		}
-		move(values[md]);
-	}
-    public void move(Direction direction) {
-        if (direction == Direction.INCREASE) {
+
+    @Override
+    public void move(Direction actuatorDirection) {
+        if (actuatorDirection == Direction.INCREASE) {
             if (value < MAX_VALUE) {
                 value++;
             }
-        } else if (direction == Direction.DECREASE) {
+        } else if (actuatorDirection == Direction.DECREASE) {
             if (value > MIN_VALUE) {
                 value--;
             }

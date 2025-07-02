@@ -3,15 +3,15 @@ package org.robotcontrol.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.robotcontrol.middleware.RpcValue;
-import org.robotcontrol.middleware.udp.UdpClient;
+import org.robotcontrol.middleware.rpc.RpcClient;
+import org.robotcontrol.middleware.rpc.RpcValue;
 
 public class ViewClient implements IView{
-    UdpClient udpClient;
+    RpcClient client;
 
 
     public ViewClient(String host, int port) {
-        udpClient = new UdpClient(host, port);
+        client = new RpcClient("View");
     }
 
    public void updateView(String[] robots, int selected, boolean error, boolean confirm) {
@@ -19,7 +19,7 @@ public class ViewClient implements IView{
         for(String robot: robots) {
             Robs.add(new RpcValue.StringValue(robot));
         }
-        udpClient.invoke("updateView", new RpcValue.ListValue(Robs),new RpcValue.IntValue(selected), new RpcValue.BoolValue(error),new RpcValue.BoolValue(confirm));
+        client.invoke("updateView", new RpcValue.ListValue(Robs),new RpcValue.IntValue(selected), new RpcValue.BoolValue(error),new RpcValue.BoolValue(confirm));
    }
 
 }

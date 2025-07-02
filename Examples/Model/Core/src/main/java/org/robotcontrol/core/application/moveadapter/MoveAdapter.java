@@ -1,38 +1,18 @@
 package org.robotcontrol.core.application.moveadapter;
 
-import org.robotcontrol.middleware.ServerStub;
 import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController;
 import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController.ActuatorDirection;
 import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorControllerMock;
-import org.robotcontrol.core.application.stateservice.StateService_I;
+import org.robotcontrol.core.application.stateservice.StateService;
 
 import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
-public class MoveAdapter extends ServerStub {
-	private StateService_I stateService;
+public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter {
+	private StateService stateService;
 
-	public enum RobotDirection{
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN,
-		BACKWARD,
-		FORWARD,
-		OPEN,
-		CLOSE
-	}
-	
-    public void move(int md) {
-		RobotDirection[] values = RobotDirection.values();
-		if (md < 0 || md >= values.length) {
-			throw new IllegalArgumentException("Invalid RobotDirection index: " + md);
-		}
-		move(values[md]);
-	}
-	
-	public void move(RobotDirection rd) {
+	public void move(RobotDirection robotDirection) {
 		String selectedRobot = stateService.getSelected();
 		
 		
@@ -44,7 +24,7 @@ public class MoveAdapter extends ServerStub {
 		Integer actuatorId;
 		ActuatorDirection direction;
 
-		switch (rd) {
+		switch (robotDirection) {
 			case LEFT:
 				actuatorId = 1;
 				direction = ActuatorDirection.DECREASE;

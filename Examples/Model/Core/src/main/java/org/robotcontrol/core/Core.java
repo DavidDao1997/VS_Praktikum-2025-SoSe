@@ -1,8 +1,10 @@
 package org.robotcontrol.core;
 
-import org.robotcontrol.middleware.udp.MoveAdapterServer;
-import org.robotcontrol.middleware.udp.StateServiceServer;
-import org.robotcontrol.middleware.udp.UdpServer;
+import org.robotcontrol.middleware.idl.View;
+import org.robotcontrol.middleware.moveadapter.MoveAdapterServer;
+import org.robotcontrol.middleware.rpc.RpcServer;
+import org.robotcontrol.middleware.stateservice.StateServiceServer;
+import org.robotcontrol.middleware.utils.Mocker;
 //import org.robotcontrol.view.ViewMock;
 import org.robotcontrol.view.ViewClient;
 import org.robotcontrol.core.application.controller.rpc.Controller;
@@ -20,7 +22,7 @@ import org.robotcontrol.core.application.stateservice.StateService.SelectDirecti
 public class Core {
     public static void main(String[] args) {
         // FIXME use client
-        StateService stateService = new StateService(new Controller(new ViewClient("localhost", 5000)));
+        StateService stateService = new StateService(new Controller(Mocker.mock(View.class)));
         stateService.register("R1A1");
         stateService.register("R1A2");
         stateService.register("R1A3");
@@ -41,9 +43,9 @@ public class Core {
 
         MoveAdapter moveAdapter = new MoveAdapter(stateService);
 
-        UdpServer server = new UdpServer();
-        server.addService(45054, new MoveAdapterServer(moveAdapter));
-        server.addService(45055, new StateServiceServer(stateService));
+        RpcServer server = new RpcServer();
+        server.addService(new MoveAdapterServer(moveAdapter), "moveAdapter", "move");
+        server.addService(new StateServiceServer(stateService), "StateService", "select", "reportHealth");
 
         server.Listen();
         server.awaitTermination();

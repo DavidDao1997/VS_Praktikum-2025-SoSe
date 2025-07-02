@@ -1,11 +1,12 @@
 package org.robotcontrol.core.application.controller.rpc;
+import org.robotcontrol.middleware.idl.View;
 import org.robotcontrol.view.IView;
 
 public class Controller implements IController {
 
-    private final IView view;
+    private final View view;
 
-    public Controller(IView view) {
+    public Controller(View view) {
         this.view = view;
     }
 

@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.robotcontrol.middleware.ServerStub;
+import org.robotcontrol.middleware.ServerStub_I;
+import org.robotcontrol.middleware.rpc.RpcUtils;
+import org.robotcontrol.middleware.rpc.RpcValue;
 import org.robotcontrol.core.application.controller.rpc.IController;
 
 
 @Getter
-public class StateService extends ServerStub implements StateService_I{
+public class StateService implements org.robotcontrol.middleware.idl.StateService {
 	
 	public enum SelectDirection{
 		UP,
@@ -144,5 +146,10 @@ public class StateService extends ServerStub implements StateService_I{
 		//update(availRobots, selectedRobot, error, confirm);
 		controller.update(availRobots,selectedRobot,error,confirm);
 	}
-	
+
+	@Override
+	public void reportHealth(String serviceName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
+	}	
 }
