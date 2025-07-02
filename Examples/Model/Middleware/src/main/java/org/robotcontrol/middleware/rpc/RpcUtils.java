@@ -31,6 +31,9 @@ public class RpcUtils {
                 unwrapped.add(unwrap(val));
             }
             return unwrapped;
+        } else if (rpcValue instanceof RpcValue.Bitmap256Value) {
+            RpcValue.Bitmap256Value bv = (RpcValue.Bitmap256Value) rpcValue;
+            return bv.getBytes(); 
         } else {
             throw new IllegalArgumentException("Unknown RpcValue type: " + rpcValue);
         }

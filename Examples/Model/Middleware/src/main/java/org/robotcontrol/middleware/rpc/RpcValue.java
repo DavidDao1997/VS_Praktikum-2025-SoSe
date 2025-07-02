@@ -1,5 +1,7 @@
 package org.robotcontrol.middleware.rpc;
 
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -124,4 +126,43 @@ public interface RpcValue {
             return "ListValue(" + values + ")";
         }
     }
+
+    class Bitmap256Value implements RpcValue {
+        private static final int BYTE_LENGTH = 32; // 256 bits
+        private final byte[] bytes;
+
+        public Bitmap256Value(byte[] bytes) {
+            if (bytes.length != BYTE_LENGTH) {
+                throw new IllegalArgumentException("Bitmap256Value must be 32 bytes (256 bits)");
+            }
+            this.bytes = Arrays.copyOf(bytes, BYTE_LENGTH);
+        }
+
+        public byte[] getBytes() {
+            return Arrays.copyOf(bytes, BYTE_LENGTH);
+        }
+
+        public BigInteger toBigInteger() {
+            return new BigInteger(1, bytes); // unsigned
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Bitmap256Value)) return false;
+            Bitmap256Value that = (Bitmap256Value) o;
+            return Arrays.equals(bytes, that.bytes);
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(bytes);
+        }
+
+        @Override
+        public String toString() {
+            return "Bitmap256Value(0x" + toBigInteger().toString(16).toUpperCase() + ")";
+        }
+    }
+
 }
