@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Status View</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.5em;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 30px;
+        }
+        li {
+            font-size: 1.1em;
+            margin: 5px 0;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        li.selected {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        .status-button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            margin-right: 20px;
+            color: white;
+            background-color: lightgray;
+        }
+        .error {
+            background-color: red;
+        }
+        .confirmation {
+            background-color: green;
+        }
+        .disabled {
+            background-color: gray;
+        }
+        #connectionStatus {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Verfügbare Roboter</h1>
+<p id="connectionStatus">Verbindung wird hergestellt...</p> <!-- Verbindungsstatus -->
+
+<ul id="robotList"></ul>
+
+<button id="errorBtn" class="status-button">Fehlerstatus</button>
+<button id="confirmationBtn" class="status-button">Bestätigung</button>
+
+<script>
+    function updateView(AvailableRobots, SelectedRobotIdx, Error, Confirmation) {
+        const list = document.getElementById("robotList");
+        const errorBtn = document.getElementById("errorBtn");
+        const confirmationBtn = document.getElementById("confirmationBtn");
+
+        list.innerHTML = "";
+
+        AvailableRobots.forEach((name, idx) => {
+            const li = document.createElement("li");
+
+            if (idx === 0) {
+                li.textContent = "Keine Auswahl";
+            } else {
+                li.textContent = name;
+            }
+
+            if (idx === SelectedRobotIdx) {
+                li.classList.add("selected");
+            }
+
+            list.appendChild(li);
+        });
+
+        errorBtn.className = "status-button";
+        if (Error) {
+            errorBtn.classList.add("error");
+            errorBtn.textContent = "Fehler erkannt";
+        } else {
+            errorBtn.classList.add("disabled");
+            errorBtn.textContent = "Kein Fehler";
+        }
+
+        confirmationBtn.className = "status-button";
+        if (Confirmation) {
+            confirmationBtn.classList.add("confirmation");
+            confirmationBtn.textContent = "Erfolgreich";
+        } else {
+            confirmationBtn.classList.add("disabled");
+            confirmationBtn.textContent = "Keine Aktion";
+        }
+    }
+
+    window.onload = function () {
+        const statusText = document.getElementById("connectionStatus");
+
+        const socket = new WebSocket("ws://localhost:4568");
+
+        socket.onopen = function () {
+            console.log("WebSocket verbunden mit Server.");
+            statusText.textContent = "WebSocket verbunden.";
+        };
+
+        socket.onmessage = function (event) {
+            try {
+                const data = JSON.parse(event.data);
+                console.log("Empfangen:", data);
+                updateView(
+                    data.available_robots,
+                    data.selected_robot_idx,
+                    data.error,
+                    data.confirmation
+                );
+            } catch (e) {
+                console.error("Fehler beim Verarbeiten der Nachricht:", e);
+            }
+        };
+
+        socket.onerror = function (error) {
+            console.error("WebSocket Fehler:", error);
+            statusText.textContent = "WebSocket Fehler!";
+        };
+
+        socket.onclose = function () {
+            console.warn("WebSocket Verbindung geschlossen.");
+            statusText.textContent = "WebSocket Verbindung geschlossen.";
+        };
+    };
+</script>
+
+</body>
+</html>
