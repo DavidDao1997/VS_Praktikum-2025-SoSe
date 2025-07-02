@@ -64,9 +64,7 @@ Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter System
         \hline
         Wartbarkeit & 
         Der Code muss übersichtlich sein, gut dokumentiert sein und wenig Komplexität enthalten. 
-        & Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar  
-        
-        \\
+        & Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar \\
         \hline
         %Portabilität & %Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
         %& nicht relevant
@@ -76,18 +74,24 @@ Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter System
         & Keine Einweisung erforderlich
         \\
         \hline
+		Anpassbarkeit & Neue Funktionen, Sensoren oder Roboterarme sollen ohne tiefgreifende Änderungen am System integriert werden können. & Erweiterungen können durch modulare Struktur und erweiterbare Schnittstellen einfach hinzugefügt werden. \\ 
+		\hline
+%Anpassbarkeit sollte man eventuell noch durchsprechen, bin aber der meinung das es möglich bsp. UI/Controller
         %Anpassbarkeit & 
         %Neue Funktionen, Sensoren oder Regeln sollen ohne tiefgreifende Änderungen am System integrierbar sein. 
         %& 
         %\\
         %\hline
+		Kompatibilität & Das System soll mit verschiedenen Hard- und Softwareplattformen kompatibel sein. & Es unterstützt die Kommunikation mit Embedded-Systemen (z.B. Raspberry Pi). \\ 
+		\hline
         %Kompatibilität & 
         %Das System soll mit bestehenden Standards und Protokollen kommunizieren können. 
         %& 
         %\\
-        %\hline
-        Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme sind ansteuerbar \\
-        \hline
+        %\hline 
+		% Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme sind ansteuerbar \\
+        Ressourcenteilung & Mehrere Roboterarme können über ein Netzwerk von einem ITS-Board gesteuert werden. & Alle hinzugefügten Roboterarme sind ansteuerbar und teilen die verfügbaren Rechenressourcen vom ITS-BRD effizient. \\
+		\hline
         Offenheit & 
        	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
         & Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
@@ -95,15 +99,15 @@ Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter System
         Zugriffstransparenz   & Die Umsetzung der Roboterarmsteuerung ist für den Benutzer nicht erkennbar und möglichst einfach gehalten & GUI zeigt nur Zustände des ausgewähltem Roboterarms an ( z.B. Verfügbarkeit) und der Roboterarm ist über das ITS-Board so einfach wie möglich steuerbar\\
         \hline
         Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist für den Benutzer unsichtbar  & Aus der Sicht der Benutzer sind alle benötigten Ressourcen zu Steuerung direkt und lokal auf dem ITS-Board\\
-       
-        
+        \hline
+	
 \end{longtable}
+
 
 
 
 \clearpage
 \section{Stakeholder}
-
 \begin{table}[h!]
 	\caption{Interessen der Stakeholder}
 	\label{tab:stakeholder}

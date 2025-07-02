@@ -1,9 +1,10 @@
 \chapter{Lösungsstrategie}
 
 \section{Controller}
-Der Controller fungiert als Observer. 
-Er empfängt Benachrichtigungen vom Modell, wenn Änderungen oder Aktualisierungen erfolgen, und leitet diese Informationen an die View weiter, um sie zu aktualisieren. 
-Der Controller speichert keine Zustände und sendet keine Eingaben von der View an das Modell.
+% Text muss überarbeitet werden oder reviewed
+% Der Controller fungiert als Observer. 
+% Er empfängt Benachrichtigungen vom Modell, wenn Änderungen oder Aktualisierungen erfolgen, und leitet diese Informationen an die View weiter, um sie zu aktualisieren. 
+% Der Controller speichert keine Zustände und sendet keine Eingaben von der View an das Modell.
 
 %Eventuell später parametertype hinzufügen und genauer definieren.
 \begin{table}[h!]
@@ -19,9 +20,34 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
     \label{tab:Controller}
 \end{table}
 
-
+\clearpage
 \section{Model}
+% ===========================Old Version StateServices===========================
+    % \subsection{StateService}
+    % \begin{table}[h!]
+    %     \centering
+    %     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+    %         \hline
+    %         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+    %         \hline
+    %         void select(SelectDirection selectDirection) & keine & Wählt einen Roboter aus \\
+    %         \hline
+    %         void setError(Boolean error) & Fehler ist aufgetreten & Setzt den Fehlerstatus. \textbf{(Beschreibung ergänzen)} \\
+    %         \hline
+    %         %void register(ActuatorName actuator) & Verbindung zwischen ActuatorController und StateService besteht & Registriert einen ActuatorController beim StateService. \\
+    %         %\hline
+    %         %void heartbeat(ActuatorName actuator) & In regelmäßigen Zeitfenstern & Benachrichtigt den StateService über den aktuellen Status der Aktoren.
+    %         %\hline
+    %         void reportHealth(String [] actuatorNames) & In regelmäßigen Zeitfenstern und wenn subscribed wurde & Benachrichtigt den StateService über den aktuellen Gesundheitsstatus der Aktoren. \\
+    %         \hline
+    %         private void notify() & StateService erfasst für Controller relevante Änderung & Benachrichtigt den Controller über Änderungen im StateServices. \\
+    %         \hline
+    %     \end{tabular}
+    %     \caption{Funktionen des StateService}
+    %     \label{tab:StateService}
+    % \end{table}
 
+% New Version Stateservice that has been implemented in mvp branch
     \subsection{StateService}
     \begin{table}[h!]
         \centering
@@ -29,25 +55,47 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
             \hline
             \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
             \hline
-            void select(SelectDirection selectDirection) & keine & Wählt einen Roboter aus \\
+            void select(SelectDirection selectDirection) & Liste der verfügbaren Roboter ist nicht leer & Wählt einen Roboter aus der Liste der verfügbaren Roboter aus und aktualisiert den Status. \\
             \hline
-            void setError(Boolean error) & Fehler ist aufgetreten & Setzt den Fehlerstatus. \textbf{(Beschreibung ergänzen)} \\
+            void select(int sd) & sd ist ein gültiger Index für die SelectDirection-Enum & Ruft die Auswahl eines Roboters basierend auf dem Richtungsindex auf. \\
             \hline
-            %void register(ActuatorName actuator) & Verbindung zwischen ActuatorController und StateService besteht & Registriert einen ActuatorController beim StateService. \\
-            %\hline
-            %void heartbeat(ActuatorName actuator) & In regelmäßigen Zeitfenstern & Benachrichtigt den StateService über den aktuellen Status der Aktoren.
-            %\hline
-            void reportHealth(String [] actuatorNames) & In regelmäßigen Zeitfenstern und wenn subscribed wurde & Benachrichtigt den StateService über den aktuellen Gesundheitsstatus der Aktoren. \\
+            void setError(boolean error, boolean confirm) & Änderung des Fehler- oder Bestätigungsstatus notwendig & Setzt den Fehler- und Bestätigungsstatus und benachrichtigt den Controller. \\
             \hline
-            private void notify() & StateService erfasst für Controller relevante Änderung & Benachrichtigt den Controller über Änderungen im StateServices. \\
+            void register(String motorName) & Motorname im richtigen Format (z.B. R1A1) & Registriert den Motor und fügt den zugehörigen Roboter der Verfügbarkeitsliste hinzu, falls dieser vollständig ist. \\
+            \hline
+            void subscribe() & keine & Placeholder-Methode, aktuell ohne Implementierung. \\
+            \hline
+            String getSelected() & Ein Roboter ist ausgewählt (selectedRobot > 0) & Gibt den Namen des aktuell ausgewählten Roboters zurück. \\
+            \hline
+            private void sendUpdate() & Änderungen im Status des StateService & Benachrichtigt den Controller über die aktuellen Verfügbarkeiten und Zustände. \\
+            \hline
+            boolean isAvailable() & keine & Prüft, ob alle vier Aktoren (A1, A2, A3, A4) des Roboters aktiviert sind. Liefert \texttt{true}, wenn der Roboter vollständig verfügbar ist. \\
             \hline
         \end{tabular}
-        \caption{Funktionen des StateService}
+        \caption{Funktionen der Komponente StateService inklusive Robot-Klasse}
         \label{tab:StateService}
     \end{table}
 
 
 \clearpage
+% ===========================old version MoveAdapter===========================
+    % \subsection{MoveAdapter}
+    % \begin{table}[h!]
+    %     \centering
+    %     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+    %         \hline
+    %         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+    %         \hline
+    %         void move(Enum RobotDirection) & Verbindung zwischen IO und MoveAdapter besteht & Gibt die Richtung an, in die sich der Roboter bewegen soll. \\
+    %         \hline
+    %         void setSelectedRobot(String robotName) & In regelmäßigen Zeitfenstern & Setzt den aktuell ausgewählten Roboter.\\
+    %         \hline
+    %     \end{tabular}
+    %     \caption{Funktionen des MoveAdapter}
+    %     \label{tab:MoveAdapter}
+    % \end{table}
+
+% new version moveAdapter that has been implemented in mvp branch
     \subsection{MoveAdapter}
     \begin{table}[h!]
         \centering
@@ -55,46 +103,72 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
             \hline
             \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
             \hline
-            void move(Enum RobotDirection) & Verbindung zwischen IO und MoveAdapter besteht & Gibt die Richtung an, in die sich der Roboter bewegen soll. \\
+            void move(int md) & md ist ein gültiger Index der RobotDirection-Enum & Ruft die Bewegungsfunktion basierend auf dem Richtungsindex auf. \\
             \hline
-            void setSelectedRobot(String robotName) & In regelmäßigen Zeitfenstern & Setzt den aktuell ausgewählten Roboter.\\
+            void move(RobotDirection rd) & Ein Roboter muss im StateService ausgewählt sein & Führt die Bewegung des Roboters in die angegebene Richtung aus. Bei Erfolg wird der Fehlerstatus im StateService zurückgesetzt. Bei Fehler wird der Fehlerstatus im StateService gesetzt. \\
             \hline
         \end{tabular}
         \caption{Funktionen des MoveAdapter}
         \label{tab:MoveAdapter}
     \end{table}
 
-    \subsection{ActuatorController}
-    \begin{table}[h!]
-        \centering
-        \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
-            \hline
-            \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
-            \hline
-            void move(Enum ActuatorDirection) & Verbindung zwischen MoveAdapter und ActuatorController besteht & Erhöht oder verringert den Steuerwert um 1 und ruft \texttt{applyValue()} auf. \\
-            \hline
-            %void ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung & Initialisiert einen Aktuator mit dem angegebenen Host und Port. \\
-            %\hline
-        \end{tabular}
-        \caption{Funktionen des ActuatorController}
-        \label{tab:ActuatorController}
-    \end{table}
 
-    \subsection{Watchdog}
-    \begin{table}[h!]
-        \centering
-        \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
-            \hline
-            \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
-            \hline
-            void checkIn(String serviceName) & service ist verfügbar & Sendet ein Signal an den Watchdog, um die Verfügbarkeit zu kommunizieren. \\
-            \hline
-            void subscribe(String serviceName) & Die Verfügbarkeit eines Services soll kommuniziert werden & Abonniert den Watchdog, um Benachrichtigungen über den Gesundheitsstatus zu erhalten. \\
-            \hline
-        \end{tabular}
-        \caption{Watchdog Funktionen}
-        \label{tab:WatchdogFunktionen}
-    \end{table}
+
+% ===========================Old version ActuatorController===========================
+    % \subsection{ActuatorController}
+    % \begin{table}[h!]
+    %     \centering
+    %     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+    %         \hline
+    %         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+    %         \hline
+    %         void move(Enum ActuatorDirection) & Verbindung zwischen MoveAdapter und ActuatorController besteht & Erhöht oder verringert den Steuerwert um 1 und ruft \texttt{applyValue()} auf. \\
+    %         \hline
+    %         %void ActuatorControlWrapper(Host: String, Port: int, Actuator: String) & Gültige Netzwerkverbindung & Initialisiert einen Aktuator mit dem angegebenen Host und Port. \\
+    %         %\hline
+    %     \end{tabular}
+    %     \caption{Funktionen des ActuatorController}
+    %     \label{tab:ActuatorController}
+    % \end{table}
+\clearpage
+% new version ActuatorController
+    \subsection{ActuatorController}
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+                \hline
+                \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+                \hline
+                void move(int md) & md ist ein gültiger Index der Direction-Enum & Wandelt den Index in eine Richtung um und ruft die entsprechende Bewegungsfunktion auf. \\
+                \hline
+                void move(Direction direction) & Der Aktuator ist initialisiert & Bewegt den Aktuator in die angegebene Richtung (INCREASE oder DECREASE) und setzt den neuen Wert. \\
+                \hline
+                private void applyValue() & Ein gültiger Aktuatorname muss gesetzt sein & Setzt den aktuellen Wert des Aktuators physisch am Roboterarm und gibt den Zustand in der Konsole aus. \\
+                \hline
+                int getValue() & keine & Gibt den aktuellen Positionswert des Aktuators zurück. \\
+                \hline
+            \end{tabular}
+            \caption{Funktionen der Komponente ActuatorController}
+            \label{tab:ActuatorController}
+        \end{table}
+
+
+% !----------Watchdog is Middleware stuff need to be changed-------------!
+    % \subsection{Watchdog}
+    % \begin{table}[h!]
+    %     \centering
+    %     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+    %         \hline
+    %         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+    %         \hline
+    %         void checkIn(String serviceName) & service ist verfügbar & Sendet ein Signal an den Watchdog, um die Verfügbarkeit zu kommunizieren. \\
+    %         \hline
+    %         void subscribe(String serviceName) & Die Verfügbarkeit eines Services soll kommuniziert werden & Abonniert den Watchdog, um Benachrichtigungen über den Gesundheitsstatus zu erhalten. \\
+    %         \hline
+    %     \end{tabular}
+    %     \caption{Watchdog Funktionen}
+    %     \label{tab:WatchdogFunktionen}
+    % \end{table}
 
 
 
@@ -146,6 +220,7 @@ Der Controller speichert keine Zustände und sendet keine Eingaben von der View 
 \section{View}
 Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine Softwareschnittstelle an, die IO keine.
 
+% Marc's schnistelle
 \subsection{IO Funktionen}
 \begin{table}[h!]
     \centering
@@ -161,7 +236,7 @@ Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine So
     \caption{IO Funktionen}
     \label{tab:IOFunktionen}
 \end{table}
-
+% Hat sich nicht verändert
 \subsection{UI Funktionen}
 \begin{table}[h!]
     \centering
@@ -176,6 +251,4 @@ Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine So
     \label{tab:UIFunktionen}
 \end{table}
 \clearpage
-
-
 
