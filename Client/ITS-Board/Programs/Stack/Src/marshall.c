@@ -1,9 +1,53 @@
 
 
 #include "marshall.h"
+void unmarshall(const char* payload, char* function, char params[][64]) {
+    function[0] = '\0';
+
+    // Funktionsnamen extrahieren
+    const char* func_start = strstr(payload, "\"function\": \"");
+    if (!func_start) return;
+    func_start += strlen("\"function\": \"");
+    const char* func_end = strchr(func_start, '"');
+    if (!func_end) return;
+    size_t func_len = func_end - func_start;
+    strncpy(function, func_start, func_len);
+    function[func_len] = '\0';
+
+    // Hole Funktionsdefinition aus der IDL-Tabelle
+    const RpcFunction* fdef = find_rpc_function(function);
+    if (!fdef) return;
+
+    // Parameter extrahieren
+    const char* params_start = strstr(payload, "\"params\": [");
+    if (!params_start) return;
+    params_start += strlen("\"params\": [");
+    const char* params_end = strchr(params_start, ']');
+    if (!params_end) return;
+
+    char params_buf[256];
+    size_t params_len = params_end - params_start;
+    strncpy(params_buf, params_start, params_len);
+    params_buf[params_len] = '\0';
+
+    int count = 0;
+    char* token = strtok(params_buf, ",");
+    while (token && count < fdef->numParams) {
+        // Entferne führende und abschließende Leerzeichen/Anführungszeichen
+        while (*token == ' ' || *token == '\"') token++;
+        char* end = token + strlen(token) - 1;
+        while (end > token && (*end == ' ' || *end == '\"')) {
+            *end = '\0';
+            end--;
+        }
+        strncpy(params[count], token, 63);
+        params[count][63] = '\0';
+        count++;
+        token = strtok(NULL, ",");
+    }
+}
     
-    
-  void marshall(const char* func, const char* paramTypes[], const char* param[],
+  void marshall(const char* func, const char* param[],
                 const int numOfParam, char* payload ) {  
     
     payload[0] = '\0';
@@ -62,7 +106,6 @@
     }
     strcat(payload, "]}");
  
-
 
   }
 

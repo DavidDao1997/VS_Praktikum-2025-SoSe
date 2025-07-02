@@ -5,6 +5,12 @@
 #include <string.h>
 #include "stdlib.h"
 
+
+#define RPC_MAX_PARAMS 4
+
+char function[64];
+char params[RPC_MAX_PARAMS][64];
+
 // Funktionsdefinition
 typedef struct {
     const char* name;
@@ -17,7 +23,9 @@ static const RpcFunction rpcFunctionTable[] = {
     { "move",          { "int" },                         1 },
     { "register_node", { "String", "String" },            2 },
     { "select",        { "int" },                         1 },
-    //{ "updateView",    { "bitmap256", "int", "bool", "bool" }, 4 }
+    {"heartbeat",      { "String" },                         1 },
+    { "receive_resolution", { "String" },             1 },
+
     // TODO ADD ALL FUNCTIONS
 
 };

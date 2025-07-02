@@ -1,4 +1,8 @@
 #include "rpc_client.h"
+#include "err.h"
+#include "marshall.h"
+#include <stdint.h>
+#include <string.h>
 
 
 
@@ -11,7 +15,11 @@ static ip_addr_t rpc_client_ip;
 static ip_addr_t rpc_server_ip;
 static uint16_t rpc_server_port = 0xAFFE;
 
-void app_stub_set_server_ip(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
+static uint32_t last_heartbeat = 0;
+const char* myIP = "192.198.33.99";
+const uint32_t myPort = 0xAFFE;
+
+void set_server_ip(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
     IP4_ADDR(&rpc_server_ip, a, b, c, d);
 }
 
@@ -31,11 +39,18 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
         memcpy(buffer, p->payload, p->len > 127 ? 127 : p->len);
         buffer[p->len > 127 ? 127 : p->len] = '\0';
 
-        lcdPrintS("Empfangen: ");
-        lcdPrintlnS(buffer);
+        char function[64];
+        char params[64];   
+        int numOfParams = 0;
+        unmarshall(buffer, function, &params);
+
+        if (strcmp(function, "receive_resolution") == 0) {
+            
+
+        }
 
         /* Echo die Daten zurück */
-        udp_sendto(pcb, p, addr, port);
+        //udp_sendto(pcb, p, addr, port);
 
         /* Puffer freigeben */
         pbuf_free(p);
@@ -55,16 +70,6 @@ void rpc_client_init(void) {
             /* Registriere Callback für empfangene Pakete */
             udp_recv(udp_client_pcb, udp_server_recv, NULL);
 
-            lcdPrintlnS("UDP-Server gestartet auf Port 7");
-
-            /* Optional: Sende eine Begrüßungsnachricht an einen Standard-Client */
-            // struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, strlen(hello_msg), PBUF_RAM);
-            // if (p != NULL) {
-            //     memcpy(p->payload, hello_msg, strlen(hello_msg));
-            //     ip_addr_t dest_ip;
-            //     IP4_ADDR(&dest_ip, 192,168,0,100); // Beispiel-IP
-            //     udp_sendto(udp_server_pcb, p, &dest_ip, UDP_SERVER_PORT);
-            //     pbuf_free(p);
             // }
         } else {
             lcdPrintlnS("UDP-Server konnte nicht gestartet werden");
@@ -74,17 +79,20 @@ void rpc_client_init(void) {
 }
 
 
+
 // Hilfsfunktion zum Senden von RPC-Requests
 static void rpc_send(const char* payload) {
     struct pbuf* p = pbuf_alloc(PBUF_TRANSPORT, strlen(payload), PBUF_RAM);
     if (!p) return;
-
-    
     
     memcpy(p->payload, payload, strlen(payload));
     udp_sendto(udp_client_pcb, p, &rpc_server_ip, rpc_server_port);
     pbuf_free(p);
 }
+
+
+
+
 
 // Kompakte JSON-Kodierung der Funktionsaufrufe
 void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
@@ -92,11 +100,54 @@ void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
     char payload[256];
 
 
-    marshall(func, paramTypes, param, numOfParam, payload);
+    marshall(func, param, numOfParam, payload);
 
-    app_stub_set_server_ip(192, 168, 33, 1); // TODO DNS
-    rpc_server_port = 0xAFFF; // TODO DNS
+
+                
+
+    set_server_ip(192, 168, 33, 1); // TODO DNS
+    rpc_server_port = 9000; // TODO DNS
 
 
     rpc_send(payload);
 }
+
+
+
+void receive_resolution();
+
+void resolve_dns(char* servicename, char* functionname) {
+    set_server_ip(192, 168, 33, 1); // TODO Watchdog 
+    rpc_server_port = 9000; // TODO Watchdog
+
+    const char* params[] = { servicename, functionname, myIP, "0xAFFE" }; // myIP und Port
+    char payload[256];
+    // senden resolve (servicename, funktionsname, Myip, Myport)
+    marshall("resolve", params, 4, payload);
+
+    rpc_send(payload);
+
+}
+
+
+void rpc_send_heartbeat(uint32_t now) {
+    if (now - last_heartbeat > 100) {
+        err_t err = ERR_OK;//dns_gethostbyname(watchdog_hostname, &rpc_server_ip, dns_found_cb, NULL);
+        if (err == ERR_OK) {
+        
+            last_heartbeat = now;
+        
+            // IP war schon gecached, direkt senden
+            const char* params[] = { "IO" };
+            char payload[256];
+
+            marshall("heartbeat", params, 1, payload);
+
+
+            set_server_ip(192, 168, 33, 1); // TODO Watchdog 
+            rpc_server_port =0xAFFA; // TODO Watchdog
+            rpc_send(payload);
+        }
+    }
+}
+
