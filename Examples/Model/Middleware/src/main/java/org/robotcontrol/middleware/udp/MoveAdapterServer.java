@@ -5,6 +5,7 @@ import org.robotcontrol.middleware.RpcValue;
 import org.robotcontrol.middleware.ServerStub;
 import org.robotcontrol.middleware.ServerStub_I;
 
+@Deprecated
 public class MoveAdapterServer implements ServerStub_I {
     private ServerStub moveAdapterService;
 

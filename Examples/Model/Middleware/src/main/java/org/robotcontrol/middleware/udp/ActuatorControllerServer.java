@@ -4,6 +4,7 @@ import org.robotcontrol.middleware.RpcValue;
 import org.robotcontrol.middleware.ServerStub;
 import org.robotcontrol.middleware.ServerStub_I;
 
+@Deprecated
 public class ActuatorControllerServer implements ServerStub_I {
     private ServerStub actuatorController;
     public ActuatorControllerServer(ServerStub actuatorController) {

@@ -2,6 +2,7 @@ package org.robotcontrol.middleware;
 
 import java.lang.reflect.Method;
 
+@Deprecated
 public class ServerStub implements ServerStub_I {
     
     public void call(String fnName, RpcValue... args) {
