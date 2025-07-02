@@ -14,19 +14,19 @@ public class StateServiceServer implements ServerStub_I {
 
     @Override
     public void call(String fnName, RpcValue... args) {
-                switch (fnName) {
+        switch (fnName) {
             case "setError":
                 stateService.setError(
-                    (boolean) RpcUtils.unwrap(args[0]), 
-                    (boolean) RpcUtils.unwrap(args[1])
-                );
+                        (boolean) RpcUtils.unwrap(args[0]),
+                        (boolean) RpcUtils.unwrap(args[1]));
                 break;
             case "reportHealth":
                 stateService.reportHealth(
-                    (String) RpcUtils.unwrap(args[0])
-                );
+                        (String) RpcUtils.unwrap(args[0]),
+                        (Boolean) RpcUtils.unwrap(args[1]));
             default:
-                System.out.printf("%s.call(fnName: %s, ...): Unimplemented method called", getClass().getSimpleName(), fnName);
+                System.out.printf("%s.call(fnName: %s, ...): Unimplemented method called", getClass().getSimpleName(),
+                        fnName);
                 break;
         }
     }

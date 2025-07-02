@@ -1,25 +1,21 @@
-package org.robotcontrol.middleware.stateservice;
+package org.robotcontrol.middleware.healthreportconsumer;
 
+import org.robotcontrol.middleware.idl.HealthReportConsumer;
 import org.robotcontrol.middleware.idl.StateService;
 import org.robotcontrol.middleware.rpc.RpcClient;
 import org.robotcontrol.middleware.rpc.RpcValue;
 
-public class StateServiceClient implements StateService {
+public class HealthReportConsumerClient implements HealthReportConsumer {
     private RpcClient client;
 
-    public StateServiceClient() {
-        client = new RpcClient("StateService");
+    public HealthReportConsumerClient(String serviceName) {
+        client = new RpcClient(serviceName);
     }
 
     @Override
        public void reportHealth(String serviceName, boolean isAlive){
         client.invoke("reportHealth", new RpcValue.StringValue(serviceName));
     }
-    
-    @Override
-    public void setError(boolean err, boolean confirm) {
-        client.invoke("setError", new RpcValue.BoolValue(err), new RpcValue.BoolValue(err));
-    }
-
+   
     
 }
