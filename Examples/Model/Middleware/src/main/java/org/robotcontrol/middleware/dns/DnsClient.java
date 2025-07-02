@@ -18,9 +18,15 @@ import org.robotcontrol.middleware.udp.UdpServer;
 public class DnsClient implements Dns {
     private UdpClient client;
 
+    public DnsClient() {
+        // FIXME hardcode DNS server socket in a constant somewhere
+        this("foobar:1234");
+    }
+
     public DnsClient(String socket) {
         String[] sockerParts = socket.split(":", 2);
-        client = new UdpClient(sockerParts[0], Integer.parseInt(sockerParts[1]));
+        // FIXME add constructor or use existing one
+        // client = new UdpClient(sockerParts[0], Integer.parseInt(sockerParts[1]));
 
         throw new UnsupportedOperationException("WIP: This class is a work in progress.");
     }
@@ -56,23 +62,23 @@ public class DnsClient implements Dns {
         //     // TODO Auto-generated catch block
         //     e.printStackTrace();
         // }
-        cbServer.Listen();
-        // wait as the server setup is not instant
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // cbServer.Listen();
+        // // wait as the server setup is not instant
+        // try {
+        //     Thread.sleep(2000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
         
-        client.invoke("resolve", new RpcValue.StringValue(serviceName), new RpcValue.StringValue(functionName), new RpcValue.StringValue(callbackHostport));
+        // client.invoke("resolve", new RpcValue.StringValue(serviceName), new RpcValue.StringValue(functionName), new RpcValue.StringValue(callbackHostport));
 
-        try {
-            return resolutionFuture.get(5, TimeUnit.SECONDS);
-        } catch (TimeoutException | InterruptedException | ExecutionException e) {
-            System.err.println("DnsClient Main: Resolution failed for " + serviceName + "." + functionName);
-        }
-        return "";
+        // try {
+        //     return resolutionFuture.get(5, TimeUnit.SECONDS);
+        // } catch (TimeoutException | InterruptedException | ExecutionException e) {
+        //     System.err.println("DnsClient Main: Resolution failed for " + serviceName + "." + functionName);
+        // }
+        // return "";
     }
 
     private class DnsClientCallbackServiceImpl implements DnsClientCallbackService, ServerStub_I {

@@ -61,7 +61,9 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
         private UdpClient client;
         private CallbackClient(String socket) {
             String[] sockerParts = socket.split(":", 2);
-            client = new UdpClient(sockerParts[0], Integer.parseInt(sockerParts[1]));
+            // FIXME add constructor or use existing one
+            // client = new UdpClient(sockerParts[0], Integer.parseInt(sockerParts[1]));
+            throw new UnsupportedOperationException("WIP: This class is a work in progress.");
         }
 
         @Override

@@ -2,7 +2,7 @@ package org.robotcontrol.middleware;
 
 import java.lang.reflect.Method;
 
-public class ServerStub {
+public class ServerStub implements ServerStub_I {
     
     public void call(String fnName, RpcValue... args) {
         Method method = findMethodByNameAndArgs(fnName, args);

@@ -1,4 +1,4 @@
-package org.robotcontrol.middleware.dns;
+package org.robotcontrol.middleware.idl;
 
 public interface DnsService {
     void register(String serviceName, String functionName, String hostport);

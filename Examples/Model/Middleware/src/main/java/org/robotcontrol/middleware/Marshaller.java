@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 public class Marshaller {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static String marshal(String functionName, List<RpcValue> values) {
+    public static String marshal(String functionName, RpcValue... values) {
         ObjectNode root = objectMapper.createObjectNode();
         root.put("function", functionName);
 
