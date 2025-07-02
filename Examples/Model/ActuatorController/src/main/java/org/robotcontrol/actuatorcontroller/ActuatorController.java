@@ -8,10 +8,20 @@ import org.robotcontrol.middleware.rpc.RpcServer;
 
 public class ActuatorController implements org.robotcontrol.middleware.idl.ActuatorController {
     public static void main(String[] args) {
-        ActuatorController ac = new ActuatorController("localhost", 50055 , "A1");
+         if (args.length != 2) {
+            System.err.println(
+             "Usage: ActuatorController <robotID> <actuatorID>");
+            System.exit(1);
+        }
+
+
+        Integer robotID = Integer.parseInt(args[0]);
+        Integer actuatorID = Integer.parseInt(args[1]);
+
+        ActuatorController ac = new ActuatorController("A"+actuatorID.toString());
 
         RpcServer server = new RpcServer();
-        server.addService(new ActuatorControllerServer(ac), "R1A1", "move");
+        server.addService(new ActuatorControllerServer(ac), "R"+robotID.toString()+"A"+actuatorID.toString(), "move");
         server.Listen();
         server.awaitTermination();
     }
@@ -22,7 +32,7 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
     private String actuator;
     private ICaDSRoboticArm real;
 
-    public ActuatorController(String host, int port, String actuator) {
+    public ActuatorController(String actuator) {
         // this.real = new CaDSRoboticArmReal(host, port);
         // this.real = new CaDSRoboticArmSimulation();
         this.real = new RoboticArmMock();
