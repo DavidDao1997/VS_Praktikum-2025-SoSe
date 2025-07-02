@@ -79,15 +79,19 @@ public class Marshaller {
     }
 
     private static JsonNode serializeValue(RpcValue val) {
-        if (val instanceof RpcValue.IntValue iv) {
-            return new IntNode(iv.value());
-        } else if (val instanceof RpcValue.StringValue sv) {
-            return new TextNode(sv.value());
-        } else if (val instanceof RpcValue.BoolValue bv) {
-            return BooleanNode.valueOf(bv.value());
-        } else if (val instanceof RpcValue.ListValue lv) {
+        if (val instanceof RpcValue.IntValue) {
+            RpcValue.IntValue iv = (RpcValue.IntValue) val;
+            return new IntNode(iv.getValue());
+        } else if (val instanceof RpcValue.StringValue) {
+            RpcValue.StringValue sv = (RpcValue.StringValue) val;
+            return new TextNode(sv.getValue());
+        } else if (val instanceof RpcValue.BoolValue) {
+            RpcValue.BoolValue bv = (RpcValue.BoolValue) val;
+            return BooleanNode.valueOf(bv.getValue());
+        } else if (val instanceof RpcValue.ListValue) {
+            RpcValue.ListValue lv = (RpcValue.ListValue) val;
             ArrayNode array = objectMapper.createArrayNode();
-            for (RpcValue item : lv.values()) {
+            for (RpcValue item : lv.getValues()) {
                 array.add(serializeValue(item));
             }
             return array;

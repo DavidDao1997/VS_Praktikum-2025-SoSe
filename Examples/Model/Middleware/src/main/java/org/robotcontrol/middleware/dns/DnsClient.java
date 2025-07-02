@@ -21,6 +21,8 @@ public class DnsClient implements Dns {
     public DnsClient(String socket) {
         String[] sockerParts = socket.split(":", 2);
         client = new UdpClient(sockerParts[0], Integer.parseInt(sockerParts[1]));
+
+        throw new UnsupportedOperationException("WIP: This class is a work in progress.");
     }
     public void register(
         String serviceName, 
@@ -42,15 +44,18 @@ public class DnsClient implements Dns {
         CompletableFuture<String> resolutionFuture = new CompletableFuture<>();
         UdpServer cbServer = new UdpServer();
         String callbackHostport = "";
-        try {
-            DatagramSocket socket;
-            socket = new DatagramSocket();
-            callbackHostport = getReachableLocalIp() + ":" + Integer.toString(socket.getLocalPort());
-            cbServer.addService(socket, new DnsClientCallbackServiceImpl(resolutionFuture));
-        } catch (SocketException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        throw new UnsupportedOperationException("WIP: This method is a work in progress.");
+        // try {
+        //     DatagramSocket socket;
+        //     socket = new DatagramSocket();
+        //     callbackHostport = getReachableLocalIp() + ":" + Integer.toString(socket.getLocalPort());
+
+        //     // FIXME requires new feature that lets us pass a full socket definition too the server
+        //     // cbServer.addService(socket, new DnsClientCallbackServiceImpl(resolutionFuture));
+        // } catch (SocketException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
         cbServer.Listen();
         // wait as the server setup is not instant
         try {

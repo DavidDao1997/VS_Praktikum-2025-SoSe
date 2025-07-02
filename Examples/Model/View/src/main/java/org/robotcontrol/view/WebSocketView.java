@@ -23,7 +23,7 @@ public class WebSocketView implements IView,ServerStub_I {
     @Override
     public void updateView(String[] robots, int selected, boolean error, boolean confirm) {
         System.out.printf(" %s, %s, %s, %s\n",Arrays.toString(robots),selected,error,confirm);
-        var data = new ViewData(robots, selected, error, confirm);
+        ViewData data = new ViewData(robots, selected, error, confirm);
         try {
             String json = objectMapper.writeValueAsString(data);
             server.sendUpdate(json);

@@ -1,8 +1,8 @@
 package org.robotcontrol.actuatorcontroller.roboticarm;
 
-//import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
+import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 
-public class RoboticArmMock {
+public class RoboticArmMock implements ICaDSRoboticArm {
 
     
     public int getBackForthPercentage() {

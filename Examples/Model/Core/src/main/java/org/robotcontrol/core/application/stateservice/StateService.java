@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.robotcontrol.middleware.ServerStub;
 import org.robotcontrol.core.application.controller.rpc.IController;
@@ -38,10 +39,10 @@ public class StateService extends ServerStub implements StateService_I{
 		Robot r = new Robot(robotName);
 		
 		
-		if (!registeredRobots.stream().map(Robot::getName).toList().contains(robotName)) {
+		if (!registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).contains(robotName)) {
 			registeredRobots.add(r);
 		}
-		int idx = registeredRobots.stream().map(Robot::getName).toList().indexOf(robotName);
+		int idx = registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).indexOf(robotName);
 		r = registeredRobots.get(idx);
 		
 		switch (motorName.substring(2, 4)) {

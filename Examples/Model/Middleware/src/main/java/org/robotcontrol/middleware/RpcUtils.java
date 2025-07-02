@@ -1,6 +1,7 @@
 package org.robotcontrol.middleware;
 
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RpcUtils {
 
@@ -13,19 +14,26 @@ public class RpcUtils {
     }
 
     public static Object unwrap(RpcValue rpcValue) {
-        if (rpcValue instanceof RpcValue.IntValue iv) {
-            return iv.value();
-        } else if (rpcValue instanceof RpcValue.StringValue sv) {
-            return sv.value();
-        } else if (rpcValue instanceof RpcValue.BoolValue bv) {
-            return bv.value();
-        } else if (rpcValue instanceof RpcValue.ListValue lv) {
-            // recursively unwrap the list elements
-            return lv.values().stream()
-                     .map(RpcUtils::unwrap)
-                     .collect(Collectors.toList());
+        if (rpcValue instanceof RpcValue.IntValue) {
+            RpcValue.IntValue iv = (RpcValue.IntValue) rpcValue;
+            return iv.getValue();
+        } else if (rpcValue instanceof RpcValue.StringValue) {
+            RpcValue.StringValue sv = (RpcValue.StringValue) rpcValue;
+            return sv.getValue();
+        } else if (rpcValue instanceof RpcValue.BoolValue) {
+            RpcValue.BoolValue bv = (RpcValue.BoolValue) rpcValue;
+            return bv.getValue();
+        } else if (rpcValue instanceof RpcValue.ListValue) {
+            RpcValue.ListValue lv = (RpcValue.ListValue) rpcValue;
+            List<RpcValue> values = lv.getValues();
+            List<Object> unwrapped = new ArrayList<>();
+            for (RpcValue val : values) {
+                unwrapped.add(unwrap(val));
+            }
+            return unwrapped;
         } else {
             throw new IllegalArgumentException("Unknown RpcValue type: " + rpcValue);
         }
     }
+
 }
