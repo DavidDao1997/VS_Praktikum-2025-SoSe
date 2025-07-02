@@ -1,4 +1,4 @@
-package org.robotcontrol.middleware;
+package org.robotcontrol.middleware.rpc;
 
 import java.util.List;
 import java.util.Objects;

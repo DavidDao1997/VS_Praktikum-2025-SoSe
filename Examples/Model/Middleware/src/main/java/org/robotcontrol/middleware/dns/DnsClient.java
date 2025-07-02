@@ -2,21 +2,22 @@ package org.robotcontrol.middleware.dns;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.robotcontrol.middleware.RpcUtils;
-import org.robotcontrol.middleware.RpcValue;
 import org.robotcontrol.middleware.ServerStub_I;
 import org.robotcontrol.middleware.idl.DnsClientCallbackService;
-import org.robotcontrol.middleware.udp.UdpClient;
-import org.robotcontrol.middleware.udp.UdpServer;
+import org.robotcontrol.middleware.rpc.RpcClient;
+import org.robotcontrol.middleware.rpc.RpcServer;
+import org.robotcontrol.middleware.rpc.RpcUtils;
+import org.robotcontrol.middleware.rpc.RpcValue;
 
 public class DnsClient implements Dns {
-    private UdpClient client;
+    private RpcClient client;
 
     public DnsClient() {
         // FIXME hardcode DNS server socket in a constant somewhere
@@ -24,12 +25,19 @@ public class DnsClient implements Dns {
     }
 
     public DnsClient(String socket) {
-        String[] sockerParts = socket.split(":", 2);
-        // FIXME add constructor or use existing one
-        // client = new UdpClient(sockerParts[0], Integer.parseInt(sockerParts[1]));
-
-        throw new UnsupportedOperationException("WIP: This class is a work in progress.");
+        String[] socketParts = socket.split(":", 2);
+        client = new RpcClient(InetSocketAddress.createUnresolved(socketParts[0], Integer.parseInt(socketParts[1])));
     }
+
+    public void ensureRegister(
+        String serviceName, 
+        String functionName, 
+        String socket
+    ) {
+        register(serviceName, functionName, socket);
+        // TODO call resolve and reRegister in case the resolve fails  
+    }
+
     public void register(
         String serviceName, 
         String functionName, 
@@ -48,37 +56,36 @@ public class DnsClient implements Dns {
         String functionName
     ) { 
         CompletableFuture<String> resolutionFuture = new CompletableFuture<>();
-        UdpServer cbServer = new UdpServer();
+        RpcServer cbServer = new RpcServer();
         String callbackHostport = "";
-        throw new UnsupportedOperationException("WIP: This method is a work in progress.");
-        // try {
-        //     DatagramSocket socket;
-        //     socket = new DatagramSocket();
-        //     callbackHostport = getReachableLocalIp() + ":" + Integer.toString(socket.getLocalPort());
+        try {
+            DatagramSocket socket;
+            socket = new DatagramSocket();
+            callbackHostport = getReachableLocalIp() + ":" + Integer.toString(socket.getLocalPort());
 
-        //     // FIXME requires new feature that lets us pass a full socket definition too the server
-        //     // cbServer.addService(socket, new DnsClientCallbackServiceImpl(resolutionFuture));
-        // } catch (SocketException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
-        // cbServer.Listen();
-        // // wait as the server setup is not instant
-        // try {
-        //     Thread.sleep(2000);
-        // } catch (InterruptedException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
+            // FIXME requires new feature that lets us pass a full socket definition too the server
+            cbServer.addService(new DnsClientCallbackServiceImpl(resolutionFuture), socket);
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        cbServer.Listen();
+        // wait as the server setup is not instant
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
-        // client.invoke("resolve", new RpcValue.StringValue(serviceName), new RpcValue.StringValue(functionName), new RpcValue.StringValue(callbackHostport));
+        client.invoke("resolve", new RpcValue.StringValue(serviceName), new RpcValue.StringValue(functionName), new RpcValue.StringValue(callbackHostport));
 
-        // try {
-        //     return resolutionFuture.get(5, TimeUnit.SECONDS);
-        // } catch (TimeoutException | InterruptedException | ExecutionException e) {
-        //     System.err.println("DnsClient Main: Resolution failed for " + serviceName + "." + functionName);
-        // }
-        // return "";
+        try {
+            return resolutionFuture.get(5, TimeUnit.SECONDS);
+        } catch (TimeoutException | InterruptedException | ExecutionException e) {
+            System.err.println("DnsClient Main: Resolution failed for " + serviceName + "." + functionName);
+        }
+        return "";
     }
 
     private class DnsClientCallbackServiceImpl implements DnsClientCallbackService, ServerStub_I {

@@ -1,7 +1,7 @@
 package org.robotcontrol.middleware.idl;
 
 public interface MoveAdapter {
-    public enum Direction{
+    public enum RobotDirection{
 		LEFT,
 		RIGHT,
 		UP,
@@ -12,5 +12,5 @@ public interface MoveAdapter {
 		CLOSE
 	}
 
-    public void move(Direction robotDirection);
+    public void move(RobotDirection robotDirection);
 }

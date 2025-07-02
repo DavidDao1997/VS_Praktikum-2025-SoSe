@@ -1,4 +1,4 @@
-package org.robotcontrol.middleware;
+package org.robotcontrol.middleware.rpc;
 
 import java.util.ArrayList;
 import java.util.List;

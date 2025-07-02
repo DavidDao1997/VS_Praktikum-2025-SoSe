@@ -1,15 +1,17 @@
 package org.robotcontrol.middleware.dns;
 
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.robotcontrol.middleware.RpcUtils;
-import org.robotcontrol.middleware.RpcValue;
 import org.robotcontrol.middleware.ServerStub_I;
 import org.robotcontrol.middleware.idl.DnsClientCallbackService;
 import org.robotcontrol.middleware.idl.DnsService;
-import org.robotcontrol.middleware.udp.UdpClient;
-import org.robotcontrol.middleware.udp.UdpServer;
+import org.robotcontrol.middleware.rpc.RpcClient;
+import org.robotcontrol.middleware.rpc.RpcServer;
+import org.robotcontrol.middleware.rpc.RpcUtils;
+import org.robotcontrol.middleware.rpc.RpcValue;
 
 public class DnsServiceImpl implements DnsService, ServerStub_I {
     private final Map<String, String> serviceRegistry = new ConcurrentHashMap<>();
@@ -58,7 +60,7 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
     }
 
     private class CallbackClient implements DnsClientCallbackService {
-        private UdpClient client;
+        private RpcClient client;
         private CallbackClient(String socket) {
             String[] sockerParts = socket.split(":", 2);
             // FIXME add constructor or use existing one
@@ -72,14 +74,14 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, SocketException {
         int dnsServerPort = 9000; // Fixed port for DNS server
 
         DnsServiceImpl dnsService = new DnsServiceImpl();
-        UdpServer s = new UdpServer();
+        RpcServer s = new RpcServer();
 
-        // Add the DnsService implementation to the RPC server
-        s.addService(dnsServerPort, dnsService);
+        DatagramSocket socket = new DatagramSocket(dnsServerPort);
+        s.addService(dnsService, socket) ;
 
         System.out.println("Starting DnsService on " + dnsServerPort + "...");
         s.Listen();
