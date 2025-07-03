@@ -35,9 +35,11 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 		confirm = false;
 		this.controller = controller;
 	}
-	
-	public void register(String motorName) {
-		String robotName = motorName.substring(0,2);
+
+	@Override
+	public void registerActuator(String actuatorName, boolean isAlive) {
+		System.out.printf("[StateService] registerActuator(actuatorName: %s, isAlive: %s) called\n", actuatorName, isAlive);
+		String robotName = actuatorName.substring(0,2);
 		Robot r = new Robot(robotName);
 		
 		
@@ -47,34 +49,33 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 		int idx = registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).indexOf(robotName);
 		r = registeredRobots.get(idx);
 		
-		switch (motorName.substring(2, 4)) {
+		switch (actuatorName.substring(2, 4)) {
 			case "A1": 
-				r.setA1(true);
+				r.setA1(isAlive);
 				break;
 			case "A2":
-				r.setA2(true);
+				r.setA2(isAlive);
 				break;
 			case "A3":
-				r.setA3(true);
+				r.setA3(isAlive);
 				break;
 			case "A4":
-				r.setA4(true);
+				r.setA4(isAlive);
 				break;
 			
 			default:
-				throw new IllegalArgumentException("Unexpected value: " + motorName.substring(2, 4));
+				throw new IllegalArgumentException("Unexpected value: " + actuatorName.substring(2, 4));
 		}
 		// check if availabeRobots can be updated
-		if (r.isAvailable()) {
+		if (r.isAvailable() && !availableRobots.contains(r)) {
 			availableRobots.add(r);
 			
 			// send update do not update error, selectedRobot
 			sendUpdate();
+		} else if (!r.isAvailable() && availableRobots.contains(r)) {
+			availableRobots.remove(r);
+			sendUpdate();
 		}
-		
-		
-		
-		
 	}
 	
 //	public void heartbeat(String motorName) {
@@ -148,8 +149,8 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 	}
 
 	@Override
-	public void reportHealth(String serviceName) {
+	public void reportHealth(String serviceName, boolean isAlive) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
-	}	
+	}
 }

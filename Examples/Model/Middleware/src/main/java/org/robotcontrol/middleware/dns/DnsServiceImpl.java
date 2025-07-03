@@ -62,10 +62,8 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
     private class CallbackClient implements DnsClientCallbackService {
         private RpcClient client;
         private CallbackClient(String socket) {
-            String[] sockerParts = socket.split(":", 2);
-            // FIXME add constructor or use existing one
-            // client = new UdpClient(sockerParts[0], Integer.parseInt(sockerParts[1]));
-            throw new UnsupportedOperationException("WIP: This class is a work in progress.");
+            String[] socketParts = socket.split(":", 2);
+            client = new RpcClient(socketParts[0], Integer.parseInt(socketParts[1]));
         }
 
         @Override

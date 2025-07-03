@@ -3,6 +3,8 @@ import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 import org.cads.vs.roboticArm.hal.real.CaDSRoboticArmReal;
 import org.robotcontrol.actuatorcontroller.roboticarm.RoboticArmMock;
 import org.robotcontrol.middleware.actuatorcontroller.ActuatorControllerServer;
+import org.robotcontrol.middleware.idl.RegisterActuator;
+import org.robotcontrol.middleware.registeractuator.RegisterActuatorClient;
 import org.robotcontrol.middleware.rpc.RpcServer;
 
 
@@ -18,7 +20,7 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
         Integer robotID = Integer.parseInt(args[0]);
         Integer actuatorID = Integer.parseInt(args[1]);
 
-        ActuatorController ac = new ActuatorController("A"+actuatorID.toString());
+        ActuatorController ac = new ActuatorController(robotID, actuatorID);
 
         RpcServer server = new RpcServer();
         server.addService(new ActuatorControllerServer(ac), "R"+robotID.toString()+"A"+actuatorID.toString(), "move");
@@ -32,11 +34,14 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
     private String actuator;
     private ICaDSRoboticArm real;
 
-    public ActuatorController(String actuator) {
+    public ActuatorController(Integer robotID, Integer actuatorID) {
         // this.real = new CaDSRoboticArmReal(host, port);
         // this.real = new CaDSRoboticArmSimulation();
         this.real = new RoboticArmMock();
-        this.actuator = actuator;
+        this.actuator = "A" + actuatorID.toString();
+
+        RegisterActuator ra = new RegisterActuatorClient();
+        ra.registerActuator("R"+robotID.toString()+"A"+actuatorID.toString(), true);
     }
 
     @Override

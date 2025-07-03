@@ -11,7 +11,7 @@ import org.robotcontrol.middleware.dns.DnsClient;
 
 public class RpcClient implements ClientStub_I {
     private String serviceName;
-    private InetSocketAddress socketAddr;
+    private String socketAddr;
     private Dns dns;
 
     public RpcClient(String serviceName) {
@@ -19,8 +19,8 @@ public class RpcClient implements ClientStub_I {
         dns = new DnsClient();
     }
 
-    public RpcClient(InetSocketAddress socketAddr) {
-        this.socketAddr = socketAddr;
+    public RpcClient(String host, int port) {
+        this.socketAddr = host + ":" + Integer.toString(port);
     }
 
 	@Override
@@ -29,22 +29,30 @@ public class RpcClient implements ClientStub_I {
             // marshal request
             String msg = Marshaller.marshal(fnName,args);
 
-            // Create UDP socket
-            DatagramSocket socket = new DatagramSocket();
+            
 
             // Convert message to bytes
             byte[] sendData = msg.getBytes();
 
             if (serviceName != null) {
                 String resolvedSocket = dns.resolve(serviceName, fnName);
-                String[] socketParts = resolvedSocket.split(":", 2);
-                String host = socketParts[0];
-                int port = Integer.parseInt(socketParts[1]);
-                socketAddr = InetSocketAddress.createUnresolved(host, port);
+                System.out.printf("DNS resloved: %s", resolvedSocket);
+                socketAddr = resolvedSocket;
             }
 
+            String[] socketParts = socketAddr.split(":", 2);
+            String host = socketParts[0];
+            int port = Integer.parseInt(socketParts[1]);
+
+
+            // Create UDP socket
+            DatagramSocket socket = new DatagramSocket();
+
+
+
+
             // Create and send packet
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, socketAddr);
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(host), port);
             socket.send(sendPacket);
             socket.close();
         } catch (Exception e) {

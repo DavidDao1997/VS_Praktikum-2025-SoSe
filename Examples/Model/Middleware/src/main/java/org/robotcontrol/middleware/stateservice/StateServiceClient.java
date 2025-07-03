@@ -21,5 +21,11 @@ public class StateServiceClient implements StateService {
         client.invoke("setError", new RpcValue.BoolValue(err), new RpcValue.BoolValue(err));
     }
 
+    @Override
+    public void registerActuator(String actuatorName, boolean isAlive) {
+        // TODO Auto-generated method stub
+        client.invoke("registerActuator", new RpcValue.StringValue(actuatorName), new RpcValue.BoolValue(isAlive));
+    }
+
     
 }

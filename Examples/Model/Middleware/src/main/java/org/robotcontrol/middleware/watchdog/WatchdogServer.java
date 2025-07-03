@@ -1,7 +1,8 @@
-package org.robotcontrol.middleware.watchDog2;
+package org.robotcontrol.middleware.watchdog;
 import org.robotcontrol.middleware.ServerStub_I;
 import org.robotcontrol.middleware.idl.WatchDog;
 import org.robotcontrol.middleware.rpc.RpcUtils;
+import org.robotcontrol.middleware.rpc.RpcValue;
 
 import lombok.AllArgsConstructor;
 
@@ -29,3 +30,4 @@ public class WatchdogServer implements ServerStub_I {
         }
     }
 }
+

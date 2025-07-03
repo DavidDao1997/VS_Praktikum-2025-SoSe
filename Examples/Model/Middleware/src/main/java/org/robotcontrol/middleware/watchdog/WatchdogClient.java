@@ -1,13 +1,14 @@
-package org.robotcontrol.middleware.watchDog2;
+package org.robotcontrol.middleware.watchdog;
+
 import org.robotcontrol.middleware.idl.WatchDog;
 import org.robotcontrol.middleware.rpc.RpcClient;
 import org.robotcontrol.middleware.rpc.RpcValue;
 
-public class WatchdogClient implements org.robotcontrol.middleware.idl.WatchDog{
+public class WatchdogClient implements org.robotcontrol.middleware.idl.WatchDog {
     private RpcClient client;
 
     public WatchdogClient(){
-        client = new RpcClient("Watchdog");
+        client = new RpcClient("watchdog");
     }
 
     @Override
@@ -16,10 +17,11 @@ public class WatchdogClient implements org.robotcontrol.middleware.idl.WatchDog{
     }
     
     @Override
-    public void subscribe(String serviceNamePattern, String observedService){
-        client.invoke("subscribe",new RpcValue.StringValue(serviceNamePattern), new RpcValue.StringValue(observedService));
+    public void subscribe(String serviceName, String patternStr){
+        client.invoke("subscribe",new RpcValue.StringValue(serviceName), new RpcValue.StringValue(patternStr));
     }
 
     
     
 }
+

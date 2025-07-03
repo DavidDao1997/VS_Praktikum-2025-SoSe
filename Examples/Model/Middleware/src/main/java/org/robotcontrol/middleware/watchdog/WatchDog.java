@@ -1,4 +1,5 @@
-package org.robotcontrol.middleware.watchDog2;
+package org.robotcontrol.middleware.watchdog;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.time.Instant;
@@ -8,11 +9,12 @@ import java.util.concurrent.Executors;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.robotcontrol.middleware.healthreportconsumer.HealthReportConsumerClient;
 import org.robotcontrol.middleware.idl.HealthReportConsumer;
+import org.robotcontrol.middleware.rpc.RpcServer;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-
 
 public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
 
@@ -21,7 +23,7 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
     // Scheduler for periodic timeout checks
     private final ScheduledExecutorService scheduler;
     // Timeout threshold for heartbeats (in milliseconds)
-    private final Duration heartbeatTimeout = Duration.ofMillis(300);
+    private final Duration heartbeatTimeout = Duration.ofMillis(2000);
 
     // Tracks online/offline status of each observedService
     private final Map<String, Boolean> observedServices = new ConcurrentHashMap<>();
@@ -112,8 +114,17 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
     }
 
     private void notifySubscriber(String subscriber, String observedService, boolean isAlive) {
-        HealthReportConsumerClient client = new HealthReportConsumerClient(serviceName);
+        System.out.printf("calling notifySubscriber(subscriber: %s, observedService: %s, isAlive: %s)\n",subscriber, observedService,isAlive);
+        HealthReportConsumerClient client = new HealthReportConsumerClient(subscriber);
         client.reportHealth(observedService,isAlive);
     }
 
+    public static void main(String[] args) {
+        WatchDog wd = new WatchDog();
+        RpcServer s = new RpcServer();
+        s.addService(new WatchdogServer(wd), "watchdog", "subscribe", "heartbeat");
+        
+        s.Listen();
+        s.awaitTermination();
+    }
 }

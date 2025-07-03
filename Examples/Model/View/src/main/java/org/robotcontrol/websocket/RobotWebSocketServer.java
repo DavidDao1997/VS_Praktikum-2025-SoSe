@@ -12,6 +12,8 @@ import java.util.Set;
 public class RobotWebSocketServer extends WebSocketServer {
 
     private final Set<WebSocket> connections = Collections.synchronizedSet(new HashSet<>());
+    private volatile String latestStateJson = null;  // Shared cached state
+
 
     public RobotWebSocketServer(int port) {
         super(new InetSocketAddress(port));
@@ -21,6 +23,11 @@ public class RobotWebSocketServer extends WebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         connections.add(conn);
         System.out.println("Client verbunden: " + conn.getRemoteSocketAddress());
+
+        // Send initial state if available
+        if (latestStateJson != null) {
+            conn.send(latestStateJson);
+        }
     }
 
     @Override
@@ -46,6 +53,8 @@ public class RobotWebSocketServer extends WebSocketServer {
     }
 
     public void sendUpdate(String json) {
+        latestStateJson = json;  // Update latest known state
+        
         synchronized (connections) {
             for (WebSocket conn : connections) {
                 conn.send(json);

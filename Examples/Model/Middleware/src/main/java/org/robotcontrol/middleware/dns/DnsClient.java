@@ -21,12 +21,12 @@ public class DnsClient implements Dns {
 
     public DnsClient() {
         // FIXME hardcode DNS server socket in a constant somewhere
-        this("foobar:1234");
+        this("localhost:9000");
     }
 
     public DnsClient(String socket) {
         String[] socketParts = socket.split(":", 2);
-        client = new RpcClient(InetSocketAddress.createUnresolved(socketParts[0], Integer.parseInt(socketParts[1])));
+        client = new RpcClient(socketParts[0], Integer.parseInt(socketParts[1]));
     }
 
     public void ensureRegister(

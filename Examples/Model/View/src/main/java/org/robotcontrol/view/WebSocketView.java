@@ -6,11 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.robotcontrol.middleware.ServerStub_I;
+import org.robotcontrol.middleware.idl.View;
 import org.robotcontrol.middleware.rpc.RpcUtils;
 import org.robotcontrol.middleware.rpc.RpcValue;
 import org.robotcontrol.websocket.RobotWebSocketServer;
 
-public class WebSocketView implements IView,ServerStub_I {
+public class WebSocketView implements View, IView,ServerStub_I {
 
     private final RobotWebSocketServer server;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -45,6 +46,7 @@ public class WebSocketView implements IView,ServerStub_I {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void call(String fnName, RpcValue... args) {
         List<String> list = (List<String>) RpcUtils.unwrap(args[0]);

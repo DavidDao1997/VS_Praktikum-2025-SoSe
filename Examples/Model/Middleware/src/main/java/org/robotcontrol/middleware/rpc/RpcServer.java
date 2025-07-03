@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import lombok.Data;
 
 public class RpcServer {
     private volatile boolean running = false;
-    private List<Thread> listenerThreads;
+    private List<Thread> listenerThreads = new ArrayList<Thread>();
     private ConcurrentHashMap<ServerStub_I, ServiceProps> concurrentMap = new ConcurrentHashMap<>();
 
     @Data
@@ -45,7 +46,7 @@ public class RpcServer {
         for (Map.Entry<ServerStub_I, ServiceProps> entry: concurrentMap.entrySet()) {
             ServerStub_I service = entry.getKey();
             ServiceProps serviceProps = entry.getValue();
-
+            
             Thread listenerThread = new Thread(() -> {
                 try {
                     DatagramSocket socket = serviceProps.getSocket() != null 
@@ -54,10 +55,12 @@ public class RpcServer {
                     
                     System.out.println("RPC server is listening on port " + socket.getLocalPort() + "/udp ...");
                     
-                    for (String fnName: serviceProps.getFunctionNames()) {
-                        String socketAddr = getReachableLocalIp() + socket.getLocalPort();
-                        System.out.printf("Register with DNS: %s.%s -> %s", serviceProps.getServiceName(), fnName, socketAddr);
-                        dns.ensureRegister(serviceProps.getServiceName(), fnName, socketAddr);
+                    if (serviceProps.getFunctionNames() != null) {
+                        for (String fnName: serviceProps.getFunctionNames()) {
+                            String socketAddr = getReachableLocalIp() + ":" + socket.getLocalPort();
+                            System.out.printf("Register with DNS: %s.%s -> %s\n", serviceProps.getServiceName(), fnName, socketAddr);
+                            dns.ensureRegister(serviceProps.getServiceName(), fnName, socketAddr);
+                        }
                     }
 
                     byte[] buffer = new byte[256];
@@ -81,6 +84,8 @@ public class RpcServer {
                     System.exit(1);
                 }
             });
+            listenerThread.start();
+            listenerThreads.add(listenerThread);
         }
     }
 
