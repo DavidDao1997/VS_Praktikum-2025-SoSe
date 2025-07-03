@@ -9,14 +9,18 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.robotcontrol.middleware.utils.Logger;
+
 public class SimpleHttpServer {
+    private final Logger logger = new Logger("SimpleHttpServer");
 
     public static void startServer(int port, String filePath) throws IOException {
+        Logger logger = new Logger("SimpleHttpServer");
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", new FileHandler(filePath));
         server.setExecutor(null);
         server.start();
-        System.out.println("HTTP Server gestartet auf Port " + port);
+        logger.debug("HTTP Server gestartet auf Port {}", port);
     }
 
     private static class FileHandler implements HttpHandler {

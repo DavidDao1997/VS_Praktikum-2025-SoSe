@@ -14,10 +14,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.robotcontrol.middleware.ServerStub_I;
 import org.robotcontrol.middleware.dns.DnsClient;
+import org.robotcontrol.middleware.utils.Logger;
 
 import lombok.Data;
 
 public class RpcServer {
+    private final Logger logger = new Logger("DnsService");
     private volatile boolean running = false;
     private List<Thread> listenerThreads = new ArrayList<Thread>();
     private ConcurrentHashMap<ServerStub_I, ServiceProps> concurrentMap = new ConcurrentHashMap<>();
@@ -53,12 +55,12 @@ public class RpcServer {
                         ? serviceProps.getSocket()
                         : new DatagramSocket();
                     
-                    System.out.println("RPC server is listening on port " + socket.getLocalPort() + "/udp ...");
+                    logger.debug("RPC server is listening on port {}/udp ...", socket.getLocalPort());
                     
                     if (serviceProps.getFunctionNames() != null) {
                         for (String fnName: serviceProps.getFunctionNames()) {
                             String socketAddr = getReachableLocalIp() + ":" + socket.getLocalPort();
-                            System.out.printf("Register with DNS: %s.%s -> %s\n", serviceProps.getServiceName(), fnName, socketAddr);
+                            logger.debug("Register with DNS: {}.{} -> {}", serviceProps.getServiceName(), fnName, socketAddr);
                             dns.ensureRegister(serviceProps.getServiceName(), fnName, socketAddr);
                         }
                     }
@@ -69,10 +71,11 @@ public class RpcServer {
                         socket.receive(packet); // blocking call
 
                         String received = new String(packet.getData(), 0, packet.getLength());
-                        System.out.println("Received from " + packet.getAddress() + ":" + packet.getPort());
-                        System.out.println("Message: " + received);
+                        logger.debug("Received from {}:{} | Message: {}", packet.getAddress(), packet.getPort(), received);
+
                         RpcRequest req = Marshaller.unmarshal(received);
                         
+                        logger.debug("calling {}", req.function());
                         service.call(req.function(),req.values().toArray(new RpcValue[0]));
                     }
 

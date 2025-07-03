@@ -12,26 +12,31 @@ import org.robotcontrol.middleware.rpc.RpcClient;
 import org.robotcontrol.middleware.rpc.RpcServer;
 import org.robotcontrol.middleware.rpc.RpcUtils;
 import org.robotcontrol.middleware.rpc.RpcValue;
+import org.robotcontrol.middleware.utils.Logger;
+
 
 public class DnsServiceImpl implements DnsService, ServerStub_I {
+    private final Logger logger = new Logger("DnsService");
+
     private final Map<String, String> serviceRegistry = new ConcurrentHashMap<>();
 
     @Override
     public void register(String serviceName, String functionName, String socket) {
         String descriptor = getDescriptor(serviceName, functionName);
         serviceRegistry.put(descriptor, socket);
-        System.out.println("DnsService: Registered '" + descriptor + "' -> '" + socket + "'");
+        logger.info("Registered '{}'' -> '{}'", descriptor, socket);
     }
 
     @Override
     public void resolve(String serviceName, String functionName, String clientCallbackSocket) {
         String descriptor = getDescriptor(serviceName, functionName);
         String resolvedSocket = serviceRegistry.getOrDefault(descriptor, "");
-        System.out.println("DnsService: Resolved '" + serviceName + "' to '" + resolvedSocket + "'. Notifying client at " + clientCallbackSocket);
-        
+        logger.info("Resolved '{}'", serviceName);
+        logger.debug("Resolved '{}' to '{}'. Notifying client at {}", serviceName, resolvedSocket, clientCallbackSocket);
+                
         CallbackClient c = new CallbackClient(clientCallbackSocket);
         c.receiveResolution(resolvedSocket);
-        System.out.println("DnsService: Notified client at " + clientCallbackSocket);
+        logger.debug("Notified client at {}", clientCallbackSocket);
     }
 
     private String getDescriptor(String serviceName, String functionName) {
@@ -73,6 +78,7 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
     }
 
     public static void main(String[] args) throws InterruptedException, SocketException {
+        Logger logger = new Logger("DnsService");
         int dnsServerPort = 9000; // Fixed port for DNS server
 
         DnsServiceImpl dnsService = new DnsServiceImpl();
@@ -81,13 +87,13 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
         DatagramSocket socket = new DatagramSocket(dnsServerPort);
         s.addService(dnsService, socket) ;
 
-        System.out.println("Starting DnsService on " + dnsServerPort + "...");
+        logger.info("Starting DnsService on port {}", dnsServerPort);
         s.Listen();
 
         // Keep the server running
         // In a real application, you'd use a robust way to keep it alive
         s.awaitTermination();
 
-        System.out.println("DnsService shut down.");
+        logger.info("DnsService shut down.");
     }
 }

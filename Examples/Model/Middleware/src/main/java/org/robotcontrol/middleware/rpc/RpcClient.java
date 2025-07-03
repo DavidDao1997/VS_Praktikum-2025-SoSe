@@ -8,8 +8,10 @@ import java.net.InetSocketAddress;
 import org.robotcontrol.middleware.ClientStub_I;
 import org.robotcontrol.middleware.dns.Dns;
 import org.robotcontrol.middleware.dns.DnsClient;
+import org.robotcontrol.middleware.utils.Logger;
 
 public class RpcClient implements ClientStub_I {
+    private final Logger logger = new Logger("RpcClient");
     private String serviceName;
     private String socketAddr;
     private Dns dns;
@@ -25,6 +27,7 @@ public class RpcClient implements ClientStub_I {
 
 	@Override
 	public void invoke(String fnName, RpcValue... args) {
+        logger.debug("invoking: {}", fnName);
 		try {
             // marshal request
             String msg = Marshaller.marshal(fnName,args);
@@ -36,7 +39,7 @@ public class RpcClient implements ClientStub_I {
 
             if (serviceName != null) {
                 String resolvedSocket = dns.resolve(serviceName, fnName);
-                System.out.printf("DNS resloved: %s", resolvedSocket);
+                logger.debug("DNS resloved: {}", resolvedSocket);
                 socketAddr = resolvedSocket;
             }
 

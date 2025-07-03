@@ -9,12 +9,13 @@ import java.util.stream.Collectors;
 import org.robotcontrol.middleware.ServerStub_I;
 import org.robotcontrol.middleware.rpc.RpcUtils;
 import org.robotcontrol.middleware.rpc.RpcValue;
+import org.robotcontrol.middleware.utils.Logger;
 import org.robotcontrol.core.application.controller.rpc.IController;
 
 
 @Getter
 public class StateService implements org.robotcontrol.middleware.idl.StateService {
-	
+	private final Logger logger = new Logger("StateService");
 	public enum SelectDirection{
 		UP,
 		DOWN		
@@ -38,7 +39,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 
 	@Override
 	public void registerActuator(String actuatorName, boolean isAlive) {
-		System.out.printf("[StateService] registerActuator(actuatorName: %s, isAlive: %s) called\n", actuatorName, isAlive);
+		logger.info("registerActuator(actuatorName: {}, isAlive: {}) called", actuatorName, isAlive);
 		String robotName = actuatorName.substring(0,2);
 		Robot r = new Robot(robotName);
 		
