@@ -1,6 +1,6 @@
 package org.robotcontrol.core;
 
-import org.robotcontrol.middleware.idl.View;
+import org.robotcontrol.middleware.idl.UI;
 import org.robotcontrol.middleware.moveadapter.MoveAdapterServer;
 import org.robotcontrol.middleware.registeractuator.RegisterActuatorServer;
 import org.robotcontrol.middleware.rpc.RpcServer;
@@ -37,7 +37,7 @@ public class Core {
         // WebSocket View erstellen
         WebSocketView view = new WebSocketView(wsServer);
         StateService stateService = new StateService(new Controller(view));
-        // stateService.registerActuator("R1A1", true);
+        stateService.registerActuator("R1A1", true);
         stateService.registerActuator("R1A2", true);
         stateService.registerActuator("R1A3", true);
         stateService.registerActuator("R1A4", true);

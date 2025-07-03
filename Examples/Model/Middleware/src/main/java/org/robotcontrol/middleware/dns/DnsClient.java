@@ -21,7 +21,7 @@ public class DnsClient implements Dns {
 
     public DnsClient() {
         // FIXME hardcode DNS server socket in a constant somewhere
-        this("localhost:9000");
+        this("localhost:9001");
     }
 
     public DnsClient(String socket) {

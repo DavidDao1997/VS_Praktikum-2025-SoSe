@@ -20,6 +20,27 @@
         },
         {
             "type": "java",
+            "name": "View",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.Main",
+            "projectName": "View"
+        },
+        {
+            "type": "java",
+            "name": "Watchdog",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.middleware.watchdog.WatchDog",
+            "projectName": "Middleware"
+        },
+         {
+            "type": "java",
+            "name": "DNS",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.middleware.dns.DnsServiceImpl",
+            "projectName": "Middleware"
+        },
+        {
+            "type": "java",
             "name": "ActuatorController",
             "request": "launch",
             "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",

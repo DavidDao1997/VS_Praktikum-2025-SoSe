@@ -12,15 +12,14 @@ import org.robotcontrol.middleware.rpc.RpcValue;
 import org.robotcontrol.middleware.utils.Logger;
 import org.robotcontrol.core.application.controller.rpc.IController;
 
-
 @Getter
 public class StateService implements org.robotcontrol.middleware.idl.StateService {
 	private final Logger logger = new Logger("StateService");
 	public enum SelectDirection{
 		UP,
-		DOWN		
+		DOWN
 	}
-	
+
 	IController controller;
 	int selectedRobot;
 	boolean error;
@@ -42,8 +41,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 		logger.info("registerActuator(actuatorName: %s, isAlive: %s) called", actuatorName, isAlive);
 		String robotName = actuatorName.substring(0,2);
 		Robot r = new Robot(robotName);
-		
-		
+
 		if (!registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).contains(robotName)) {
 			registeredRobots.add(r);
 		}
@@ -63,14 +61,14 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 			case "A4":
 				r.setA4(isAlive);
 				break;
-			
+
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + actuatorName.substring(2, 4));
 		}
 		// check if availabeRobots can be updated
 		if (r.isAvailable() && !availableRobots.contains(r)) {
 			availableRobots.add(r);
-			
+
 			// send update do not update error, selectedRobot
 			sendUpdate();
 		} else if (!r.isAvailable() && availableRobots.contains(r)) {
@@ -78,13 +76,13 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 			sendUpdate();
 		}
 	}
-	
-//	public void heartbeat(String motorName) {
-//		
-//	}
-	
+
+	// public void heartbeat(String motorName) {
+	//
+	// }
+
 	public void subscribe() {
-		
+
 	}
 
 	public void select(int sd) {
@@ -94,7 +92,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 		}
 		select(values[sd]);
 	}
-	
+
 	public void select(SelectDirection sd) {
 		if (availableRobots.isEmpty()) {
 			error = true;
@@ -102,7 +100,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 			sendUpdate();
 			return;
 		}
-		
+
 		if (sd == SelectDirection.UP) {
 			selectedRobot = (selectedRobot - 1 + availableRobots.size() + 1) % (availableRobots.size() + 1);
 		} else if (sd == SelectDirection.DOWN) {
@@ -112,41 +110,37 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 		error = false;
 		// send update
 		sendUpdate();
-		
-		
-		
-				
+
 	}
-	
+
 	public String getSelected() {
 		if (selectedRobot > 0) {
-			return availableRobots.get(selectedRobot-1).getName();
+			return availableRobots.get(selectedRobot - 1).getName();
 		}
 		return null;
 	}
-	
+
 	public void setError(boolean err, boolean confirm) {
 		if (error != err || this.confirm != confirm) {
 			error = err;
 			this.confirm = confirm;
-		//  send update
-			sendUpdate();			
+			// send update
+			sendUpdate();
 		}
 	}
-	
-	
+
 	private void sendUpdate() {
-		String[] availRobots = new String[availableRobots.size()+1];
+		String[] availRobots = new String[availableRobots.size() + 1];
 		availRobots[0] = "";
 		int idx = 1;
-		
+
 		for (Robot robot : availableRobots) {
 			availRobots[idx] = robot.getName();
 			idx++;
 		}
-		
-		//update(availRobots, selectedRobot, error, confirm);
-		controller.update(availRobots,selectedRobot,error,confirm);
+
+		// update(availRobots, selectedRobot, error, confirm);
+		controller.update(availRobots, selectedRobot, error, confirm);
 	}
 
 	@Override
