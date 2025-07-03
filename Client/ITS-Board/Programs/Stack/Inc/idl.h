@@ -26,6 +26,7 @@ static const RpcFunction rpcFunctionTable[] = {
     {"heartbeat",      { "String" },                         1 },
     {"resolve",       { "String", "String", "String"}, 3 },
     { "receiveResolution", { "String" },             1 },
+    {"setTimestamp",{"String", "int"}, 2},
 
     // TODO ADD ALL FUNCTIONS
 

@@ -20,8 +20,8 @@
 #include "LCD_Touch.h"
 
 #include "lcd.h"
-
 #include "led.h"
+
 #include "lwip_interface.h"
 #include "app_stub.h"
 #include "rpc_client.h"
@@ -79,7 +79,7 @@ void toggleState() {
 }
 
 void resetScreen() {
-   GUI_clear(WHITE);
+  GUI_clear(WHITE);
   lcdGotoXY(1, 1);
 }
 
@@ -130,9 +130,10 @@ int main(void) {
     uint32_t now = HAL_GetTick();
     check_input(); // Check for incoming packets
     //rpc_send_heartbeat(now); // Send heartbeat to server
+    rpc_send_timestamp(now);
 
     
-    if (now - last_cycle >= 200) {
+    if (now - last_cycle >= 150) {
       last_cycle = now;
       //
       // === READ ===

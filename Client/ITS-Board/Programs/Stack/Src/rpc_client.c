@@ -2,10 +2,14 @@
 #include "err.h"
 #include "marshall.h"
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 
 #define MYPORT 0xAFFE
+
+
+
 
 
 // Clientserver festlegen 
@@ -16,6 +20,8 @@ static ip_addr_t rpc_target_server_ip;
 static uint16_t rpc_target_server_port = 45054;
 
 static uint32_t last_heartbeat = 0;
+static uint32_t last_timestamp = 0;
+
 char* socket = "172.16.1.55:54045";
 
 
@@ -56,6 +62,13 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
             if (sscanf(full, "%d.%d.%d.%d:%d", &ip1, &ip2, &ip3, &ip4, &port) == 5) {
                 receive_resolution(ip1, ip2, ip3, ip4, port);
             }
+        } else if (strcmp(function, "setTimestamp") == 0) {
+            char* service = params[0]; 
+            int time;
+
+            if (sscanf(params[1], "%d", &time) == 1){
+                // TODO put into timestamp table of service table
+            }
 
         }
 
@@ -68,6 +81,7 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
 int rpc_init(void) {
     int err = ERR_OK;
     udp_client_pcb = udp_new();
+    
     if (udp_client_pcb != NULL) {
         err = udp_bind(udp_client_pcb, IP_ADDR_ANY, 54045);
 
@@ -129,22 +143,17 @@ void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
     if (strcmp(func, "select") == 0) {
         resolve_dns("stateService", "select"); 
 
-        // TODO resolve
         //set_server_ip(172, 16, 1, 87); 
         //rpc_target_server_port = 63721; 
 
     } else if (strcmp(func, "move") == 0) {
         resolve_dns("moveAdapter", "move"); 
 
-        // TODO resolve
-        //set_server_ip(172, 16, 1, 87); // TODO Watchdog 
-        //rpc_target_server_port = 63721; // TODO Watchdog
+        //set_server_ip(172, 16, 1, 87); 
+        //rpc_target_server_port = 63721; 
 
     }
-    //set_server_ip(192, 168, 33, 1); // TODO DNS
-    //rpc_target_server_port = 9000; // TODO DNS
-
-
+   
     rpc_send(payload);
 }
 
@@ -165,9 +174,33 @@ void rpc_send_heartbeat(uint32_t now) {
             marshall("heartbeat", params, 1, payload);
 
 
-            set_server_ip(172, 16, 1, 87); // TODO Watchdog 
-            rpc_target_server_port =0xAFFA; // TODO Watchdog
+            set_server_ip(172, 16, 1, 87);
+            rpc_target_server_port =0xAFFA; 
             rpc_send(payload);
+        }
+    }
+}
+
+void rpc_send_timestamp(uint32_t now) {
+    if (now - last_heartbeat > 250) {
+        err_t err = ERR_OK;
+        if (err == ERR_OK) {
+        
+            last_heartbeat = now;
+        
+            char act_timestamp[16];
+            sprintf(act_timestamp, "%d", now);
+            // IP war schon gecached, direkt senden
+            const char* params[] = { "IO", act_timestamp};
+            char payload[256];
+
+            marshall("setTimestamp", params, 2, payload);
+
+            
+            set_server_ip(172, 16, 1, 255);
+            // UDP braucht einen Port
+            rpc_target_server_port =0xAFFA; 
+            // rpc_send(payload);
         }
     }
 }
