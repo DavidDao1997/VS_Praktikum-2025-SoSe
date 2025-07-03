@@ -39,7 +39,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 
 	@Override
 	public void registerActuator(String actuatorName, boolean isAlive) {
-		logger.info("registerActuator(actuatorName: {}, isAlive: {}) called", actuatorName, isAlive);
+		logger.info("registerActuator(actuatorName: %s, isAlive: %s) called", actuatorName, isAlive);
 		String robotName = actuatorName.substring(0,2);
 		Robot r = new Robot(robotName);
 		

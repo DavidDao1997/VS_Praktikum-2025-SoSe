@@ -24,19 +24,19 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
     public void register(String serviceName, String functionName, String socket) {
         String descriptor = getDescriptor(serviceName, functionName);
         serviceRegistry.put(descriptor, socket);
-        logger.info("Registered '{}'' -> '{}'", descriptor, socket);
+        logger.info("Registered '%s'' -> '%s'", descriptor, socket);
     }
 
     @Override
     public void resolve(String serviceName, String functionName, String clientCallbackSocket) {
         String descriptor = getDescriptor(serviceName, functionName);
         String resolvedSocket = serviceRegistry.getOrDefault(descriptor, "");
-        logger.info("Resolved '{}'", serviceName);
-        logger.debug("Resolved '{}' to '{}'. Notifying client at {}", serviceName, resolvedSocket, clientCallbackSocket);
+        logger.info("Resolved '%s'", serviceName);
+        logger.debug("Resolved '%s' to '%s'. Notifying client at %s", serviceName, resolvedSocket, clientCallbackSocket);
                 
         CallbackClient c = new CallbackClient(clientCallbackSocket);
         c.receiveResolution(resolvedSocket);
-        logger.debug("Notified client at {}", clientCallbackSocket);
+        logger.debug("Notified client at %s", clientCallbackSocket);
     }
 
     private String getDescriptor(String serviceName, String functionName) {
@@ -79,7 +79,7 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
 
     public static void main(String[] args) throws InterruptedException, SocketException {
         Logger logger = new Logger("DnsService");
-        int dnsServerPort = 9000; // Fixed port for DNS server
+        int dnsServerPort = 9001; // Fixed port for DNS server
 
         DnsServiceImpl dnsService = new DnsServiceImpl();
         RpcServer s = new RpcServer();
@@ -87,7 +87,7 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
         DatagramSocket socket = new DatagramSocket(dnsServerPort);
         s.addService(dnsService, socket) ;
 
-        logger.info("Starting DnsService on port {}", dnsServerPort);
+        logger.info("Starting DnsService on port %s", dnsServerPort);
         s.Listen();
 
         // Keep the server running

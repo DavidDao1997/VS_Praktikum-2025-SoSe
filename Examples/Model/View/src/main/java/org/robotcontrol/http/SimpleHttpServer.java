@@ -20,7 +20,7 @@ public class SimpleHttpServer {
         server.createContext("/", new FileHandler(filePath));
         server.setExecutor(null);
         server.start();
-        logger.debug("HTTP Server gestartet auf Port {}", port);
+        logger.debug("HTTP Server gestartet auf Port %s", port);
     }
 
     private static class FileHandler implements HttpHandler {

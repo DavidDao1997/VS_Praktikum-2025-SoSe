@@ -55,12 +55,12 @@ public class RpcServer {
                         ? serviceProps.getSocket()
                         : new DatagramSocket();
                     
-                    logger.debug("RPC server is listening on port {}/udp ...", socket.getLocalPort());
+                    logger.debug("RPC server is listening on port %s/udp ...", socket.getLocalPort());
                     
                     if (serviceProps.getFunctionNames() != null) {
                         for (String fnName: serviceProps.getFunctionNames()) {
                             String socketAddr = getReachableLocalIp() + ":" + socket.getLocalPort();
-                            logger.debug("Register with DNS: {}.{} -> {}", serviceProps.getServiceName(), fnName, socketAddr);
+                            logger.debug("Register with DNS: %s.%s -> %s", serviceProps.getServiceName(), fnName, socketAddr);
                             dns.ensureRegister(serviceProps.getServiceName(), fnName, socketAddr);
                         }
                     }
@@ -71,11 +71,11 @@ public class RpcServer {
                         socket.receive(packet); // blocking call
 
                         String received = new String(packet.getData(), 0, packet.getLength());
-                        logger.debug("Received from {}:{} | Message: {}", packet.getAddress(), packet.getPort(), received);
+                        logger.debug("Received from %s:%s | Message: %s", packet.getAddress(), packet.getPort(), received);
 
                         RpcRequest req = Marshaller.unmarshal(received);
                         
-                        logger.debug("calling {}", req.function());
+                        logger.debug("calling %s", req.function());
                         service.call(req.function(),req.values().toArray(new RpcValue[0]));
                     }
 

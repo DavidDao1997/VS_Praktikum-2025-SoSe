@@ -27,7 +27,7 @@ public class RpcClient implements ClientStub_I {
 
 	@Override
 	public void invoke(String fnName, RpcValue... args) {
-        logger.debug("invoking: {}", fnName);
+        logger.debug("invoking: %s", fnName);
 		try {
             // marshal request
             String msg = Marshaller.marshal(fnName,args);
@@ -39,7 +39,7 @@ public class RpcClient implements ClientStub_I {
 
             if (serviceName != null) {
                 String resolvedSocket = dns.resolve(serviceName, fnName);
-                logger.debug("DNS resloved: {}", resolvedSocket);
+                logger.debug("DNS resloved: %s", resolvedSocket);
                 socketAddr = resolvedSocket;
             }
 

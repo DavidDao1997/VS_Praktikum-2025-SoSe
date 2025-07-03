@@ -23,7 +23,7 @@ public class RobotWebSocketServer extends WebSocketServer {
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         connections.add(conn);
-        logger.debug("Client verbunden: {}",conn.getRemoteSocketAddress());
+        logger.debug("Client verbunden: %s",conn.getRemoteSocketAddress());
 
         // Send initial state if available
         if (latestStateJson != null) {
@@ -34,23 +34,23 @@ public class RobotWebSocketServer extends WebSocketServer {
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         connections.remove(conn);
-        logger.debug("Client getrennt: {}", conn.getRemoteSocketAddress());
+        logger.debug("Client getrennt: %s", conn.getRemoteSocketAddress());
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        logger.debug("Nachricht empfangen: {}", message);
+        logger.debug("Nachricht empfangen: %s", message);
         // Optional: Client-Nachrichten verarbeiten
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        logger.error("Fehler: {}", ex.getMessage());
+        logger.error("Fehler: %s", ex.getMessage());
     }
 
     @Override
     public void onStart() {
-        logger.info("WebSocket Server gestartet auf Port {}", getPort());
+        logger.info("WebSocket Server gestartet auf Port %s", getPort());
     }
 
     public void sendUpdate(String json) {
