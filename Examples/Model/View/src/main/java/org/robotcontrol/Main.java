@@ -1,5 +1,7 @@
 package org.robotcontrol;
 
+import java.io.IOException;
+
 import org.robotcontrol.http.SimpleHttpServer;
 import org.robotcontrol.middleware.rpc.RpcServer;
 import org.robotcontrol.middleware.ui.UIServer;
@@ -10,12 +12,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // WebSocket-Server starten
-        RobotWebSocketServer wsServer = new RobotWebSocketServer(4568);
+        RobotWebSocketServer wsServer = new RobotWebSocketServer(4567);
         wsServer.start();
 
-        // HTTP-Server starten
+        // HTTP-Server in einem eigenen Thread starten
         SimpleHttpServer.startServer(8080, "ui.html");
-
+       
         // WebSocket View erstellen
         WebSocketView view = new WebSocketView(wsServer);
 

@@ -34,21 +34,33 @@ public class WebSocketView implements UI {
             this.confirmation = confirm;
         }
     }
+    // Diese Methode wird verwendet, um Null-Bytes aus den robotBitmap-Daten zu entfernen
+    private String[] sanitizeRobots(String robotsString) {
+        // Entfernen von Null-Bytes, die durch UTF-8-Konvertierung entstehen könnten
+        robotsString = robotsString.replaceAll("\u0000", "");
+        return robotsString.split(",");  // Angenommen, Roboter sind durch Kommas getrennt
+    }
+
 
     @Override
     public void updateView(byte[] robotBitmap, int selected, boolean error, boolean confirm) {
-        // Umwandlung des byte[] robots in String[] (innerhalb der call-Methode)
+        // Umwandlung des byte[] robots in String
         String robotsString = new String(robotBitmap, StandardCharsets.UTF_8);
+        System.out.println("Received robots string: " + robotsString);
+        System.out.println("Raw robotBitmap: " + Arrays.toString(robotBitmap));
 
-        // Annahme: Die Roboter sind durch Kommas getrennt (falls das Format es
-        // erfordert)
-        String[] robotsArray = robotsString.split(",");
+        // Sanitize und aufteilen der Roboter
+        String[] robotsArray = sanitizeRobots(robotsString);
 
-        System.out.printf(" %s, %s, %s, %s\n", robotsArray, selected, error, confirm);
+        // Ausgabe der Roboter, um sicherzustellen, dass sie korrekt sind
+        System.out.println("Sanitized robots array: " + Arrays.toString(robotsArray));
+        System.out.printf("Selected: %d, Error: %b, Confirmation: %b\n", selected, error, confirm);
+
+        // Erstellen der ViewData und JSON
         ViewData data = new ViewData(robotsArray, selected, error, confirm);
         try {
             String json = objectMapper.writeValueAsString(data);
-            System.out.printf(json);
+            System.out.println("Sending JSON: " + json);  // Zum Debuggen
             server.sendUpdate(json);
         } catch (Exception e) {
             e.printStackTrace();
