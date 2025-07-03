@@ -8,8 +8,8 @@
 
 #define RPC_MAX_PARAMS 4
 
-char function[64];
-char params[RPC_MAX_PARAMS][64];
+//char function[64];
+//char params[RPC_MAX_PARAMS][64];
 
 // Funktionsdefinition
 typedef struct {
@@ -24,7 +24,8 @@ static const RpcFunction rpcFunctionTable[] = {
     { "register_node", { "String", "String" },            2 },
     { "select",        { "int" },                         1 },
     {"heartbeat",      { "String" },                         1 },
-    { "receive_resolution", { "String" },             1 },
+    {"resolve",       { "String", "String", "String"}, 3 },
+    { "receiveResolution", { "String" },             1 },
 
     // TODO ADD ALL FUNCTIONS
 

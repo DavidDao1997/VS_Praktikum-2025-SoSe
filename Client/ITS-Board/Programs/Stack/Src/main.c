@@ -101,7 +101,14 @@ int main(void) {
   
   lcdPrintlnS("Initialisiere Netzwerk...");
   
-  rpc_client_init();
+  int err = rpc_init();
+
+  if (err != ERR_OK) {
+    lcdPrintlnS("Fehler beim Starten der RPC Funktion");
+    while (1) {
+      // Endlosschleife bei Fehler
+    }
+  }
 
   lcdPrintlnS("../done");
 
@@ -122,10 +129,10 @@ int main(void) {
   while (1) {
     uint32_t now = HAL_GetTick();
     check_input(); // Check for incoming packets
-    rpc_send_heartbeat(now); // Send heartbeat to server
+    //rpc_send_heartbeat(now); // Send heartbeat to server
 
     
-    if (now - last_cycle >= 300) {
+    if (now - last_cycle >= 200) {
       last_cycle = now;
       //
       // === READ ===

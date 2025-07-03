@@ -4,11 +4,12 @@
 #include "lcd.h"
 #include "lwip/udp.h"
 #include "lwip/pbuf.h"
+#include "lwip_interface.h"
 #include <string.h>
 #include <stdio.h>
 #include "marshall.h"
 
-void rpc_client_init(void);
+int rpc_init(void);
 void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
                 const int numOfParam);
 

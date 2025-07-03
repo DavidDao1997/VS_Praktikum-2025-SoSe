@@ -5,31 +5,37 @@
 #include <string.h>
 
 
+#define MYPORT 0xAFFE
 
 
-
+// Clientserver festlegen 
+// static ip_addr_t rpc_client_ip;
 // Zielserver festlegen 
-static ip_addr_t rpc_client_ip;
+static ip_addr_t rpc_target_server_ip;
 
-
-static ip_addr_t rpc_server_ip;
-static uint16_t rpc_server_port = 0xAFFE;
+static uint16_t rpc_target_server_port = 45054;
 
 static uint32_t last_heartbeat = 0;
-const char* myIP = "192.198.33.99";
-const uint32_t myPort = 0xAFFE;
+char* socket = "172.16.1.55:54045";
+
 
 void set_server_ip(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
-    IP4_ADDR(&rpc_server_ip, a, b, c, d);
+    IP4_ADDR(&rpc_target_server_ip, a, b, c, d);
 }
+
+
 
 // RPC-Client-Port (dynamisch)
 static struct udp_pcb* udp_client_pcb = NULL;
 static uint16_t rpc_id_counter = 1;
 
+void receive_resolution(uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint32_t port) {
+    set_server_ip( a,  b,  c,  d);
+    rpc_target_server_port = port;
+}
+
 static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
-                            const ip_addr_t *addr, u16_t port)
-{
+                            const ip_addr_t *addr, u16_t port) {
     LWIP_UNUSED_ARG(arg);
     LWIP_UNUSED_ARG(pcb);
 
@@ -40,17 +46,18 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
         buffer[p->len > 127 ? 127 : p->len] = '\0';
 
         char function[64];
-        char params[64];   
-        int numOfParams = 0;
-        unmarshall(buffer, function, &params);
+        char params[RPC_MAX_PARAMS][64];   
+        unmarshall(buffer, function, params);
 
-        if (strcmp(function, "receive_resolution") == 0) {
-            
+        if (strcmp(function, "receiveResolution") == 0) {
+            char* full = params[0];  // z.B. "172.16.1.1:123456"
+    
+            int ip1, ip2, ip3, ip4, port;
+            if (sscanf(full, "%d.%d.%d.%d:%d", &ip1, &ip2, &ip3, &ip4, &port) == 5) {
+                receive_resolution(ip1, ip2, ip3, ip4, port);
+            }
 
         }
-
-        /* Echo die Daten zurück */
-        //udp_sendto(pcb, p, addr, port);
 
         /* Puffer freigeben */
         pbuf_free(p);
@@ -58,24 +65,21 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
 }
 
 // Initialisierung des Client-PCB
-void rpc_client_init(void) {
+int rpc_init(void) {
+    int err = ERR_OK;
     udp_client_pcb = udp_new();
     if (udp_client_pcb != NULL) {
-        err_t err;
+        err = udp_bind(udp_client_pcb, IP_ADDR_ANY, 54045);
 
-        /* Binde den PCB an den Port */
-        err = udp_bind(udp_client_pcb, IP_ADDR_ANY, 0);
-
-        if (err == ERR_OK) {
-            /* Registriere Callback für empfangene Pakete */
-            udp_recv(udp_client_pcb, udp_server_recv, NULL);
-
-            // }
-        } else {
-            lcdPrintlnS("UDP-Server konnte nicht gestartet werden");
+        if (ERR_OK != err){
+            lcdPrintlnS("UDP-Client konnte nicht gestartet werden");
             memp_free(MEMP_UDP_PCB, udp_client_pcb);
+            return err;
+        } else {
+            udp_recv(udp_client_pcb, udp_server_recv, NULL);
         }
     }
+    return err;
 }
 
 
@@ -83,15 +87,35 @@ void rpc_client_init(void) {
 // Hilfsfunktion zum Senden von RPC-Requests
 static void rpc_send(const char* payload) {
     struct pbuf* p = pbuf_alloc(PBUF_TRANSPORT, strlen(payload), PBUF_RAM);
-    if (!p) return;
+    if (!p){
+        lcdPrintlnS("UDP-Client konnte nicht gestartet werden");
+        return;
+    } 
     
     memcpy(p->payload, payload, strlen(payload));
-    udp_sendto(udp_client_pcb, p, &rpc_server_ip, rpc_server_port);
+    udp_sendto(udp_client_pcb, p, &rpc_target_server_ip, rpc_target_server_port);
     pbuf_free(p);
 }
 
 
+void resolve_dns(char* servicename, char* functionname) {
+    set_server_ip(172, 16, 1, 87); 
+    rpc_target_server_port = 9000; 
 
+
+    const char* params[] = { servicename, functionname, socket }; // myIP und Port
+    char payload[256];
+    // senden resolve (servicename, funktionsname, Myip:Myport)
+    if (ERR_OK == marshall("resolve", params, 3, payload)) {
+        // Sende den Payload an den Server
+        rpc_send(payload);
+    } 
+
+    while (rpc_target_server_port == 9000){
+        check_input();
+    }
+
+}
 
 
 // Kompakte JSON-Kodierung der Funktionsaufrufe
@@ -101,33 +125,30 @@ void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
 
 
     marshall(func, param, numOfParam, payload);
+    
+    if (strcmp(func, "select") == 0) {
+        resolve_dns("stateService", "select"); 
 
+        // TODO resolve
+        //set_server_ip(172, 16, 1, 87); 
+        //rpc_target_server_port = 63721; 
 
-                
+    } else if (strcmp(func, "move") == 0) {
+        resolve_dns("moveAdapter", "move"); 
 
-    set_server_ip(192, 168, 33, 1); // TODO DNS
-    rpc_server_port = 9000; // TODO DNS
+        // TODO resolve
+        //set_server_ip(172, 16, 1, 87); // TODO Watchdog 
+        //rpc_target_server_port = 63721; // TODO Watchdog
+
+    }
+    //set_server_ip(192, 168, 33, 1); // TODO DNS
+    //rpc_target_server_port = 9000; // TODO DNS
 
 
     rpc_send(payload);
 }
 
 
-
-void receive_resolution();
-
-void resolve_dns(char* servicename, char* functionname) {
-    set_server_ip(192, 168, 33, 1); // TODO Watchdog 
-    rpc_server_port = 9000; // TODO Watchdog
-
-    const char* params[] = { servicename, functionname, myIP, "0xAFFE" }; // myIP und Port
-    char payload[256];
-    // senden resolve (servicename, funktionsname, Myip, Myport)
-    marshall("resolve", params, 4, payload);
-
-    rpc_send(payload);
-
-}
 
 
 void rpc_send_heartbeat(uint32_t now) {
@@ -144,8 +165,8 @@ void rpc_send_heartbeat(uint32_t now) {
             marshall("heartbeat", params, 1, payload);
 
 
-            set_server_ip(192, 168, 33, 1); // TODO Watchdog 
-            rpc_server_port =0xAFFA; // TODO Watchdog
+            set_server_ip(172, 16, 1, 87); // TODO Watchdog 
+            rpc_target_server_port =0xAFFA; // TODO Watchdog
             rpc_send(payload);
         }
     }
