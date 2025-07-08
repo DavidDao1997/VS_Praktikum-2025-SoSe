@@ -1,5 +1,8 @@
 package org.robotcontrol.core.application.stateservice;
 
+import lombok.Getter;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.robotcontrol.core.application.controller.rpc.IController;
+import org.robotcontrol.middleware.idl.Controller;
 import org.robotcontrol.middleware.idl.MoveAdapter;
 import org.robotcontrol.middleware.utils.Logger;
 
@@ -19,7 +22,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 	private final Logger logger = new Logger("StateService");
 
 	MoveAdapter moveAdapter;
-	IController controller;
+	Controller controller;
 	int selectedRobot;
 	boolean error;
 	boolean confirm;
@@ -30,7 +33,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
     private final ScheduledExecutorService scheduler =
         Executors.newSingleThreadScheduledExecutor();
 
-    public StateService(IController controller) {
+    public StateService(Controller controller) {
         this.controller = controller;
         this.registeredRobots = new ArrayList<>();
         this.availableRobots = new ArrayList<>();
@@ -149,7 +152,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         for (int i = 0; i < availableRobots.size(); i++) {
             availRobots[i + 1] = availableRobots.get(i).getName();
         }
-        controller.update(availRobots, selectedRobot, error, confirm);
+        controller.update(convertStringArrayToBitmap256(availRobots), selectedRobot, error, confirm);
     }
 
     @Override
@@ -160,5 +163,36 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
     /** Stops the periodic update thread. */
     public void shutdown() {
         scheduler.shutdownNow();
+    }
+
+        // Methode zur Konvertierung von String[] in ein 32 Byte langes byte[] für
+    // Bitmap256
+    private byte[] convertStringArrayToBitmap256(String[] robots) {
+        // Berechne die Gesamtgröße des Byte-Arrays, das alle String-Bytes enthält
+        StringBuilder combinedRobots = new StringBuilder();
+
+        // Kombiniere alle Roboter-Namen zu einem einzelnen String
+        for (String robot : robots) {
+            combinedRobots.append(robot);
+        }
+
+        // Hole den kombinierten String und konvertiere ihn in ein byte[]
+        byte[] byteArray = combinedRobots.toString().getBytes(StandardCharsets.UTF_8);
+
+        // Wenn das Array weniger als 32 Bytes hat, fülle es mit Nullen auf
+        if (byteArray.length < 32) {
+            byte[] paddedArray = new byte[32];
+            System.arraycopy(byteArray, 0, paddedArray, 0, byteArray.length);
+            return paddedArray; // Rückgabe des gepolsterten Arrays
+        }
+        // Wenn das Array mehr als 32 Bytes hat, schneide es auf 32 Bytes zu
+        else if (byteArray.length > 32) {
+            byte[] truncatedArray = new byte[32];
+            System.arraycopy(byteArray, 0, truncatedArray, 0, 32);
+            return truncatedArray; // Rückgabe des gekürzten Arrays
+        }
+
+        // Wenn das Array genau 32 Bytes hat, gebe es zurück
+        return byteArray;
     }
 }
