@@ -2,10 +2,6 @@ package org.robotcontrol.middleware.rpc;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +17,6 @@ import org.robotcontrol.middleware.utils.Logger;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Setter;
 
 public class RpcServer {
     private final Logger logger = new Logger("DnsService");
@@ -127,16 +122,14 @@ public class RpcServer {
         }
     }
 
-    private static String getReachableLocalIp() {
-        try (DatagramSocket tmpSocket = new DatagramSocket()) {
-            // Use an external IP to determine the right interface — doesn't send anything
-            tmpSocket.connect(InetAddress.getByName("8.8.8.8"), 53);
-            return tmpSocket.getLocalAddress().getHostAddress();
-        } catch (Exception e) {
-            e.printStackTrace();
-            // TODO Handle Exception gracefully
-            System.exit(1);
-            return "";
+    // TODO move to utils
+    private String getIp() {
+        String envVar = System.getenv("IP_ADDR");
+        if (envVar != null && !envVar.isEmpty()) {
+            return envVar;
+        } else {
+            logger.trace("IP_ADDR undefined, defaulting to 127.0.0.1");
+            return "127.0.0.1"; // fallback
         }
     }
 
@@ -149,7 +142,7 @@ public class RpcServer {
 
             if (serviceProps.getFunctionNames() != null) {
                 for (String fnName : serviceProps.getFunctionNames()) {
-                    String socketAddr = getReachableLocalIp() + ":" + socket.getLocalPort();
+                    String socketAddr = getIp() + ":" + socket.getLocalPort();
                     logger.info("RPCServer: PeriodicRegistration Socket %s\n",socketAddr);
                     if (dns.resolve(serviceProps.serviceName, fnName) == "") {
                         

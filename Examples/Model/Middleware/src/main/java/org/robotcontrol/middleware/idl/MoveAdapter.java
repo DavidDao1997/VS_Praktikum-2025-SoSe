@@ -13,4 +13,5 @@ public interface MoveAdapter {
 	}
 
     public void move(RobotDirection robotDirection);
+	public void setSelected(String selected);
 }

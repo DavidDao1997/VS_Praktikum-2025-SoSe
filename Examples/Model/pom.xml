@@ -38,5 +38,4 @@
         <module>Core</module>
         <module>ActuatorController</module>
     </modules>
-
 </project>

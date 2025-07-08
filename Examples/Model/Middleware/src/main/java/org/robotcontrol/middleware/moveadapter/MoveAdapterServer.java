@@ -3,6 +3,7 @@ package org.robotcontrol.middleware.moveadapter;
 import org.robotcontrol.middleware.ServerStub_I;
 import org.robotcontrol.middleware.idl.MoveAdapter;
 import org.robotcontrol.middleware.idl.MoveAdapter.RobotDirection;
+import org.robotcontrol.middleware.idl.StateService.SelectDirection;
 import org.robotcontrol.middleware.rpc.RpcUtils;
 import org.robotcontrol.middleware.rpc.RpcValue;
 
@@ -17,7 +18,7 @@ public class MoveAdapterServer implements ServerStub_I {
         switch (fnName) {
             case "move":
                 moveAdapter.move(
-                    (RobotDirection) RpcUtils.unwrap(args[0])
+                    RobotDirection.values()[(int) RpcUtils.unwrap(args[0])]
                 );
                 break;
             default:

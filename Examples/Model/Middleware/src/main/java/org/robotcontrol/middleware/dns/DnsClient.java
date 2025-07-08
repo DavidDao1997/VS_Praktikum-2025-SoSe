@@ -15,13 +15,16 @@ import org.robotcontrol.middleware.rpc.RpcClient;
 import org.robotcontrol.middleware.rpc.RpcServer;
 import org.robotcontrol.middleware.rpc.RpcUtils;
 import org.robotcontrol.middleware.rpc.RpcValue;
+import org.robotcontrol.middleware.utils.Logger;
 
 public class DnsClient implements Dns {
+    private final Logger logger = new Logger("DnsService");
     private RpcClient client;
 
     public DnsClient() {
         // FIXME hardcode DNS server socket in a constant somewhere
-        this("localhost:9001");
+        this("localhost:9000");
+        // this("172.16.1.87:9000");
     }
 
     public DnsClient(String socket) {
@@ -56,7 +59,7 @@ public class DnsClient implements Dns {
         try {
             DatagramSocket socket;
             socket = new DatagramSocket();
-            callbackHostport = getReachableLocalIp() + ":" + Integer.toString(socket.getLocalPort());
+            callbackHostport = getIp() + ":" + Integer.toString(socket.getLocalPort());
 
             // FIXME requires new feature that lets us pass a full socket definition too the server
             cbServer.addService(new DnsClientCallbackServiceImpl(resolutionFuture), socket);
@@ -103,14 +106,25 @@ public class DnsClient implements Dns {
 
     }
 
-    private static String getReachableLocalIp() {
-        try (DatagramSocket tmpSocket = new DatagramSocket()) {
-            // Use an external IP to determine the right interface — doesn't send anything
-            tmpSocket.connect(InetAddress.getByName("8.8.8.8"), 53);
-            return tmpSocket.getLocalAddress().getHostAddress();
-        } catch (Exception e) {
-            e.printStackTrace();
+    // TODO move to utils
+    private String getIp() {
+        String envVar = System.getenv("IP_ADDR");
+        if (envVar != null && !envVar.isEmpty()) {
+            return envVar;
+        } else {
+            logger.trace("IP_ADDR undefined, defaulting to 127.0.0.1");
             return "127.0.0.1"; // fallback
         }
     }
+
+    // private static String getReachableLocalIp() {
+    //     try (DatagramSocket tmpSocket = new DatagramSocket()) {
+    //         // Use an external IP to determine the right interface — doesn't send anything
+    //         tmpSocket.connect(InetAddress.getByName("8.8.8.8"), 53);
+    //         return tmpSocket.getLocalAddress().getHostAddress();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return "127.0.0.1"; // fallback
+    //     }
+    // }
 }

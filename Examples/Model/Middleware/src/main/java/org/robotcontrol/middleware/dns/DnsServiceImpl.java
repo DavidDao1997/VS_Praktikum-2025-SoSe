@@ -79,7 +79,11 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
 
     public static void main(String[] args) throws InterruptedException, SocketException {
         Logger logger = new Logger("DnsService");
-        int dnsServerPort = 9001; // Fixed port for DNS server
+        // logger.trace("this is trace logs");
+        // logger.debug("this is debug logs");
+        // logger.info("this is info logs");
+        // logger.warn("this is warn logs");
+        int dnsServerPort = 9000; // Fixed port for DNS server
 
         DnsServiceImpl dnsService = new DnsServiceImpl();
         RpcServer s = new RpcServer();

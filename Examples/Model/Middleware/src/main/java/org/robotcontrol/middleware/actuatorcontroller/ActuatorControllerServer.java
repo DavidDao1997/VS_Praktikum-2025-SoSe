@@ -2,6 +2,7 @@ package org.robotcontrol.middleware.actuatorcontroller;
 
 import org.robotcontrol.middleware.ServerStub_I;
 import org.robotcontrol.middleware.idl.ActuatorController;
+import org.robotcontrol.middleware.idl.StateService.SelectDirection;
 import org.robotcontrol.middleware.rpc.RpcUtils;
 import org.robotcontrol.middleware.rpc.RpcValue;
 
@@ -16,7 +17,7 @@ public class ActuatorControllerServer implements ServerStub_I {
         switch (fnName) {
             case "move":
                 actuatorController.move(
-                    (ActuatorController.Direction) RpcUtils.unwrap(args[0])
+                    ActuatorController.Direction.values()[(int) RpcUtils.unwrap(args[0])]
                 );
                 break;
             default:

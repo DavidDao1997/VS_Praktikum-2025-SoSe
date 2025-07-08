@@ -7,8 +7,8 @@ import org.robotcontrol.middleware.rpc.RpcValue;
 public class ActuatorControllerClient implements ActuatorController {
     private RpcClient client;
     
-    public ActuatorControllerClient() {
-        client = new RpcClient("ActuatorController");
+    public ActuatorControllerClient(String serviceName) {
+        client = new RpcClient(serviceName);
     }
 
     @Override

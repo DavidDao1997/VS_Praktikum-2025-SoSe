@@ -6,6 +6,33 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.Main",
+            "projectName": "View"
+        },
+        {
+            "type": "java",
+            "name": "WatchDog",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.middleware.watchdog.WatchDog",
+            "projectName": "Middleware",
+            "env": {
+                "LOG_LEVEL": "TRACE"
+            }
+        },
+        {
+            "type": "java",
+            "name": "DnsServiceImpl",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.middleware.dns.DnsServiceImpl",
+            "projectName": "Middleware",
+            "env": {
+                "LOG_LEVEL": "TRACE"
+            }
+        },
+        {
+            "type": "java",
             "name": "Core",
             "request": "launch",
             "mainClass": "org.robotcontrol.core.Core",

@@ -44,6 +44,11 @@ public class RpcClient implements ClientStub_I {
                 }
                 logger.debug("DNS resloved: %s", resolvedSocket);
                 socketAddr = resolvedSocket;
+                if (resolvedSocket != "") {
+                    logger.debug("DNS resloved: %s", resolvedSocket);
+                } else {
+                    return;
+                }
             }
 
             String[] socketParts = socketAddr.split(":", 2);
