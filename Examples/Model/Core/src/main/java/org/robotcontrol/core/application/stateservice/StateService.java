@@ -51,11 +51,17 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         logger.info("registerActuator(actuatorName: %s, isAlive: %s) called", actuatorName, isAlive);
         String robotName = actuatorName.substring(0, 2);
         Robot r = new Robot(robotName);
-
+		
 		if (!registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).contains(robotName)) {
 			registeredRobots.add(r);
 		}
 		int idx = registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).indexOf(robotName);
+		logger.warn("selectedRobot: %s idx: %s isAlive: %s", selectedRobot, idx, isAlive);
+		if (selectedRobot == idx + 1 && isAlive == false) {
+			selectedRobot = 0;
+			moveAdapter.setSelected("");
+			sendUpdate();
+		}
 		r = registeredRobots.get(idx);
 		
 		switch (actuatorName.substring(2, 4)) {
@@ -152,6 +158,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         for (int i = 0; i < availableRobots.size(); i++) {
             availRobots[i + 1] = availableRobots.get(i).getName();
         }
+		logger.info("controller.update(%s, %s, %s, %s)", availRobots, selectedRobot, error, confirm);
         controller.update(convertStringArrayToBitmap256(availRobots), selectedRobot, error, confirm);
     }
 

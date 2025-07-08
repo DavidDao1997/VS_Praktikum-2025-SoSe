@@ -34,11 +34,11 @@ public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter 
 				direction = ActuatorDirection.DECREASE;
 				break;
 			case DOWN:
-				actuatorId = 2;
+				actuatorId = 3;
 				direction = ActuatorDirection.DECREASE;
 				break;
 			case BACKWARD:
-				actuatorId = 3;
+				actuatorId = 2;
 				direction = ActuatorDirection.DECREASE;
 				break;
 			case CLOSE:		
@@ -50,11 +50,11 @@ public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter 
 				direction = ActuatorDirection.INCREASE;
 				break;
 			case UP:
-				actuatorId = 2;
+				actuatorId = 3;
 				direction = ActuatorDirection.INCREASE;
 				break;
 			case FORWARD:
-				actuatorId = 3;
+				actuatorId = 2;
 				direction = ActuatorDirection.INCREASE;
 				break;
 			case OPEN:
@@ -68,7 +68,7 @@ public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter 
 		}
 		
 		// FIXME use client
-		org.robotcontrol.middleware.idl.ActuatorController acm = new ActuatorControllerClient("R1A1");
+		org.robotcontrol.middleware.idl.ActuatorController acm = new ActuatorControllerClient(selected + "A" + actuatorId);
 		acm.move(Direction.values()[direction.ordinal()]);
 
 		stateService.setError(false, true);

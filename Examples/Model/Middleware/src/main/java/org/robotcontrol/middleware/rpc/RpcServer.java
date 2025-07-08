@@ -70,7 +70,7 @@ public class RpcServer {
                     //         dns.register(serviceProps.serviceName, fnName, socketAddr);
                     //     }
                     // }
-                    scheduler.scheduleAtFixedRate(this::periodicRegistration, 0, 200, TimeUnit.MILLISECONDS);
+                    scheduler.scheduleAtFixedRate(this::periodicRegistration, 0, 3000, TimeUnit.MILLISECONDS);
 
                     byte[] buffer = new byte[256];
                     while (running) {
@@ -143,8 +143,8 @@ public class RpcServer {
             if (serviceProps.getFunctionNames() != null) {
                 for (String fnName : serviceProps.getFunctionNames()) {
                     String socketAddr = getIp() + ":" + socket.getLocalPort();
-                    logger.info("RPCServer: PeriodicRegistration Socket %s\n",socketAddr);
-                    if (dns.resolve(serviceProps.serviceName, fnName) == "") {
+                    logger.debug("RPCServer: PeriodicRegistration Socket %s\n",socketAddr);
+                    if (dns.resolve(serviceProps.serviceName, fnName) != socketAddr) {
                         
                         dns.register(serviceProps.serviceName, fnName, socketAddr);
                     }

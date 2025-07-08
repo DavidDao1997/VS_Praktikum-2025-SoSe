@@ -2,12 +2,12 @@ package org.robotcontrol.middleware.idl;
 
 public interface MoveAdapter {
     public enum RobotDirection{
-		LEFT,
-		RIGHT,
 		UP,
 		DOWN,
-		BACKWARD,
+		LEFT,
+		RIGHT,
 		FORWARD,
+		BACKWARD,
 		OPEN,
 		CLOSE
 	}

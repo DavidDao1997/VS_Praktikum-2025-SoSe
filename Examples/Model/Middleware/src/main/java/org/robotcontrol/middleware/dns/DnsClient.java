@@ -40,7 +40,8 @@ public class DnsClient implements Dns {
 
     public DnsClient() {
         // FIXME hardcode DNS server socket in a constant somewhere
-        this("localhost:9000");
+        // this("localhost:9000");
+        this("172.16.1.87:9000");
     }
 
     public DnsClient(String socket) {
@@ -69,7 +70,7 @@ public class DnsClient implements Dns {
         String key = serviceName + "." + functionName;
         CacheEntry cached = cache.get(key);
         if (cached != null && System.currentTimeMillis() - cached.timestamp < CACHE_TTL_MS) {
-            logger.info("Cache hit for {} → {}", key, cached.value);
+            logger.debug("Cache hit for %s -> %s", key, cached.value);
             return cached.value;
         }
 
@@ -102,7 +103,11 @@ public class DnsClient implements Dns {
         try {
             String resolved = resolutionFuture.get(5, TimeUnit.SECONDS);
             // Store in cache before returning
-            cache.put(key, new CacheEntry(resolved, System.currentTimeMillis()));
+            if (!"".equals(resolved) && (resolved != null)) {
+                logger.debug("Cache store for %s -> %s", key, resolved);
+            
+                cache.put(key, new CacheEntry(resolved, System.currentTimeMillis()));
+            }
             return resolved;
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
             System.err.println("DnsClient: Resolution failed for " + key);
@@ -119,11 +124,11 @@ public class DnsClient implements Dns {
 
         @Override
         public void call(String fnName, RpcValue... args) {
-            receiveResolution((String) RpcUtils.unwrap(args[0]));
+            receiveResolution((String) RpcUtils.unwrap(args[0]), (String) RpcUtils.unwrap(args[1]), (String) RpcUtils.unwrap(args[2]));
         }
 
         @Override
-        public void receiveResolution(String resolvedSocket) {
+        public void receiveResolution(String _serviceName, String _fnName, String resolvedSocket) {
             resolutionFuture.complete(resolvedSocket);
         }
     }

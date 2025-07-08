@@ -1,12 +1,9 @@
 package org.robotcontrol.core.application.controller.rpc;
 
-import org.robotcontrol.middleware.idl.UI;
 import org.robotcontrol.middleware.ui.UIClient;
-import org.robotcontrol.view.IView;
+
 import org.robotcontrol.view.WebSocketView;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class Controller implements org.robotcontrol.middleware.idl.Controller {
 
