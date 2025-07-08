@@ -29,14 +29,7 @@ public class DnsClient implements Dns {
         client = new RpcClient(socketParts[0], Integer.parseInt(socketParts[1]));
     }
 
-    public void ensureRegister(
-        String serviceName, 
-        String functionName, 
-        String socket
-    ) {
-        register(serviceName, functionName, socket);
-        // TODO call resolve and reRegister in case the resolve fails  
-    }
+
 
     public void register(
         String serviceName, 
@@ -50,6 +43,8 @@ public class DnsClient implements Dns {
             new RpcValue.StringValue(socket)
         );
     }
+
+    
 
     public String resolve(
         String serviceName, 

@@ -36,16 +36,16 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.10</version> 
-            <!-- <version>${javafx.version}</version>
-            <classifier>${javafx.platform}</classifier> use these for mac-->
+            <!-- <version>17.0.10</version>  -->
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier> 
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.10</version> 
-            <!-- <version>${javafx.version}</version>
-            <classifier>${javafx.platform}</classifier> use these for mac-->
+            <!-- <version>17.0.10</version>  -->
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier> 
         </dependency> 
 
         <dependency>
