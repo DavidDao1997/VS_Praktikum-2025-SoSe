@@ -1,23 +1,25 @@
 #include "rpc_client.h"
+#include "Driver_Common.h"
 #include "err.h"
 #include "marshall.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include "caching_proxy.h"
+#include "stm32f4xx_hal.h"
 
 
 #define MYPORT 0xAFFE
 
-
-
-
+#define DNS_PORT 9000
+#define MAX_RESOLVE_TIME 500
 
 // Clientserver festlegen 
 // static ip_addr_t rpc_client_ip;
 // Zielserver festlegen 
 static ip_addr_t rpc_target_server_ip;
 
-static uint16_t rpc_target_server_port = 45054;
+static uint16_t rpc_target_server_port = 0;
 
 static uint32_t last_heartbeat = 0;
 static uint32_t last_timestamp = 0;
@@ -56,8 +58,14 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
         unmarshall(buffer, function, params);
 
         if (strcmp(function, "receiveResolution") == 0) {
-            char* full = params[0];  // z.B. "172.16.1.1:123456"
-    
+            const char* servicename = params[0];
+            const char* functionname = params[1];
+            const char* full = params[2];  // z.B. "172.16.1.1:123456"
+
+            if (ERR_OK != cache_store(servicename, functionname, full,  HAL_GetTick())){
+                lcdPrintlnS("Cache Proxy Full");
+            }
+            
             int ip1, ip2, ip3, ip4, port;
             if (sscanf(full, "%d.%d.%d.%d:%d", &ip1, &ip2, &ip3, &ip4, &port) == 5) {
                 receive_resolution(ip1, ip2, ip3, ip4, port);
@@ -102,7 +110,6 @@ int rpc_init(void) {
 static void rpc_send(const char* payload) {
     struct pbuf* p = pbuf_alloc(PBUF_TRANSPORT, strlen(payload), PBUF_RAM);
     if (!p){
-        lcdPrintlnS("UDP-Client konnte nicht gestartet werden");
         return;
     } 
     
@@ -115,31 +122,40 @@ static void rpc_send(const char* payload) {
 void resolve_dns(char* servicename, char* functionname) {
     set_server_ip(172, 16, 1, 87); 
     rpc_target_server_port = 9000; 
+    // First search in Cache
+    const char * full = resolve_proxy_dns(servicename, functionname);
 
+    if (NULL == full){
+        // Not in Cache
+        const char* params[] = { servicename, functionname, socket }; // myIP und Port
+        char payload[256];
+        // senden resolve (servicename, funktionsname, Myip:Myport)
+        if (ERR_OK == marshall("resolve", params, 3, payload)) {
+            // Sende den Payload an den Server
+            rpc_send(payload);
+        } 
 
-    const char* params[] = { servicename, functionname, socket }; // myIP und Port
-    char payload[256];
-    // senden resolve (servicename, funktionsname, Myip:Myport)
-    if (ERR_OK == marshall("resolve", params, 3, payload)) {
-        // Sende den Payload an den Server
-        rpc_send(payload);
-    } 
-
-    while (rpc_target_server_port == 9000){
-        check_input();
+        uint32_t start = HAL_GetTick();
+        while ((rpc_target_server_port == DNS_PORT) && (HAL_GetTick() - start <= MAX_RESOLVE_TIME)){ //Add time max 500ms
+            check_input();
+        }
+        if (rpc_target_server_port == DNS_PORT){
+           receive_resolution(0, 0, 0, 0, 0);
+        }
+    } else {
+        // Is in cache
+        int ip1, ip2, ip3, ip4, port;
+        if (sscanf(full, "%d.%d.%d.%d:%d", &ip1, &ip2, &ip3, &ip4, &port) == 5) {
+                receive_resolution(ip1, ip2, ip3, ip4, port);
+        }
     }
-
 }
 
 
-// Kompakte JSON-Kodierung der Funktionsaufrufe
 void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
                 const int numOfParam){
     char payload[256];
-
-
     marshall(func, param, numOfParam, payload);
-    
     if (strcmp(func, "select") == 0) {
         resolve_dns("stateService", "select"); 
 

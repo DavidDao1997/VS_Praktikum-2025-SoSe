@@ -21,11 +21,13 @@ ITS-Board/README.md
 !ITS-Board/Programs/Stack/Inc/app_stub.h
 !ITS-Board/Programs/Stack/Inc/idl.h
 !ITS-Board/Programs/Stack/Inc/marshall.h
+!ITS-Board/Programs/Stack/Inc/caching_proxy.h
 
 !ITS-Board/Programs/Stack/Src/main.c
 !ITS-Board/Programs/Stack/Src/app_stub.c
 !ITS-Board/Programs/Stack/Src/rpc_client.c
 !ITS-Board/Programs/Stack/Src/marshall.c
+!ITS-Board/Programs/Stack/Src/caching_proxy.c
 
 #!ITS-Board/Programs/Stack/Src/rest_lvl0.c
 #!ITS-Board/Programs/Stack/Src/udp_server.c
