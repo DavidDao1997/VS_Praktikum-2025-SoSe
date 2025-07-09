@@ -3,28 +3,29 @@
 	
 \end{quote}
 
-\section{Offenheit}
-\begin{quote}
+%\section{Offenheit}
+%\begin{quote}
 	
-\end{quote}
+%\end{quote}
 	
-\section{Verteilungstranzparenzen}
-\begin{quote}
+%\section{Verteilungstranzparenzen}
+%\begin{quote}
 	
-\end{quote}
+%\end{quote}
 
-\section{Kohärenz}
-\begin{quote}
-Kohärenz wird dadurch sichergestellt, dass die Steuerung alle Roboter ausschliesslich über das ITS-Board zulässig ist.
-\end{quote}
+%\section{Kohärenz}
+%\begin{quote}
+%Kohärenz wird dadurch sichergestellt, dass die Steuerung alle Roboter ausschliesslich über das ITS-Board zulässig ist.
+%\end{quote}
 \section{Sicherheit (Safety)}
 \begin{quote}
-Watchdogs auf dem Raspberry Pi des Roboterarms überwacht die eigene Verfügbarkeit. Wenn sich der Roboterarm durch einen vorherigen Aufruf vom ITS-Board bewegt, muss eine Verbindung zum ITS-Board bestehen. Bricht diese ab, oder das Netzwerk ist zu stark ausgelastet, muss der Roboterarm sofort anhalten. Wenn das ITS-Board einen Abbruch der Verbindung feststellt ist der Roboterarm als "nicht verfügbar" erkennbar.
-Security ist keine Anforderung an das System.
+Für jede Betätigung des Nutzer wird nun ein Bewegungsbefehl an den Roboter weitergegeben. Sobald der Nutzer die Taste loslässt, hört der Roboter auf sich zu bewegen.
+%Watchdogs auf dem Raspberry Pi des Roboterarms überwacht die eigene Verfügbarkeit. Wenn sich der Roboterarm durch einen vorherigen Aufruf vom ITS-Board bewegt, muss eine Verbindung zum ITS-Board bestehen. Bricht diese ab, oder das Netzwerk ist zu stark ausgelastet, muss der Roboterarm sofort anhalten. Wenn das ITS-Board einen Abbruch der Verbindung feststellt ist der Roboterarm als "nicht verfügbar" erkennbar.
+%Security ist keine Anforderung an das System.
 \end{quote}
 \section{Bedienoberfläche}
 \begin{quote}
-	Die GUI wird textuell auf dem Display des ITS-Boards dargestellt. Es wird auf Einfachheit und Eindeutigkeit geachtet.
+	Die Bedienung wird textuell auf dem Display des ITS-Boards dargestellt. Es wird auf Einfachheit und Eindeutigkeit geachtet.
 	
 \end{quote}
 
@@ -59,25 +60,6 @@ Security ist keine Anforderung an das System.
 \end{quote}
 
 
-\section{Kommunikation}
-
-\begin{quote}
-	Für die Kommunikation wird das TCP-Protokoll genutzt. Die Steuerung der Roboterarme wird RPC durchgeführt.
-\end{quote}
-
-\section{Konfiguration}
-
-\begin{quote}
-	Die Raspberry Pi's und das ITS-Board bekommen eine feste IP-Adresse in einer bestehenden Netzwerkumgebung. Es existiert kein DHCP.
-	Jeder Roboterarm hat eine eigene Hardgecodete Konfiguration, die dem ITS-Board mitgeteilt wird.
-\end{quote}
-
-\section{Logging, Protokollierung}
-
-\begin{quote}
-	
-	Das Logging findet auf dem Raspberry Pi statt.
-\end{quote}
 
 %\section{Management und Administrierbarkeit}
 %
@@ -116,15 +98,15 @@ Security ist keine Anforderung an das System.
 %	Persistenz ist ein technisch bedingtes Thema und trägt nichts zur eigentlichen Fachlichkeit eines Systems bei. Dennoch müssen Sie sich als Architekt mit dem Thema auseinander setzen, denn ein erheblicher Teil aller Software-Systeme benötigt einen effizienten Zugriff auf persistent gespeicherte Daten. Hierzu gehören praktisch sämtliche kommerziellen und viele technischen Systeme. Eingebettete Systeme (embedded systems ) gehorchen jedoch oft anderen Regeln hinsichtlich ihrer Datenverwaltung.
 %\end{quote}
 
-\section{Plausibilisierung und Validierung}
-\begin{quote}
-	Wo und wie plausibilisieren und validieren Sie (Eingabe-)daten, etwa Benutzereingaben?
-\end{quote}
+%\section{Plausibilisierung und Validierung}
+%\begin{quote}
+%	Wo und wie plausibilisieren und validieren Sie (Eingabe-)daten, etwa Benutzereingaben?
+%\end{quote}
 
-\section{Sessionbehandlung}
-\begin{quote}
-	Sofern ein Roboterarm sich beim ITS-Board erfolgreich registriert hat, kann dieser, wenn erreichbar, angesteuert werden. Dafür wird eine TCP-Verbindung aufgebaut und danach mit RPC kommuniziert. Ein Watchdog auf beiden Seiten überwacht die Verbindung.
-\end{quote}
+%\section{Sessionbehandlung}
+%\begin{quote}
+%	Sofern ein Roboterarm sich beim ITS-Board erfolgreich registriert hat, kann dieser, wenn erreichbar, angesteuert werden. Dafür wird eine TCP-Verbindung aufgebaut und danach mit RPC kommuniziert. Ein Watchdog auf beiden Seiten überwacht die Verbindung.
+%\end{quote}
 
 %\section{Sicherheit}
 
@@ -140,11 +122,11 @@ Security ist keine Anforderung an das System.
 %	Das Thema IT-Sicherheit hat häufig Berührung zu juristischen Aspekten, teilweise sogar zu internationalem Recht.
 %\end{quote}
 
-\section{Skalierung}
+%\section{Skalierung}
 
-\begin{quote}
-Dies Skalierung ist durch das /24 Netz begrenzt. Ansonsten können sich die Roboterarme beliebig mit ihren Kenndaten bei dem ITS-Board anmelden.
-\end{quote}
+%\begin{quote}
+%Dies Skalierung ist durch das /24 Netz begrenzt. Ansonsten können sich die Roboterarme beliebig mit ihren Kenndaten bei dem ITS-Board anmelden.
+%\end{quote}
 
 %\section{Transaktionsbehandlung}
 
@@ -152,11 +134,11 @@ Dies Skalierung ist durch das /24 Netz begrenzt. Ansonsten können sich die Robo
 %	Transaktionen sind Arbeitsschritte oder Abläufe, die entweder alle gemeinsam oder garnicht durchgeführt werden. Der Begriff stammt aus den Datenbanken - wichtiges Stichwort hier sind ACID-Transaktionen (atomar, consistent, isolated, durable). Im Bereich von NoSQL-Datenbanken gelten andere Kriterien.
 %\end{quote}
 
-\section{Verteilung}
+%\section{Verteilung}
 
-\begin{quote}
+%\begin{quote}
 	Das ITS-Board ruft per RPC die API der Middleware auf, diese wird dann in eine Bewegung des Roboterarms übersetzt. Die Nachrichten werden asynchron ausgetauscht. Die Anmeldung des Roboters erfolgt ebenfalls durch einen RPC aufruf. am ITS-Board.
 	
 %	Verteilung: Entwurf von Software-Systemen, deren Bestandteile auf unterschiedlichen und eventuell physikalisch getrennten Rechnersystemen ablaufen.
 %	Zur Verteilung gehören Dinge wie der Aufruf entfernter Methoden (remote procedure call, RPC), die Übertragung von Daten oder Dokumenten an verteilte Kommunikationspartner, die Wahl passender Interaktionsstile oder Nachrichtenaustauschmuster (etwa: synchron / asynchron, publish- subsribe, peer-to- peer).
-\end{quote}
+%\end{quote}
