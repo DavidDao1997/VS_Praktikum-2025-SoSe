@@ -1,0 +1,19 @@
+services:
+  server:
+    image: java-udp-server
+    ports:
+      - "45054:45054/udp"
+
+  client:
+    image: c-udp-client
+    depends_on:
+      - server
+    environment:
+      SERVER_IP: server
+
+  dnsclient:
+    image: dns-client
+    depends_on:
+      - dnsserver
+  dnsserver:
+    image: dns-server
