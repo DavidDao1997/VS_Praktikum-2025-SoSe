@@ -7,6 +7,7 @@
 #include <string.h>
 #include "caching_proxy.h"
 #include "stm32f4xx_hal.h"
+#include "timestamp.h"
 
 
 #define MYPORT 0xAFFE
@@ -55,29 +56,33 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
 
         char function[64];
         char params[RPC_MAX_PARAMS][64];   
-        unmarshall(buffer, function, params);
+        uint32_t timestamp = 0;
+        unmarshall(buffer, function, params, &timestamp);
 
         if (strcmp(function, "receiveResolution") == 0) {
             const char* servicename = params[0];
             const char* functionname = params[1];
             const char* full = params[2];  // z.B. "172.16.1.1:123456"
 
-            if (ERR_OK != cache_store(servicename, functionname, full,  HAL_GetTick())){
-                lcdPrintlnS("Cache Proxy Full");
-            }
-            
-            int ip1, ip2, ip3, ip4, port;
-            if (sscanf(full, "%d.%d.%d.%d:%d", &ip1, &ip2, &ip3, &ip4, &port) == 5) {
-                receive_resolution(ip1, ip2, ip3, ip4, port);
+            if (!((strcmp(full, "") == 0) || (full == NULL))){
+
+                if (ERR_OK != cache_store(servicename, functionname, full,  HAL_GetTick())){
+                    lcdPrintlnS("Cache Proxy Full");
+                }
+                
+                int ip1, ip2, ip3, ip4, port;
+                if (sscanf(full, "%d.%d.%d.%d:%d", &ip1, &ip2, &ip3, &ip4, &port) == 5) {
+                    receive_resolution(ip1, ip2, ip3, ip4, port);
+                }
             }
         } else if (strcmp(function, "setTimestamp") == 0) {
             char* service = params[0]; 
+            char* function = params[1];
             int time;
 
-            if (sscanf(params[1], "%d", &time) == 1){
-                // TODO put into timestamp table of service table
+            if (sscanf(params[2], "%d", &time) == 1){
+                set_or_update_timestamp(service, function, time);
             }
-
         }
 
         /* Puffer freigeben */
@@ -120,7 +125,7 @@ static void rpc_send(const char* payload) {
 
 
 void resolve_dns(char* servicename, char* functionname) {
-    set_server_ip(172, 16, 1, 87); 
+    set_server_ip(172, 16, 1, 200); 
     rpc_target_server_port = 9000; 
     // First search in Cache
     const char * full = resolve_proxy_dns(servicename, functionname);
@@ -128,9 +133,10 @@ void resolve_dns(char* servicename, char* functionname) {
     if (NULL == full){
         // Not in Cache
         const char* params[] = { servicename, functionname, socket }; // myIP und Port
-        char payload[256];
+        char payload[PAYLOAD_FIXED_SIZE];
+        uint32_t timestamp = 0;
         // senden resolve (servicename, funktionsname, Myip:Myport)
-        if (ERR_OK == marshall("resolve", params, 3, payload)) {
+        if (ERR_OK == marshall("resolve", params, 3, payload, timestamp)) {
             // Sende den Payload an den Server
             rpc_send(payload);
         } 
@@ -154,23 +160,28 @@ void resolve_dns(char* servicename, char* functionname) {
 
 void rpc_invoke(const char* func, const char* paramTypes[], const char* param[],
                 const int numOfParam){
-    char payload[256];
-    marshall(func, param, numOfParam, payload);
+    char payload[PAYLOAD_FIXED_SIZE];
+    uint32_t timestamp = 0;
+    bool gotTimestamp = false;
     if (strcmp(func, "select") == 0) {
         resolve_dns("stateService", "select"); 
-
+        
+        gotTimestamp = get_timestamp("stateService", "select", &timestamp);
         //set_server_ip(172, 16, 1, 87); 
         //rpc_target_server_port = 63721; 
 
     } else if (strcmp(func, "move") == 0) {
         resolve_dns("moveAdapter", "move"); 
+        gotTimestamp = get_timestamp("stateService", "move", &timestamp);
 
         //set_server_ip(172, 16, 1, 87); 
         //rpc_target_server_port = 63721; 
 
     }
-   
-    rpc_send(payload);
+    if (gotTimestamp){
+        marshall(func, param, numOfParam, payload, timestamp);
+        rpc_send(payload);
+    }
 }
 
 
@@ -185,9 +196,9 @@ void rpc_send_heartbeat(uint32_t now) {
         
             // IP war schon gecached, direkt senden
             const char* params[] = { "IO" };
-            char payload[256];
-
-            marshall("heartbeat", params, 1, payload);
+            char payload[PAYLOAD_FIXED_SIZE];
+            uint32_t timestamp = 0;
+            marshall("heartbeat", params, 1, payload, timestamp);
 
 
             set_server_ip(172, 16, 1, 87);
@@ -198,25 +209,31 @@ void rpc_send_heartbeat(uint32_t now) {
 }
 
 void rpc_send_timestamp(uint32_t now) {
-    if (now - last_heartbeat > 250) {
+    if (now - last_timestamp > 250) {
         err_t err = ERR_OK;
         if (err == ERR_OK) {
         
-            last_heartbeat = now;
+            last_timestamp = now;
         
             char act_timestamp[16];
             sprintf(act_timestamp, "%d", now);
             // IP war schon gecached, direkt senden
             const char* params[] = { "IO", act_timestamp};
-            char payload[256];
-
-            marshall("setTimestamp", params, 2, payload);
-
+            char payload[PAYLOAD_FIXED_SIZE];
+            uint32_t timestamp = 0;
+            uint32_t gotTimestamp = 0;     
             
-            set_server_ip(172, 16, 1, 255);
-            // UDP braucht einen Port
-            rpc_target_server_port =0xAFFA; 
-            // rpc_send(payload);
+            // set timestamp to needed services
+            if (get_timestamp("moveAdapter","setTimestamp", &timestamp)){
+                marshall("setTimestamp", params, 2, payload, timestamp);
+                resolve_dns("moveAdapter", "setTimestamp");
+                rpc_send(payload);
+            }
+            if (get_timestamp("stateService", "setTimestamp", &timestamp)){
+                marshall("setTimestamp", params, 2, payload, timestamp);
+                resolve_dns("stateService", "setTimestamp"); 
+                rpc_send(payload);
+            }
         }
     }
 }

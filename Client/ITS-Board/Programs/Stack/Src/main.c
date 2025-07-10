@@ -47,10 +47,6 @@ typedef enum {
 State currentState = STATE_SELECT_MENU;
 State lastState = STATE_SELECT_MENU;
 
-bool isButtonPressed(uint16_t s) {
-  return (0x01U << s) != ((0x01U << s) & GPIOF -> IDR); 
- }
-
 typedef struct {
   bool S0_pressed;
   bool S1_pressed; // NOT NEEDED YET
@@ -61,6 +57,23 @@ typedef struct {
   bool S6_pressed;
   bool S7_pressed;
 } ButtonState;
+
+bool isButtonPressed(uint16_t s) {
+  return (0x01U << s) != ((0x01U << s) & GPIOF -> IDR); 
+ }
+
+bool isAnyButtonPressed(ButtonState btns){
+  return btns.S0_pressed ||
+         btns.S1_pressed ||
+         btns.S2_pressed ||
+         btns.S3_pressed ||
+         btns.S4_pressed ||
+         btns.S5_pressed ||
+         btns.S6_pressed ||
+         btns.S7_pressed;
+}
+
+
 
 
 void readButtons(ButtonState *buttons) {
@@ -91,7 +104,7 @@ int main(void) {
   TP_Init(false);               // Initialisierung des LCD Boards mit Touch
 
   // Begruessungstext
-  lcdPrintlnS("UDP-Client");
+  lcdPrintlnS("Roboterarm-Steuerung");
 
   // initialisiere den Stack 
   init_lwip_stack();
@@ -116,7 +129,7 @@ int main(void) {
   resetScreen();
  
 
-   ButtonState btn;
+   ButtonState btn, lastBtn = {0};
 
   // INITIAL MENUE HERE
   lcdPrintlnS("SELECT MENU");
@@ -130,10 +143,10 @@ int main(void) {
     uint32_t now = HAL_GetTick();
     check_input(); // Check for incoming packets
     //rpc_send_heartbeat(now); // Send heartbeat to server
-    rpc_send_timestamp(now);
+    //rpc_send_timestamp(now);
 
     
-    if (now - last_cycle >= 150) {
+    if (now - last_cycle >= 20) {
       last_cycle = now;
       //
       // === READ ===
@@ -143,82 +156,87 @@ int main(void) {
       //
       // === MODIFY ===
       //
-      if (btn.S0_pressed) {
-        toggleState();  // FSM-State Wechsel bei S0
-      }
-
-      //
-      // === WRITE ===
-      //
-      if (currentState != lastState) {
-        resetScreen();
-        // Zustandswechsel erkannt → ggf. Statusanzeige
-        switch (currentState) {
-          case STATE_SELECT_MENU:
-            lcdPrintlnS("SELECT MENU");
-            lcdPrintlnS("S7 -> UP");
-            lcdPrintlnS("S6 -> DOWN");
-            lcdPrintlnS("S0 -> NEXT MENU");
-            break;
-          case STATE_MOVE_MENU:
-            lcdPrintlnS("MOVE MENU");
-            lcdPrintlnS("S7 -> UP");
-            lcdPrintlnS("S6 -> DOWN");
-            lcdPrintlnS("S5 -> FORWARD");
-            lcdPrintlnS("S4 -> BACKWARD");
-            lcdPrintlnS("S3 -> LEFT");
-            lcdPrintlnS("S2 -> RIGHT");
-            lcdPrintlnS("S0 -> NEXT MENU");
-            break;
-          case STATE_CLAW_MENU:
-            lcdPrintlnS("CLAW MENU");
-            lcdPrintlnS("S7 -> OPEN");
-            lcdPrintlnS("S6 -> CLOSE");
-            lcdPrintlnS("S0 -> NEXT MENU");
-            break;
-          default:
-            break;
+      if (!isAnyButtonPressed(lastBtn)) {
+        if (btn.S0_pressed && !lastBtn.S0_pressed) {
+          toggleState();  // FSM-State Wechsel bei S0
         }
 
-        lastState = currentState;  // Aktuellen Zustand merken
-      }
-
-      switch (currentState) {
-        case STATE_SELECT_MENU:
-          if (btn.S7_pressed) {
-            select(SELECT_UP);
-          } else if (btn.S6_pressed) {
-            select(SELECT_DOWN);
+        //
+        // === WRITE ===
+        //
+      
+        if (currentState != lastState) {
+          resetScreen();
+          // Zustandswechsel erkannt → ggf. Statusanzeige
+          switch (currentState) {
+            case STATE_SELECT_MENU:
+              lcdPrintlnS("SELECT MENU");
+              lcdPrintlnS("S7 -> UP");
+              lcdPrintlnS("S6 -> DOWN");
+              lcdPrintlnS("S0 -> NEXT MENU");
+              break;
+            case STATE_MOVE_MENU:
+              lcdPrintlnS("MOVE MENU");
+              lcdPrintlnS("S7 -> UP");
+              lcdPrintlnS("S6 -> DOWN");
+              lcdPrintlnS("S5 -> FORWARD");
+              lcdPrintlnS("S4 -> BACKWARD");
+              lcdPrintlnS("S3 -> LEFT");
+              lcdPrintlnS("S2 -> RIGHT");
+              lcdPrintlnS("S0 -> NEXT MENU");
+              break;
+            case STATE_CLAW_MENU:
+              lcdPrintlnS("CLAW MENU");
+              lcdPrintlnS("S7 -> OPEN");
+              lcdPrintlnS("S6 -> CLOSE");
+              lcdPrintlnS("S0 -> NEXT MENU");
+              break;
+            default:
+              break;
           }
-          break;
 
-        case STATE_MOVE_MENU:
-          if (btn.S7_pressed) {
-            move(DIR_UP);
-          } else if (btn.S6_pressed) {
-            move(DIR_DOWN);
-          } else if (btn.S5_pressed) {
-            move(DIR_FORWARD);
-          } else if (btn.S4_pressed) {
-            move(DIR_BACKWARD);
-          } else if (btn.S3_pressed) {
-            move(DIR_LEFT);
-          } else if (btn.S2_pressed) {
-            move(DIR_RIGHT);
-          } 
-          break;
+          lastState = currentState;  // Aktuellen Zustand merken
+        }
 
-        case STATE_CLAW_MENU:
-          if (btn.S7_pressed) {
-            move(DIR_OPEN);
-          } else if (btn.S6_pressed) {
-            move(DIR_CLOSE);
-          }        
-          break;
+      
+        switch (currentState) {
+          case STATE_SELECT_MENU:
+            if (btn.S7_pressed && !lastBtn.S7_pressed) {
+              select(SELECT_UP);
+            } else if (btn.S6_pressed && !lastBtn.S6_pressed) {
+              select(SELECT_DOWN);
+            }
+            break;
 
-        default:
-          break;
-      } 
+          case STATE_MOVE_MENU:
+            if (btn.S7_pressed && !lastBtn.S7_pressed) {
+              move(DIR_UP);
+            } else if (btn.S6_pressed && !lastBtn.S6_pressed) {
+              move(DIR_DOWN);
+            } else if (btn.S5_pressed && !lastBtn.S5_pressed) {
+              move(DIR_FORWARD);
+            } else if (btn.S4_pressed && !lastBtn.S4_pressed) {
+              move(DIR_BACKWARD);
+            } else if (btn.S3_pressed && !lastBtn.S3_pressed) {
+              move(DIR_LEFT);
+            } else if (btn.S2_pressed && !lastBtn.S2_pressed) {
+              move(DIR_RIGHT);
+            } 
+            break;
+
+          case STATE_CLAW_MENU:
+            if (btn.S7_pressed && !lastBtn.S7_pressed) {
+              move(DIR_OPEN);
+            } else if (btn.S6_pressed && !lastBtn.S6_pressed) {
+              move(DIR_CLOSE);
+            }        
+            break;
+
+          default:
+            break;
+        } 
+      }
+      lastBtn = btn;
     }
   }
 }
