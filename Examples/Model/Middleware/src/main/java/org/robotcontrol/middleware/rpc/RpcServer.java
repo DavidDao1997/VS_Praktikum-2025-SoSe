@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -139,13 +140,15 @@ public class RpcServer {
             ServiceProps serviceProps = entry.getValue();
             DatagramSocket socket = serviceProps.getSocket();
                    
-
+            
             if (serviceProps.getFunctionNames() != null) {
                 for (String fnName : serviceProps.getFunctionNames()) {
                     String socketAddr = getIp() + ":" + socket.getLocalPort();
                     logger.debug("RPCServer: PeriodicRegistration Socket %s\n",socketAddr);
-                    if (dns.resolve(serviceProps.serviceName, fnName) != socketAddr) {
-                        
+                    String resolved = dns.resolve(serviceProps.serviceName, fnName);
+                    logger.debug("Resolved Adress %s, Socket Adress %s",resolved,socketAddr);
+                    if (!socketAddr.equals(resolved)) {
+                        logger.info("Trying to register");
                         dns.register(serviceProps.serviceName, fnName, socketAddr);
                     }
                 }

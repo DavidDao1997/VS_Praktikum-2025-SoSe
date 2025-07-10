@@ -36,16 +36,19 @@ public class RpcClient implements ClientStub_I {
 
             // Convert message to bytes
             byte[] sendData = msg.getBytes();
+        
 
             if (serviceName != null) {
                 String resolvedSocket = dns.resolve(serviceName, fnName);
-                if(resolvedSocket == ""){
+                logger.info("RPCClient resolvedSocket: %s",resolvedSocket);
+                if(resolvedSocket.equals("")){
+                    logger.info("No Cache hit");
                     return;
                 }
-                logger.debug("DNS resloved: %s", resolvedSocket);
+                logger.info("DNS resloved: %s", resolvedSocket);
                 socketAddr = resolvedSocket;
                 if (resolvedSocket != "") {
-                    logger.debug("DNS resloved: %s", resolvedSocket);
+                    logger.info("DNS resloved: %s", resolvedSocket);
                 } else {
                     return;
                 }

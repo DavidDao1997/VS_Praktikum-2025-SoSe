@@ -25,21 +25,21 @@
     </properties>
 
     <dependencies>
-        <!-- <dependency>
+        <dependency>
             <groupId>org.cads.vs</groupId>
             <artifactId>robotic-arm-lib</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/CaDSRoboticArmInterface.jar</systemPath>
-        </dependency> -->
+        </dependency> 
 
         <!-- to install the dependency below, run
-            mvn install:install-file -Dfile=lib/CaDSRoboticArmInterface.jar \
+            mvn install:install-file -Dfile=ActuatorController/lib/CaDSRoboticArmInterface.jar \
                 -DgroupId=org.cads.vs \
                 -DartifactId=robotic-arm-lib \
                 -Dversion=1.0 \
-                -Dpackaging=jar 
-        -->
+                -Dpackaging=jar -->
+       
         <dependency>
             <groupId>org.cads.vs</groupId>
             <artifactId>robotic-arm-lib</artifactId>

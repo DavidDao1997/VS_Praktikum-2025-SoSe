@@ -1,6 +1,7 @@
 package org.robotcontrol.middleware.watchdog;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.time.Instant;
 import java.time.Duration;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 import org.robotcontrol.middleware.healthreportconsumer.HealthReportConsumerClient;
 import org.robotcontrol.middleware.idl.HealthReportConsumer;
 import org.robotcontrol.middleware.rpc.RpcServer;
+import org.robotcontrol.middleware.utils.Logger;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -22,6 +24,10 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
     private final Map<String, Instant> lastHeartbeatTimestamps = new ConcurrentHashMap<>();
     // Scheduler for periodic timeout checks
     private final ScheduledExecutorService scheduler;
+
+    // Executor for periodic subscriber notifications
+    private final ScheduledExecutorService scheduled_reporthealth = Executors.newSingleThreadScheduledExecutor();
+
     // Timeout threshold for heartbeats (in milliseconds)
     private final Duration heartbeatTimeout = Duration.ofMillis(2000);
 
@@ -34,6 +40,8 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
     // Stores the actual subscriber instances
     private final Map<String, HealthReportConsumer> subscriberConsumers = new ConcurrentHashMap<>();
 
+    Logger logger;
+
     public WatchDog(){
         // Initialize scheduler to run timeout checks at fixed intervals
         scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -43,30 +51,21 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
             heartbeatTimeout.toMillis(),
             TimeUnit.MILLISECONDS
         );
+        logger = new Logger("Watchdog");
+        // start periodic subscriber notifications every 200 ms
+        scheduled_reporthealth.scheduleAtFixedRate(this::periodicnotifySubscriber, 0, 200, TimeUnit.MILLISECONDS);
     }
 
     /**
      * Registers a subscriber to receive events for observedServices matching the given wildcard pattern (e.g., "R*").
      */
-    public void subscribe(String serviceName, String patternStr) {
-        if (serviceName == null || patternStr == null) {
-            throw new IllegalArgumentException("serviceName, patternStr, and consumer must not be null");
+    public void subscribe(String subscriber, String patternStr) {
+        if (subscriber == null || patternStr == null) {
+            throw new IllegalArgumentException("subscriber and patternStr must not be null");
         }
-        // Convert wildcard to regex: '*' -> '.*'
+        logger.info("Subscriber: %s, Service: %s", subscriber,patternStr );
         Pattern regex = Pattern.compile("^" + patternStr.replace("*", ".*") + "$");
-        Pattern prev = subscriptionPatterns.putIfAbsent(serviceName, regex);
-        // On first subscription, send current status of all matching observedServices
-        if (prev == null) {
-            for (Map.Entry<String, Boolean> entry : observedServices.entrySet()) {
-                String observedService = entry.getKey();
-                boolean status = entry.getValue();
-                if (regex.matcher(observedService).matches()) {
-                    HealthReportConsumerClient client = new HealthReportConsumerClient(serviceName);
-                    client.reportHealth(observedService,status);
-                    
-                }
-            }
-        }
+        subscriptionPatterns.putIfAbsent(subscriber, regex);
     }
 
     public void heartbeat(String serviceName){
@@ -75,20 +74,12 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
         }
         // Check previous status for revival detection
         boolean wasUp = observedServices.getOrDefault(serviceName, false);
-        System.out.println(serviceName + ": " + wasUp);
         boolean isFirstHeartbeat = !lastHeartbeatTimestamps.containsKey(serviceName);
-        System.out.println(serviceName + ": isFirstHeartbeat " + isFirstHeartbeat);
         // Record timestamp
         lastHeartbeatTimestamps.put(serviceName, Instant.now());
         // Mark observedService as up
         observedServices.put(serviceName, true);
         // Notify subscribers only on the first heartbeat
-        if (isFirstHeartbeat) {
-            subscriptionPatterns.entrySet().stream()
-                    .filter(e -> e.getValue().matcher(serviceName).matches() && !e.getKey().equals(serviceName))
-                    .map(Map.Entry::getKey)
-                    .forEach(subscriber -> notifySubscriber(subscriber, serviceName, true));
-        }
     }
 
     /**
@@ -104,7 +95,7 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
                 subscriptionPatterns.entrySet().stream()
                         .filter(e -> e.getValue().matcher(observedService).matches())
                         .map(Map.Entry::getKey)
-                        .forEach(subscriber -> notifySubscriber(subscriber, observedService, false));
+                        .forEach(subscriber -> notifySubscriber(subscriber, observedService));
                 // Mark observedService as down
                 observedServices.put(observedService, false);
                 // Remove timestamp to allow re-notification on next heartbeat
@@ -113,10 +104,33 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
         }
     }
 
-    private void notifySubscriber(String subscriber, String observedService, boolean isAlive) {
-        System.out.printf("calling notifySubscriber(subscriber: %s, observedService: %s, isAlive: %s)\n",subscriber, observedService,isAlive);
+    private void notifySubscriber(String subscriber, String service) {
         HealthReportConsumerClient client = new HealthReportConsumerClient(subscriber);
-        client.reportHealth(observedService,isAlive);
+        client.reportHealth(service, subscriber);
+    }
+
+    /**
+     * Periodically notify each subscriber of current service status.
+     */
+    private void periodicnotifySubscriber() {
+        
+        
+        for (Entry<String, Pattern> subEntry : subscriptionPatterns.entrySet()) {
+            String subscriber = subEntry.getKey();
+            Pattern pattern = subEntry.getValue();
+            for (Entry<String, Boolean> svcEntry : observedServices.entrySet()) {
+                String service = svcEntry.getKey();
+                Boolean alive = svcEntry.getValue();
+                if (pattern.matcher(service).matches()) {
+                    // if service alive, send its name; otherwise send empty string
+                    if (Boolean.TRUE.equals(alive)) {
+                        notifySubscriber(subscriber, service);
+                    } else {
+                        notifySubscriber(subscriber, "");
+                    }
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {

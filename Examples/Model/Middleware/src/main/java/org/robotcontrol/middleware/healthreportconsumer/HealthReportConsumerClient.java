@@ -13,9 +13,10 @@ public class HealthReportConsumerClient implements HealthReportConsumer {
     }
 
     @Override
-       public void reportHealth(String serviceName, boolean isAlive){
-        client.invoke("reportHealth", new RpcValue.StringValue(serviceName), new RpcValue.BoolValue(isAlive));
+       public void reportHealth(String serviceName, String subscription){
+        client.invoke("reportHealth", new RpcValue.StringValue(serviceName), new RpcValue.StringValue(subscription));
     }
+
    
     
 }

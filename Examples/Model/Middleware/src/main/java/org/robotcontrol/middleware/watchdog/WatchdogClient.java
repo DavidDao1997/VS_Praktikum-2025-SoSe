@@ -8,7 +8,7 @@ public class WatchdogClient implements org.robotcontrol.middleware.idl.WatchDog 
     private RpcClient client;
 
     public WatchdogClient(){
-        client = new RpcClient("watchdog");
+        client = new RpcClient("Watchdog");
     }
 
     @Override

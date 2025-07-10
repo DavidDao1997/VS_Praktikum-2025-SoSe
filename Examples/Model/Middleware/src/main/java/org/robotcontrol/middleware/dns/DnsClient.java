@@ -40,8 +40,8 @@ public class DnsClient implements Dns {
 
     public DnsClient() {
         // FIXME hardcode DNS server socket in a constant somewhere
-        // this("localhost:9000");
-        this("172.16.1.87:9000");
+        this("localhost:9000");
+        //this("172.16.1.87:9000");
     }
 
     public DnsClient(String socket) {
@@ -69,7 +69,8 @@ public class DnsClient implements Dns {
         // Check cache first
         String key = serviceName + "." + functionName;
         CacheEntry cached = cache.get(key);
-        if (cached != null && System.currentTimeMillis() - cached.timestamp < CACHE_TTL_MS) {
+        if (cached != null){ //System.currentTimeMillis() - cached.timestamp < CACHE_TTL_MS) {
+            
             logger.debug("Cache hit for %s -> %s", key, cached.value);
             return cached.value;
         }
@@ -88,7 +89,7 @@ public class DnsClient implements Dns {
         cbServer.Listen();
         // wait as the server setup is not instant
         try {
-            Thread.sleep(2000);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -101,6 +102,7 @@ public class DnsClient implements Dns {
         );
 
         try {
+            
             String resolved = resolutionFuture.get(5, TimeUnit.SECONDS);
             // Store in cache before returning
             if (!"".equals(resolved) && (resolved != null)) {

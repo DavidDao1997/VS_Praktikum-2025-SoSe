@@ -12,7 +12,7 @@ public class StateServiceClient implements StateService {
     }
 
     @Override
-       public void reportHealth(String serviceName, boolean isAlive){
+       public void reportHealth(String serviceName, String subscription){
         client.invoke("reportHealth", new RpcValue.StringValue(serviceName));
     }
     
@@ -31,6 +31,7 @@ public class StateServiceClient implements StateService {
     public void select(SelectDirection selectDirection) {
         client.invoke("select", new RpcValue.IntValue(selectDirection.ordinal()));
     }
+
 
     
 }
