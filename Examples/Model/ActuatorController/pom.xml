@@ -25,27 +25,40 @@
     </properties>
 
     <dependencies>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.cads.vs</groupId>
             <artifactId>robotic-arm-lib</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/CaDSRoboticArmInterface.jar</systemPath>
+        </dependency> -->
+
+        <!-- to install the dependency below, run
+            mvn install:install-file -Dfile=lib/CaDSRoboticArmInterface.jar \
+                -DgroupId=org.cads.vs \
+                -DartifactId=robotic-arm-lib \
+                -Dversion=1.0 \
+                -Dpackaging=jar 
+        -->
+        <dependency>
+            <groupId>org.cads.vs</groupId>
+            <artifactId>robotic-arm-lib</artifactId>
+            <version>1.0</version>
         </dependency>
         
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.10</version> 
-            <!-- <version>${javafx.version}</version>
-            <classifier>${javafx.platform}</classifier> use these for mac-->
+            <!-- <version>17.0.10</version>  -->
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier> 
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.10</version> 
-            <!-- <version>${javafx.version}</version>
-            <classifier>${javafx.platform}</classifier> use these for mac-->
+            <!-- <version>17.0.10</version>  -->
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier> 
         </dependency> 
 
         <dependency>

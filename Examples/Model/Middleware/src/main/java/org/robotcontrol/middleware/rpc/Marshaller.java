@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
-
 public class Marshaller {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -93,6 +92,13 @@ public class Marshaller {
             ArrayNode array = objectMapper.createArrayNode();
             for (RpcValue item : lv.getValues()) {
                 array.add(serializeValue(item));
+            }
+            return array;
+        } else if (val instanceof RpcValue.Bitmap256Value) {
+            RpcValue.Bitmap256Value bav = (RpcValue.Bitmap256Value) val;
+            ArrayNode array = objectMapper.createArrayNode();
+            for (byte b : bav.getBytes()) {
+                array.add(b & 0xFF); // convert signed byte to unsigned int
             }
             return array;
         } else {

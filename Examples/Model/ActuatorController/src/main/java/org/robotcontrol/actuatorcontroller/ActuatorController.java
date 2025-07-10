@@ -35,10 +35,17 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
     private ICaDSRoboticArm real;
 
     public ActuatorController(Integer robotID, Integer actuatorID) {
-        // this.real = new CaDSRoboticArmReal(host, port);
+        this.real = new CaDSRoboticArmReal("127.0.0.1", 50055);
         // this.real = new CaDSRoboticArmSimulation();
-        this.real = new RoboticArmMock();
+        // this.real = new RoboticArmMock();
         this.actuator = "A" + actuatorID.toString();
+        // try {
+        //     Thread.sleep(5000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+        // this.real.setBackForthPercentageTo(100);
 
         RegisterActuator ra = new RegisterActuatorClient();
         ra.registerActuator("R"+robotID.toString()+"A"+actuatorID.toString(), true);
@@ -48,11 +55,11 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
     public void move(Direction actuatorDirection) {
         if (actuatorDirection == Direction.INCREASE) {
             if (value < MAX_VALUE) {
-                value++;
+                value+=10;
             }
         } else if (actuatorDirection == Direction.DECREASE) {
             if (value > MIN_VALUE) {
-                value--;
+                value-=10;
             }
         }
         applyValue();

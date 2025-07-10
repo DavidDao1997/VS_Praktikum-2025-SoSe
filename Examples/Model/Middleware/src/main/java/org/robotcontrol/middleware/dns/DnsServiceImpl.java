@@ -31,11 +31,11 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
     public void resolve(String serviceName, String functionName, String clientCallbackSocket) {
         String descriptor = getDescriptor(serviceName, functionName);
         String resolvedSocket = serviceRegistry.getOrDefault(descriptor, "");
-        logger.info("Resolved '%s'", serviceName);
+        logger.debug("Resolved '%s'", serviceName);
         logger.debug("Resolved '%s' to '%s'. Notifying client at %s", serviceName, resolvedSocket, clientCallbackSocket);
                 
         CallbackClient c = new CallbackClient(clientCallbackSocket);
-        c.receiveResolution(resolvedSocket);
+        c.receiveResolution(serviceName, functionName, resolvedSocket);
         logger.debug("Notified client at %s", clientCallbackSocket);
     }
 
@@ -72,14 +72,18 @@ public class DnsServiceImpl implements DnsService, ServerStub_I {
         }
 
         @Override
-        public void receiveResolution(String resolvedSocket) {
-            client.invoke("receiveResolution", new RpcValue.StringValue(resolvedSocket));
+        public void receiveResolution(String serviceName, String fnName, String resolvedSocket) {
+            client.invoke("receiveResolution", new RpcValue.StringValue(serviceName), new RpcValue.StringValue(fnName), new RpcValue.StringValue(resolvedSocket));
         }
     }
 
     public static void main(String[] args) throws InterruptedException, SocketException {
         Logger logger = new Logger("DnsService");
-        int dnsServerPort = 9001; // Fixed port for DNS server
+        // logger.trace("this is trace logs");
+        // logger.debug("this is debug logs");
+        // logger.info("this is info logs");
+        // logger.warn("this is warn logs");
+        int dnsServerPort = 9000; // Fixed port for DNS server
 
         DnsServiceImpl dnsService = new DnsServiceImpl();
         RpcServer s = new RpcServer();

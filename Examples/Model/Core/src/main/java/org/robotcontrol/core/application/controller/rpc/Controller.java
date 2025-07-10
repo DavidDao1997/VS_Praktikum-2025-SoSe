@@ -1,20 +1,31 @@
 package org.robotcontrol.core.application.controller.rpc;
-import org.robotcontrol.middleware.idl.View;
-import org.robotcontrol.view.IView;
 
-public class Controller implements IController {
+import org.robotcontrol.middleware.ui.UIClient;
 
-    private final View view;
+import org.robotcontrol.view.WebSocketView;
 
-    public Controller(View view) {
+
+public class Controller implements org.robotcontrol.middleware.idl.Controller {
+
+    private final WebSocketView view;
+
+    public Controller(WebSocketView view) {
         this.view = view;
     }
 
     @Override
-    public void update(String[] robots, int selected, boolean error, boolean confirm) {
-        view.updateView(robots, selected, error, confirm);
-        System.out.println("UpdateView wurde erfolgreich aufgerufen.");
+    public void update(byte[] robots, int selected, boolean error, boolean confirm) {
+        // Konvertiere String[] robots in ein byte[] (anstatt Byte[] verwenden wir
+        // byte[])
+       // byte[] robots2Byte = convertStringArrayToBitmap256(robots);
+
+        UIClient client = new UIClient();
+        client.updateView(robots, selected, error, confirm);
+    }
+
+
+    @Override
+    public void reportHealth(String serviceName, boolean isAlive) {
+        throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
     }
 }
-
-

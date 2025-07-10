@@ -27,5 +27,10 @@ public class StateServiceClient implements StateService {
         client.invoke("registerActuator", new RpcValue.StringValue(actuatorName), new RpcValue.BoolValue(isAlive));
     }
 
+    @Override
+    public void select(SelectDirection selectDirection) {
+        client.invoke("select", new RpcValue.IntValue(selectDirection.ordinal()));
+    }
+
     
 }
