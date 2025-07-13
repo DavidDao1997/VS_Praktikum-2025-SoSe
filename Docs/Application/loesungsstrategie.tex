@@ -11,6 +11,7 @@ Dies förderte sowohl die Parallelisierung einzelner Entwicklungsaufgaben als au
 
 \clearpage
 \section{Controller}
+
 In der vorliegenden Architektur übernimmt der Controller nicht mehr die klassische Rolle eines Observers, sondern fungiert als schlanker, zustandsloser Vermittler zwischen Modell und View im Sinne des MVC-Musters. \\
 Anstelle eines ereignisgesteuerten oder abfragenden (Pull-)Ansatzes sendet das Modell (z.\,B. der \textit{StateService}) in regelmäßigen Intervallen aktiv (Push-basiert)\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.209-211} seinen aktuellen Zustand an den Controller. \\
 Dieser verarbeitet die empfangenen Daten nicht weiter, sondern leitet sie unmittelbar und unverändert an die View weiter.\\
@@ -39,13 +40,12 @@ Die klare Trennung der Verantwortlichkeiten sowie der rein gerichtete Datenfluss
 % Bin mir in diesen bereich nicht wirklich sicher. Versuche mit Notebook die jeweilige punkte abzudecken, aber warum wir es genau sogemacht haben - ist mir noch fremd.
 % Sollten eventuell über die schritte nochmal genauer reden.
 \section{Model}
-Im Rahmen der gewählten MVC-Architektur übernimmt das \textit{Model} die zentrale Rolle bei der Verwaltung des Anwendungszustands und der Geschäftslogik.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.90-94}. 
-Gemäß dem Prinzip der \textit{Separation of Concerns} ist das Model ausschließlich für Datenhaltung, Zustandsverwaltung und domänenspezifische Logik zuständig – losgelöst von Darstellung und Steuerung. 
+Im Rahmen der gewählten MVC-Architektur übernimmt das \textit{Model} die zentrale Rolle bei der Verwaltung des Anwendungszustands und der Geschäftslogik.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.90-94}
+Gemäß dem Prinzip der \textit{Separation of Concerns} ist das Model ausschließlich für Datenhaltung und Zustandsverwaltung losgelöst von Darstellung und Steuerung. 
 Die nachfolgenden Funktionen sind bewusst im Model (StateService) verankert, da sie direkt die Verwaltung und den Zustand der Roboter betreffen.
 \\\\% Hab ein Problem hier, da eigentlich der komplette Core das Modell ist, oder ich verstehe irgendwas nicht richtig
 Die Kapselung dieser Funktionen im Model stellt sicher, dass Zustandslogik, Validierung und Datenverarbeitung zentral gebündelt sind\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.91 und S.137}.
 Die View bleibt vollständig abstrahiert und erhält ausschließlich aktualisierte Daten über den Controller. 
-Da der Datenfluss unidirektional vom Modell über den Controller zur View erfolgt, wird eine klare Trennung der Verantwortlichkeiten sichergestellt. 
 
 \subsection{StateService}
 \begin{table}[h!]
@@ -174,14 +174,23 @@ Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine So
         \hline
         void updateView(robotBitmap: Byte[],selected: int, error: bool, confirm: bool) & Gültige Modell-Daten vorhanden & View-Schnittstelle. Aktualisiert die UI mit den neuesten Roboter-Daten und Statusinformationen (Fehler, Bestätigung). \\ 
         \hline
-
     \end{tabular}
     \caption{UI Funktionen}
     \label{tab:UIFunktionen}
 \end{table}
 
+% Die UI-Funktionen übernehmen im Rahmen des MVC-Musters die rein visuelle Darstellung des aktuellen Modellzustands. 
+% Die zentrale Methode \texttt{updateView()} wird vom Controller innerhalb der Anwendungsschicht aufgerufen, sobald neue Zustandsinformationen aus dem Modell vorliegen.
+% Die Benutzeroberfläche wird in einem HTML-basierten Webbrowser dargestellt. 
+% Diese Gestaltung folgt dem Prinzip der Client-Server-Architektur: Der Browser fungiert als leichtgewichtiger Client, der ausschließlich für die Präsentation zuständig ist, während Geschäftslogik und Zustandsverwaltung vollständig in der Anwendung verbleiben.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.82 f.} 
+% Dadurch wird eine plattformunabhängige und benutzerfreundliche Bedienoberfläche ermöglicht.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.23}
+
 Die UI-Funktionen übernehmen im Rahmen des MVC-Musters die rein visuelle Darstellung des aktuellen Modellzustands. 
-Die zentrale Methode \texttt{updateView()} wird vom Controller innerhalb der Anwendungsschicht aufgerufen, sobald neue Zustandsinformationen aus dem Modell vorliegen.
+Die zentrale Methode \texttt{updateView()} wird vom Controller innerhalb der Anwendungsschicht aufgerufen, sobald neue Zustandsinformationen aus dem Modell vorliegen. 
 Die Benutzeroberfläche wird in einem HTML-basierten Webbrowser dargestellt. 
-Diese Gestaltung folgt dem Prinzip der Client-Server-Architektur: Der Browser fungiert als leichtgewichtiger Client, der ausschließlich für die Präsentation zuständig ist, während Geschäftslogik und Zustandsverwaltung vollständig in der Anwendung verbleiben.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.82 f.} 
-Dadurch wird eine plattformunabhängige und benutzerfreundliche Bedienoberfläche ermöglicht.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.23}
+Ein HTTP-Server stellt die statischen HTML-Inhalte klassisch im Client-Server-Modell bereit. 
+Für die Aktualisierung des UI-Zustands kommt zusätzlich eine WebSocket-Verbindung zum Einsatz, über die neue Modellinformationen entsprechend unserer definierten Datenflussrichtung direkt vom Server an den Browser übertragen werden. 
+Auf diese Weise wird die Oberfläche automatisch an neue Zustände angepasst, ohne dass wiederholte Client-Anfragen notwendig sind.
+
+
+% HTML wird klassische Client-Server geserved, aber das update wird entsprechend unserer Datenffluss richtung mit hilfe von Websocket in dem Browser gepusht
