@@ -1,0 +1,11 @@
+@startuml
+participant "ActuatorController (Model)" as ActCtrl
+participant "StateService (Model)" as StS
+'participant "MoveAdapter (Model)" as MA
+'participant "Controller (Controller)" as Ctrl
+'participant "UI (View)" as UI
+
+loop 4 servos melden sich an
+ActCtrl ->> StS: registerActuator(ActuatorName: String, isAlive: bool)
+end
+@enduml

@@ -147,21 +147,39 @@ Damit ergänzt der \texttt{ActuatorController} die Bewegungslogik auf unterer Eb
 Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine Softwareschnittstelle an, die IO keine.
 
 % Marc's schnistelle - Funktionen müssen überarbietet werden
-\subsection{IO Funktionen}
+% \subsection{IO Funktionen}
+% \begin{table}[h!]
+%     \centering
+%     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
+%         \hline
+%         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
+%         \hline
+%         void readInputs() & Eingabe durch den Benutzer erfolgt & Überprüft die Benutzereingaben und löst entsprechende Aktionen aus. \\
+%         \hline
+%         int initIO() & IO-Hardware verfügbar & Initialisiert und überprüft die IO-Hardwareschnittstellen und gibt einen Fehlercode bei Problemen zurück. \\
+%         \hline
+%     \end{tabular}
+%     \caption{IO Funktionen}
+%     \label{tab:IOFunktionen}
+% \end{table}
+\subsection{Interne IO-Funktionen}
 \begin{table}[h!]
     \centering
     \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
         \hline
         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
         \hline
-        void readInputs() & Eingabe durch den Benutzer erfolgt & Überprüft die Benutzereingaben und löst entsprechende Aktionen aus. \\
+        void readButtons() & Eingabetasten sind verbunden & Liest den aktuellen Zustand aller Tasten aus. \\
         \hline
-        int initIO() & IO-Hardware verfügbar & Initialisiert und überprüft die IO-Hardwareschnittstellen und gibt einen Fehlercode bei Problemen zurück. \\
+        bool isAnyButtonPressed(lastBtn: int) & Taste wurde zuvor gedrückt & Überprüft, ob dieselbe Taste weiterhin gedrückt wird.\\
+        \hline
+        void toggleState() & Zustand soll gewechselt werden & Wechselt den aktuellen Zustand. Kann erweitert werden, um zusätzliche Funktionen auszulösen. \\
         \hline
     \end{tabular}
-    \caption{IO Funktionen}
-    \label{tab:IOFunktionen}
+    \caption{Interne IO-Funktionen}
+    \label{tab:interneIOFunktionen}
 \end{table}
+
 
 \clearpage
 % Hat sich nicht verändert
@@ -172,7 +190,7 @@ Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine So
         \hline
         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
         \hline
-        void updateView(robotBitmap: Byte[],selected: int, error: bool, confirm: bool) & Gültige Modell-Daten vorhanden & View-Schnittstelle. Aktualisiert die UI mit den neuesten Roboter-Daten und Statusinformationen (Fehler, Bestätigung). \\ 
+        void updateView(robots: String[],selected: int, error: bool, confirm: bool) & Gültige Modell-Daten vorhanden & View-Schnittstelle. Aktualisiert die UI mit den neuesten Roboter-Daten und Statusinformationen (Fehler, Bestätigung). \\ 
         \hline
     \end{tabular}
     \caption{UI Funktionen}
