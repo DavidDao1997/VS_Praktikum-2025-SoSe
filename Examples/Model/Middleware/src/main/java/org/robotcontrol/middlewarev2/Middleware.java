@@ -47,7 +47,7 @@ public final class Middleware {
         return new ActuatorControllerImpl.Client(serviceName);
     }
     public static RpcServer createActuatorControllerServer(ActuatorController actuatorController, Integer port, String serviceName, String... clients) {
-        return new ActuatorControllerImpl.Server(port, actuatorController, clients, serviceName, clients);
+        return new ActuatorControllerImpl.Server(port, actuatorController, clients, serviceName, "move");
     }
 
     // each idl Interface has these 2 methods

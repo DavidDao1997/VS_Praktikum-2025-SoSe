@@ -8,19 +8,19 @@
     <!-- pom.xml -->
     <!-- add this on mac 
     <dependencies>
-        <!-- already present -->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.13</version>
         </dependency>
 
-        <!-- add this: provides a tiny, stdout logger -->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.13</version>
-            <scope>runtime</scope>   <!-- only at run-time -->
+            <scope>runtime</scope>  
         </dependency>
     </dependencies> -->
 
