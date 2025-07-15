@@ -25,6 +25,8 @@ ITS-Board/README.md
 !ITS-Board/Programs/Stack/Inc/moveAdapter.h
 !ITS-Board/Programs/Stack/Inc/stateService.h
 !ITS-Board/Programs/Stack/Inc/rpc_server.h
+!ITS-Board/Programs/Stack/Inc/moveAdapter_client.h
+!ITS-Board/Programs/Stack/Inc/stateService_client.h
 
 !ITS-Board/Programs/Stack/Src/main.c
 !ITS-Board/Programs/Stack/Src/app_stub.c
