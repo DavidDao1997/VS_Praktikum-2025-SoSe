@@ -42,7 +42,7 @@
 	\hline
 	U8 & Fehlertransparenz & Fehlerhafte Übertragung eines RPCs müssen ggf. der Applikation mitgeteilt werden. \\
 	\hline
-	U9 & Watchdog & Für überwachte Health-Observables werden Watchdogs angelegt. Diese überwachen die Verfügbarkeit der Teilnehmer, wenn Lebenszeichen ausbleiben werden Health-Observer benachrichtigt.  \\
+	U9 & Watchdog & Der Watchdog informiert Subscriber ob andere Services verfügbar sind.      %Für überwachte Health-Observables werden Watchdogs angelegt. Diese überwachen die Verfügbarkeit der Teilnehmer, wenn Lebenszeichen ausbleiben werden Health-Observer benachrichtigt.  \\
 	\hline
 	
 \end{tabular}
@@ -132,7 +132,8 @@ Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische 
 	
 	\item \textbf{Fehlertransparenz U8:}\\
 	\begin{itemize}
-		\item 
+		\item Fehler dürfen nur in ausnahmenfällen mitgeteilt werden
+		\item Sollten so gut wie möglich verschleiert werden
 	\end{itemize}
 	
 	\item \textbf{Watchdog U9:}\\

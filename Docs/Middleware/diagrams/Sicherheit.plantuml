@@ -1,0 +1,18 @@
+@startuml
+participant "Client Stub" as CS
+participant "Server Stub" as SerS
+
+loop Timestamp setzen
+CS -> CS: readTimestamp()
+CS -> CS: marshall(Service, "setTimestamp", timestamp)
+CS ->> SerS: send(RPC)
+SerS -> SerS: unmarshall(RPC)
+SerS-> SerS: setTimestamp(Service, "setTimestamp", timestamp)
+end
+
+note right
+Dieser Timestamp wird alle 250ms neu gesendet.
+Der wird dafür genutzt Nachrichten zu verschicken,
+um Echtzeitanforderung zu erfüllen.
+end note
+@enduml
