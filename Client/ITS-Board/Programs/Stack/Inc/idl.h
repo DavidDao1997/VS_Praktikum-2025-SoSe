@@ -21,12 +21,12 @@ typedef struct {
 // IDL-Tabelle
 static const RpcFunction rpcFunctionTable[] = {
     { "move",          { "int" },                         1 },
-    { "register_node", { "String", "String" },            2 },
+    { "register", { "String", "String","String" },            3 },
     { "select",        { "int" },                         1 },
     {"heartbeat",      { "String" },                         1 },
     {"resolve",       { "String", "String", "String"}, 3 },
     { "receiveResolution", { "String", "String", "String" }, 3 },
-    {"setTimestamp",{"String", "int"}, 2},
+    {"setTimestamp",{"String", "String", "int"}, 3},
 
     // TODO ADD ALL FUNCTIONS
 

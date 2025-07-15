@@ -27,7 +27,7 @@ void unmarshall(const char* payload, char* function, char params[][64], uint32_t
     char* end_ptr;
 
     // --- 2. Timestamp extrahieren ---
-    const char* ts_key = "\"timestamp\":";
+    const char* ts_key = "\"timeStamp\":";
     p = strstr(p, ts_key);
     if (!p) return; 
     p += strlen(ts_key);
@@ -120,7 +120,7 @@ int marshall(const char* func, const char* param[],
     int written;
 
     // Beginne das JSON-Objekt mit Timestamp und Funktion
-    written = snprintf(p, remaining_size, "{\"timestamp\":%u,\"function\":\"%s\",\"params\":[", timestamp, func);
+    written = snprintf(p, remaining_size, "{\"timeStamp\":%u,\"function\":\"%s\",\"params\":[", timestamp, func);
 
     // Prüfen, ob snprintf einen Fehler hatte oder der Puffer zu klein war
     if (written < 0 || written >= remaining_size) {

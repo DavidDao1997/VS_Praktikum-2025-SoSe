@@ -16,8 +16,8 @@ void invoke_stateService(const char* func, const char* paramTypes[], const char*
     uint32_t timestamp = 0;
     if (strcmp(func, "select") == 0) {
 
-        get_timestamp("stateService", "select", &timestamp);
-        proxy_send("stateService",func, param, numOfParam, timestamp);
+        get_timestamp("StateService", "select", &timestamp);
+        proxy_send("StateService",func, param, numOfParam, timestamp);
         
     } 
     // else if (strcmp(func, "any") == 0) {

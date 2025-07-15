@@ -13,11 +13,13 @@
 
 void invoke_moveAdapter(const char* func, const char* paramTypes[], const char* param[],
                 const int numOfParam){
-    uint32_t timestamp = 0;
+    uint32_t timestamp = 98;
     if (strcmp(func, "move") == 0) {
 
-        get_timestamp("moveAdapter", "move", &timestamp);
-        proxy_send("moveAdapter",func, param, numOfParam, timestamp);
+        if (get_timestamp("MoveAdapter", "move", &timestamp)){
+            proxy_send("MoveAdapter",func, param, numOfParam, timestamp);
+        }
+        
         
     } 
     // else if (strcmp(func, "any") == 0) {

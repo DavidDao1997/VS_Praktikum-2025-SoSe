@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include "marshall.h"
 
+
+
 //int rpc_init(void);
 void register_invoke(const char* func, const char* paramTypes[], const char* param[],
                 const int numOfParam);

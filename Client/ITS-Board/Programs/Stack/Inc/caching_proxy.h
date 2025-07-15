@@ -6,8 +6,6 @@
 #include "lwip_interface.h"
 #include <stdint.h>
 
-
-
 int rpc_proxy_init(void);
 
 void proxy_send(const char * servicename, const char* function, const char* param[],

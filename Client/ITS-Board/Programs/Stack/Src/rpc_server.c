@@ -46,11 +46,13 @@ static void udp_server_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p,
                 }
             }
         } else if (strcmp(function, "setTimestamp") == 0) {
+            //lcdPrintlnS("Reading Timestamp");
             char* service = params[0]; 
             char* function = params[1];
-            int time;
+            uint32_t time;
 
             if (sscanf(params[2], "%d", &time) == 1){
+                //lcdPrintlnS("Setting Timestamp");
                 set_or_update_timestamp(service, function, time);
             }
         }

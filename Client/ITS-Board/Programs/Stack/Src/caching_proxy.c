@@ -12,7 +12,7 @@
 #define MAX_RESOLVE_TIME 500
 
 static struct udp_pcb* udp_send_pcb = NULL;
-char* socket = "172.16.1.55:54045";
+char* socket = "172.16.1.55:45054";
 
 ip_addr_t rpc_target_server_ip;
 
@@ -114,10 +114,10 @@ void resolve_dns(const char* servicename, const char* functionname) {
 
         uint32_t start = HAL_GetTick();
         while ((rpc_target_server_port == DNS_PORT) && (HAL_GetTick() - start <= MAX_RESOLVE_TIME)){ //Add time max 500ms
-            check_input();
+           check_input();
         }
         if (rpc_target_server_port == DNS_PORT){
-           receive_resolution(0, 0, 0, 0, 0);
+           receive_resolution(0, 0, 0, 0, 99);
         }
     } else {
         // Is in cache

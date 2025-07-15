@@ -1,6 +1,8 @@
 #ifndef APP_STUB_H
 #define APP_STUB_H
 
+#define MYSOCKET "172.16.1.55:45054"
+
 typedef enum {
     DIR_UP,
     DIR_DOWN,

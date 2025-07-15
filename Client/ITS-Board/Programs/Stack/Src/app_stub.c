@@ -43,10 +43,11 @@ void move(Direction dir) {
 }
 
 void register_node( char* name, char* functionName) {
-    const char* paramTypes[] = { "String", "String" };
-    const char* param[] = {name, functionName};
-    int numOfParam = 2;
-    register_invoke(functionName,paramTypes, param, numOfParam);
+    char *socket = MYSOCKET;
+    const char* paramTypes[] = { "String", "String" , "String"};
+    const char* param[] = {name, functionName, socket};
+    int numOfParam = 3;
+    register_invoke("register",paramTypes, param, numOfParam);
 }
 
 void select(SDirection dir) {
