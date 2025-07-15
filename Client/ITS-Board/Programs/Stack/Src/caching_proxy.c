@@ -15,8 +15,9 @@ static struct udp_pcb* udp_send_pcb = NULL;
 char* socket = "172.16.1.55:45054";
 
 ip_addr_t rpc_target_server_ip;
-
 uint16_t rpc_target_server_port = 0;
+
+uint32_t circleCache = 0;
 
 typedef struct {
     char servicename[32];
@@ -70,7 +71,15 @@ int cache_store(const char* servicename, const char* functionname, const char* s
             return 0;
         }
     }
-    return -1;
+    strncpy(cache[circleCache].servicename, servicename, sizeof(cache[0].servicename)-1);
+    strncpy(cache[circleCache].functionname, functionname, sizeof(cache[0].functionname)-1);
+    strncpy(cache[circleCache].socket, socket, sizeof(cache[0].socket)-1);
+    cache[circleCache].time = time;
+    cache[circleCache].valid = 1;
+
+    circleCache = (circleCache + 1) % CACHE_SIZE;
+
+    return 0;
 }
 
 void set_server_ip(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
