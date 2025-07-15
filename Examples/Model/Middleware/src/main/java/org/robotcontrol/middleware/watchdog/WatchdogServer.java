@@ -18,7 +18,6 @@ public class WatchdogServer implements ServerStub_I {
                 watchdog.subscribe(
                         (String) RpcUtils.unwrap(args[0]),
                         (String) RpcUtils.unwrap(args[1]));
-
                 break;
 
             case "heartbeat":

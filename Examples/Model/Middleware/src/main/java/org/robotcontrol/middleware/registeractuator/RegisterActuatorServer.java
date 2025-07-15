@@ -26,13 +26,10 @@ public class RegisterActuatorServer implements ServerStub_I {
         switch (fnName) {
             case "reportHealth":
                 String actuatorName = (String) RpcUtils.unwrap(args[0]);
-                boolean isAlive = (boolean) RpcUtils.unwrap(args[1]);
+                String isAlive = (String) RpcUtils.unwrap(args[1]);
 
                 Boolean previousState = actuatorStates.get(actuatorName);
-                if (previousState == null || previousState != isAlive) {
-                    actuatorStates.put(actuatorName, isAlive);
-                    registerActuator.registerActuator(actuatorName, isAlive);
-                }
+               registerActuator.registerActuator(actuatorName, false);
                 break;
 
             default:

@@ -31,7 +31,7 @@ public class StateServiceServer implements ServerStub_I {
             case "reportHealth":
                 stateService.reportHealth(
                         (String) RpcUtils.unwrap(args[0]),
-                        (Boolean) RpcUtils.unwrap(args[1]));
+                        (String) RpcUtils.unwrap(args[1]));
             case "select":
                 stateService.select(
                     SelectDirection.values()[(int) RpcUtils.unwrap(args[0])]

@@ -33,7 +33,7 @@ public class DnsClient implements Dns {
         }
     }
 
-    // In-memory cache: key = "serviceName.functionName"
+
     private final Map<String, CacheEntry> cache = new ConcurrentHashMap<>();
     // Cache TTL of 60 seconds
     private static final long CACHE_TTL_MS = 60_000L;
@@ -68,6 +68,8 @@ public class DnsClient implements Dns {
     ) { 
         // Check cache first
         String key = serviceName + "." + functionName;
+        // Print cache for debugging
+ 
         CacheEntry cached = cache.get(key);
         if (cached != null){ //System.currentTimeMillis() - cached.timestamp < CACHE_TTL_MS) {
             
@@ -89,7 +91,7 @@ public class DnsClient implements Dns {
         cbServer.Listen();
         // wait as the server setup is not instant
         try {
-            Thread.sleep(200);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -109,7 +111,10 @@ public class DnsClient implements Dns {
                 logger.debug("Cache store for %s -> %s", key, resolved);
             
                 cache.put(key, new CacheEntry(resolved, System.currentTimeMillis()));
+                // Print cache after update
+            
             }
+            cbServer.stop();
             return resolved;
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
             System.err.println("DnsClient: Resolution failed for " + key);

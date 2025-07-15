@@ -71,6 +71,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         watchdogClient = new WatchdogClient();
         watchdogClient.subscribe("ServiceState", "R*");
         subscriptionHealth.putIfAbsent("R*", false);
+        subscriptionLastReportTime.put("R*",System.currentTimeMillis());
     }
 
     @Override
@@ -120,13 +121,6 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 		}
 	}
 
-	// public void heartbeat(String motorName) {
-	//
-	// }
-
-	public void subscribe() {
-
-	}
 
     public void select(int sd) {
         SelectDirection[] values = SelectDirection.values();
@@ -181,20 +175,27 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         controller.update(convertStringArrayToBitmap256(availNames), selectedRobot, error, confirm);
     }
 
-    @Override
-    public void reportHealth(String serviceName, String subscription) {
-        logger.info("Received health report for service {} subscription {}", serviceName, subscription);
-        // Subscription-level update
-        subscriptionHealth.put(subscription, true);
-        subscriptionLastReportTime.put(subscription, System.currentTimeMillis());
-        // Service-level update
-        serviceHealth.put(serviceName, true);
-        serviceLastReportTime.put(serviceName, System.currentTimeMillis());
-    }
+@Override
+public void reportHealth(String serviceName, String subscription) {
+    logger.info("Received health report for service %s subscription %s", serviceName, subscription);
+
+    long now = System.currentTimeMillis();
+
+    // ---- Subscription-level update ----
+    subscriptionHealth.put(subscription, true);
+    subscriptionLastReportTime.put(subscription, now);
+
+    // ---- Service-level update ----
+    // ConcurrentHashMap erlaubt keine null-Werte – also einfach (über)schreiben.
+    // Bei einem neuen Dienst wird der Eintrag angelegt, sonst nur aktualisiert.
+    serviceHealth.put(serviceName, true);
+    serviceLastReportTime.put(serviceName, now);
+}
 
   
     private void periodicSubscriptionHealthCheck() {
         long now = System.currentTimeMillis();
+       
         for (Entry<String, Long> entry : subscriptionLastReportTime.entrySet()) {
             String subscription = entry.getKey();
             long last = entry.getValue();

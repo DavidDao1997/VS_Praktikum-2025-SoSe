@@ -61,6 +61,7 @@ public class Core {
         server.addService(new MoveAdapterServer(moveAdapter), "moveAdapter", "move");
         server.addService(new StateServiceServer(stateService), "stateService", "select");
         server.addService(new RegisterActuatorServer(stateService), "registerActuator", "reportHealth");
+       
 
         server.Listen();
         server.awaitTermination();

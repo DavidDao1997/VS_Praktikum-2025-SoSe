@@ -36,9 +36,14 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
 
     // Maps subscriber names to regex patterns
     private final Map<String, Pattern> subscriptionPatterns = new ConcurrentHashMap<>();
+    // Keeps the exact wildcard pattern (e.g. "R*") so we can send it back unaltered
+    private final Map<String, String> subscriptionOriginals = new ConcurrentHashMap<>();
 
     // Stores the actual subscriber instances
     private final Map<String, HealthReportConsumer> subscriberConsumers = new ConcurrentHashMap<>();
+
+    /** Cache of HealthReportConsumerClient objects – avoids re‑creating sockets each time */
+    private final Map<String, HealthReportConsumerClient> clientCache = new ConcurrentHashMap<>();
 
     Logger logger;
 
@@ -66,6 +71,7 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
         logger.info("Subscriber: %s, Service: %s", subscriber,patternStr );
         Pattern regex = Pattern.compile("^" + patternStr.replace("*", ".*") + "$");
         subscriptionPatterns.putIfAbsent(subscriber, regex);
+        subscriptionOriginals.putIfAbsent(subscriber, patternStr);
     }
 
     public void heartbeat(String serviceName){
@@ -104,20 +110,41 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
         }
     }
 
+    /**
+     * Notify a single subscriber about the (current) health of a service.
+     * Uses a cached HealthReportConsumerClient to avoid repeated construction.
+     */
     private void notifySubscriber(String subscriber, String service) {
-        HealthReportConsumerClient client = new HealthReportConsumerClient(subscriber);
-        client.reportHealth(service, subscriber);
+        // Re‑use (or lazily create) a client for this subscriber
+        HealthReportConsumerClient client =
+                clientCache.computeIfAbsent(subscriber, key -> new HealthReportConsumerClient(key));
+
+        // Retrieve the originally supplied wildcard pattern
+        String patternStr = subscriptionOriginals.getOrDefault(subscriber, "");
+
+        logger.info("Report Health: pattern=%s, service=%s", patternStr, service);
+        client.reportHealth(service, patternStr);
     }
 
     /**
      * Periodically notify each subscriber of current service status.
      */
     private void periodicnotifySubscriber() {
-        
-        
+        // If we have no observed services yet, still inform every subscriber
+        // so they know their subscription was accepted, but no matching service
+        // is available at the moment.
+        if (observedServices.isEmpty()) {
+            for (String subscriber : subscriptionPatterns.keySet()) {
+                notifySubscriber(subscriber, "");
+            }
+            return; // Nothing else to do
+        }
+
         for (Entry<String, Pattern> subEntry : subscriptionPatterns.entrySet()) {
             String subscriber = subEntry.getKey();
             Pattern pattern = subEntry.getValue();
+
+           
             for (Entry<String, Boolean> svcEntry : observedServices.entrySet()) {
                 String service = svcEntry.getKey();
                 Boolean alive = svcEntry.getValue();
@@ -136,7 +163,7 @@ public class WatchDog implements org.robotcontrol.middleware.idl.WatchDog{
     public static void main(String[] args) {
         WatchDog wd = new WatchDog();
         RpcServer s = new RpcServer();
-        s.addService(new WatchdogServer(wd), "watchdog", "subscribe", "heartbeat");
+        s.addService(new WatchdogServer(wd), "Watchdog", "subscribe", "heartbeat");
         
         s.Listen();
         s.awaitTermination();

@@ -8,9 +8,11 @@ import org.robotcontrol.view.WebSocketView;
 public class Controller implements org.robotcontrol.middleware.idl.Controller {
 
     private final WebSocketView view;
+    private UIClient client;
 
     public Controller(WebSocketView view) {
         this.view = view;
+        client = new UIClient();
     }
 
     @Override
@@ -19,7 +21,6 @@ public class Controller implements org.robotcontrol.middleware.idl.Controller {
         // byte[])
        // byte[] robots2Byte = convertStringArrayToBitmap256(robots);
 
-        UIClient client = new UIClient();
         client.updateView(robots, selected, error, confirm);
     }
 
