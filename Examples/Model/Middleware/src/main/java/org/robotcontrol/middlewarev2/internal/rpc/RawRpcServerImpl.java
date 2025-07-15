@@ -48,11 +48,13 @@ public class RawRpcServerImpl implements RpcServer {
                     if (service != null) { 
                         logger.error("service called without timestamp"); 
                     }
+                    logger.trace("calling function: %s", req.function());
                     internalService.call(req.function(), req.values().toArray(new RpcValue[0]));
                 } else {
                     if (internalService != null) { 
                         logger.error("internalService called with timestamp"); 
                     }
+                    logger.trace("calling function: %s", req.function());
                     service.call(req.timestamp(), req.function(), req.values().toArray(new RpcValue[0]));
                 }
             }

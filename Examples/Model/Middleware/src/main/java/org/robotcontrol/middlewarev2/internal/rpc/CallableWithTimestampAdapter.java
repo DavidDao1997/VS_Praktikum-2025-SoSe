@@ -19,7 +19,7 @@ public class CallableWithTimestampAdapter implements CallableWithTimestamp {
         if (timeLeft >= 0) {
             delegate.call(fnName, args);
         } else {
-            logger.debug("Dropped call, time left: %s", timeLeft);
+            logger.debug("Dropped call %s time left: %s", fnName, timeLeft);
         }; 
     }
 }

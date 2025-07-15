@@ -77,6 +77,7 @@ public class WatchdogImpl {
         }
 
         public void heartbeat(String serviceName){
+            logger.debug("heartbeat from %s", serviceName);
             if (serviceName == null) {
                 throw new IllegalArgumentException("serviceName must not be null");
             }
@@ -139,7 +140,7 @@ public class WatchdogImpl {
                         (String) RpcValue.unwrap(args[1])
                     );
                     break;
-                case "setSelected":
+                case "heartbeat":
                     this.heartbeat(
                         (String) RpcValue.unwrap(args[0])
                     );

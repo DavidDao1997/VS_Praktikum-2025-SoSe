@@ -33,6 +33,7 @@ public class RawRpcClientImpl implements Invokable, InvokableWithTimestamp {
     @Override
     public void invoke(Long timestamp, String fnName, RpcValue... args) {
         byte[] msg = Marshaller.marshal(timestamp, fnName, args).getBytes();
+        logger.trace("INVOKING msg: %s", msg);
         
         try {
             DatagramSocket socket = new DatagramSocket();
@@ -46,6 +47,7 @@ public class RawRpcClientImpl implements Invokable, InvokableWithTimestamp {
 
     public void invoke(String fnName, RpcValue... args) {
         byte[] msg = Marshaller.marshal(fnName, args).getBytes();
+        logger.trace("INVOKING msg: %s", msg);
 
         try {
             DatagramSocket socket = new DatagramSocket();

@@ -3,6 +3,7 @@ package org.robotcontrol.core;
 import org.robotcontrol.middleware.utils.Environment;
 import org.robotcontrol.middleware.utils.Logger;
 import org.robotcontrol.middlewarev2.Middleware;
+import org.robotcontrol.middlewarev2.idl.Controller;
 import org.robotcontrol.middlewarev2.idl.MoveAdapter;
 import org.robotcontrol.middlewarev2.idl.StateService;
 import org.robotcontrol.middlewarev2.idl.StateService.SelectDirection;
@@ -12,9 +13,9 @@ public class Corev2 {
     private static final Logger logger = new Logger("Corev2");
 
     public static void main(String[] args) throws InterruptedException {
-        StateService stateService = new StateServiceMock();
+        StateService stateService = new org.robotcontrol.core.application.stateservice.StateService(new ControllerMock());
         MoveAdapter moveAdapter = new org.robotcontrol.core.application.moveadapter.MoveAdapter(stateService);
-        moveAdapter.setSelected("R1A1");
+        moveAdapter.setSelected("R1");
 
         RpcServer moveAdapterServer = Middleware.createMoveAdapterServer(
             moveAdapter, 
@@ -69,8 +70,7 @@ public class Corev2 {
 
         @Override
         public void setError(boolean err, boolean confirm) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'setError'");
+            logger.info("setError(%s, %s)", err, confirm);
         }
 
         @Override
@@ -79,4 +79,17 @@ public class Corev2 {
         }
     }
 
+    public static class ControllerMock implements Controller {
+
+        @Override
+        public void reportHealth(String serviceName, boolean isAlive) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
+        }
+
+        @Override
+        public void update(byte[] robots, int selected, boolean error, boolean confirm) {
+            logger.info("update(%s, %s, %s, %s)", robots, selected, error, confirm);
+        }
+    }
 }

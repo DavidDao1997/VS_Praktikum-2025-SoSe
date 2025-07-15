@@ -10,15 +10,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.robotcontrol.middleware.idl.Controller;
-import org.robotcontrol.middleware.idl.MoveAdapter;
 import org.robotcontrol.middleware.utils.Logger;
+import org.robotcontrol.middlewarev2.Middleware;
+import org.robotcontrol.middlewarev2.idl.Controller;
+import org.robotcontrol.middlewarev2.idl.MoveAdapter;
+import org.robotcontrol.middlewarev2.idl.Watchdog;
 
 import lombok.Setter;
 
 
 @Setter
-public class StateService implements org.robotcontrol.middleware.idl.StateService {
+public class StateService implements org.robotcontrol.middlewarev2.idl.StateService {
 	private final Logger logger = new Logger("StateService");
 
 	MoveAdapter moveAdapter;
@@ -26,6 +28,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 	int selectedRobot;
 	boolean error;
 	boolean confirm;
+	private final Watchdog watchdog = Middleware.createWatchdogClient();
 	private List<Robot> registeredRobots;
 	private List<Robot> availableRobots;
 
@@ -44,54 +47,56 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         // start periodic update task: sendUpdate() every 1 second
         scheduler.scheduleAtFixedRate(this::sendUpdate, 0, 10000, TimeUnit.MILLISECONDS);
 		// this.moveAdapter = moveAdapter;
-    }
-
-    @Override
-    public void registerActuator(String actuatorName, boolean isAlive) {
-        logger.info("registerActuator(actuatorName: %s, isAlive: %s) called", actuatorName, isAlive);
-        String robotName = actuatorName.substring(0, 2);
-        Robot r = new Robot(robotName);
-		
-		if (!registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).contains(robotName)) {
-			registeredRobots.add(r);
-		}
-		int idx = registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).indexOf(robotName);
-		logger.warn("selectedRobot: %s idx: %s isAlive: %s", selectedRobot, idx, isAlive);
-		if (selectedRobot == idx + 1 && isAlive == false) {
-			selectedRobot = 0;
-			moveAdapter.setSelected("");
-			sendUpdate();
-		}
-		r = registeredRobots.get(idx);
-		
-		switch (actuatorName.substring(2, 4)) {
-			case "A1": 
-				r.setA1(isAlive);
-				break;
-			case "A2":
-				r.setA2(isAlive);
-				break;
-			case "A3":
-				r.setA3(isAlive);
-				break;
-			case "A4":
-				r.setA4(isAlive);
-				break;
-
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + actuatorName.substring(2, 4));
-		}
-		// check if availabeRobots can be updated
-		if (r.isAvailable() && !availableRobots.contains(r)) {
-			availableRobots.add(r);
-
-			// send update do not update error, selectedRobot
-			sendUpdate();
-		} else if (!r.isAvailable() && availableRobots.contains(r)) {
-			availableRobots.remove(r);
-			sendUpdate();
-		}
+		// scheduler.scheduleAtFixedRate(this.renewSubscription, 0, 10, TimeUnit.SECONDS);
+		watchdog.subscribe("StateService", "R*");
 	}
+
+    // @Override
+    // public void registerActuator(String actuatorName, boolean isAlive) {
+    //     logger.info("registerActuator(actuatorName: %s, isAlive: %s) called", actuatorName, isAlive);
+    //     String robotName = actuatorName.substring(0, 2);
+    //     Robot r = new Robot(robotName);
+		
+	// 	if (!registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).contains(robotName)) {
+	// 		registeredRobots.add(r);
+	// 	}
+	// 	int idx = registeredRobots.stream().map(Robot::getName).collect(Collectors.toList()).indexOf(robotName);
+	// 	logger.warn("selectedRobot: %s idx: %s isAlive: %s", selectedRobot, idx, isAlive);
+	// 	if (selectedRobot == idx + 1 && isAlive == false) {
+	// 		selectedRobot = 0;
+	// 		moveAdapter.setSelected("");
+	// 		sendUpdate();
+	// 	}
+	// 	r = registeredRobots.get(idx);
+		
+	// 	switch (actuatorName.substring(2, 4)) {
+	// 		case "A1": 
+	// 			r.setA1(isAlive);
+	// 			break;
+	// 		case "A2":
+	// 			r.setA2(isAlive);
+	// 			break;
+	// 		case "A3":
+	// 			r.setA3(isAlive);
+	// 			break;
+	// 		case "A4":
+	// 			r.setA4(isAlive);
+	// 			break;
+
+	// 		default:
+	// 			throw new IllegalArgumentException("Unexpected value: " + actuatorName.substring(2, 4));
+	// 	}
+	// 	// check if availabeRobots can be updated
+	// 	if (r.isAvailable() && !availableRobots.contains(r)) {
+	// 		availableRobots.add(r);
+
+	// 		// send update do not update error, selectedRobot
+	// 		sendUpdate();
+	// 	} else if (!r.isAvailable() && availableRobots.contains(r)) {
+	// 		availableRobots.remove(r);
+	// 		sendUpdate();
+	// 	}
+	// }
 
 	// public void heartbeat(String motorName) {
 	//
@@ -198,4 +203,8 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         // Wenn das Array genau 32 Bytes hat, gebe es zurück
         return byteArray;
     }
+
+	private void renewSubscription() {
+		watchdog.subscribe("StateService", "R*");
+	}
 }

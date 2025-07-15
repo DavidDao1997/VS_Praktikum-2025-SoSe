@@ -3,10 +3,12 @@ package org.robotcontrol.middlewarev2.internal.timestamp;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.robotcontrol.middleware.utils.Logger;
 import org.robotcontrol.middlewarev2.idl.types.RpcValue;
 import org.robotcontrol.middlewarev2.rpc.Callable;
 
 public class TimestampServiceImpl implements Callable {
+    private static final Logger logger = new Logger("TimestampServiceImpl");
     private final Map<String, Long> timestampRegistry = new ConcurrentHashMap<>();
 
     @Override
@@ -28,6 +30,7 @@ public class TimestampServiceImpl implements Callable {
     }
 
     public Long getTimestamp(String serviceName, String functionName) {
+        logger.debug("getting Timestamp: %s.%s -> %s",serviceName, functionName, timestampRegistry.get(toKey(serviceName, functionName)));
         return timestampRegistry.get(toKey(serviceName, functionName));
     }
 

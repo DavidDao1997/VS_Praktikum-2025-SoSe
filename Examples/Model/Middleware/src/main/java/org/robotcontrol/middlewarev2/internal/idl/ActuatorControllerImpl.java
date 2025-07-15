@@ -1,9 +1,8 @@
 package org.robotcontrol.middlewarev2.internal.idl;
 
 
+import org.robotcontrol.middleware.utils.Logger;
 import org.robotcontrol.middlewarev2.idl.ActuatorController;
-import org.robotcontrol.middlewarev2.idl.MoveAdapter;
-import org.robotcontrol.middlewarev2.idl.MoveAdapter.RobotDirection;
 import org.robotcontrol.middlewarev2.idl.types.RpcValue;
 import org.robotcontrol.middlewarev2.internal.rpc.RpcClientImpl;
 import org.robotcontrol.middlewarev2.internal.rpc.RpcServerImpl;
@@ -13,6 +12,8 @@ import org.robotcontrol.middlewarev2.rpc.Invokable;
 import lombok.AllArgsConstructor;
 
 public class ActuatorControllerImpl {
+    private static final Logger logger = new Logger("ActuatorControllerImpl");
+
     @AllArgsConstructor
     public static class Service implements Callable {
         private final ActuatorController actuatorController;
@@ -38,6 +39,7 @@ public class ActuatorControllerImpl {
 
         @Override
         public void move(Direction actuatorDirection) {
+            logger.debug("invoking move");
             client.invoke(
                 "move",
                 new RpcValue.LongValue(actuatorDirection.ordinal())

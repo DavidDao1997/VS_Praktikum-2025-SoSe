@@ -1,13 +1,18 @@
 package org.robotcontrol.core.application.moveadapter;
 
-import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController.ActuatorDirection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.robotcontrol.middleware.utils.Logger;
 import org.robotcontrol.middlewarev2.Middleware;
 import org.robotcontrol.middlewarev2.idl.ActuatorController;
 import org.robotcontrol.middlewarev2.idl.StateService;
 
 public class MoveAdapter implements org.robotcontrol.middlewarev2.idl.MoveAdapter {
+	private static final Logger logger = new Logger("MoveAdapter");
 	private StateService stateService;
 	private String selected;
+	private final Map<String, ActuatorController> clients = new ConcurrentHashMap<>();
 
 	public MoveAdapter(StateService stateService) {
 		this.stateService = stateService;
@@ -66,7 +71,12 @@ public class MoveAdapter implements org.robotcontrol.middlewarev2.idl.MoveAdapte
 		}
 		
 		// FIXME use client
-		ActuatorController acm = Middleware.createActuatorControllerClient(selected + "A" + actuatorId);
+		ActuatorController acm = clients.get(selected + "A" + actuatorId);
+		if (acm == null) {
+			acm = Middleware.createActuatorControllerClient(selected + "A" + actuatorId);
+			clients.put(selected + "A" + actuatorId, acm);
+		}
+		logger.info("TRYING TO MOVE actuator: %s, direction: %s", selected + "A" + actuatorId, direction);
 		acm.move(ActuatorController.Direction.values()[direction.ordinal()]);
 
 		stateService.setError(false, true);

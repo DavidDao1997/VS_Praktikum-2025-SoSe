@@ -42,7 +42,7 @@ public class DnsClientImpl implements Dns {
         try {
             return resolutionFuture.get(100, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            logger.debug("Timeout in resolve: %s", e);
+            logger.debug("Timeout during resolve(%s, %s): %s", serviceName, functionName, e);
             // throw new RuntimeException(e);
         } catch (InterruptedException | ExecutionException e) {
             logger.debug("Exception in resolve, rethrowing as RuntimeException: %s", e);

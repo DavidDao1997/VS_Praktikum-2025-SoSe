@@ -1,14 +1,19 @@
 package org.robotcontrol.actuatorcontroller;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 import org.cads.vs.roboticArm.hal.real.CaDSRoboticArmReal;
-import org.robotcontrol.actuatorcontroller.roboticarm.RoboticArmMock;
-import org.robotcontrol.middleware.actuatorcontroller.ActuatorControllerServer;
-import org.robotcontrol.middleware.idl.RegisterActuator;
-import org.robotcontrol.middleware.registeractuator.RegisterActuatorClient;
-import org.robotcontrol.middleware.rpc.RpcServer;
+import org.robotcontrol.middleware.utils.Environment;
+import org.robotcontrol.middleware.utils.Logger;
+import org.robotcontrol.middlewarev2.Middleware;
+import org.robotcontrol.middlewarev2.idl.Watchdog;
+import org.robotcontrol.middlewarev2.rpc.RpcServer;
 
 
-public class ActuatorController implements org.robotcontrol.middleware.idl.ActuatorController {
+public class ActuatorController implements org.robotcontrol.middlewarev2.idl.ActuatorController {
+    private static final Logger logger = new Logger("ActuatorController");
     public static void main(String[] args) {
          if (args.length != 2) {
             System.err.println(
@@ -16,39 +21,48 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
             System.exit(1);
         }
 
-
         Integer robotID = Integer.parseInt(args[0]);
         Integer actuatorID = Integer.parseInt(args[1]);
 
+        Integer PORT = Environment.getEnvIntOrExit("PORT");
+
         ActuatorController ac = new ActuatorController(robotID, actuatorID);
 
-        RpcServer server = new RpcServer();
-        server.addService(new ActuatorControllerServer(ac), "R"+robotID.toString()+"A"+actuatorID.toString(), "move");
-        server.Listen();
-        server.awaitTermination();
+        RpcServer server = Middleware.createActuatorControllerServer(ac, PORT, "R"+robotID.toString()+"A"+actuatorID.toString(), "core");
+        // server.listenAndServe();
+        server.start();
+        // server.addService(PORT, new ActuatorControllerServer(ac), "R"+robotID.toString()+"A"+actuatorID.toString(), "move");
+
     }
 
     private int value = 50;
     private final int MIN_VALUE = 0;
     private final int MAX_VALUE = 100;
-    private String actuator;
+    private final String serviceName;
+    private final String actuator;
     private ICaDSRoboticArm real;
+    private final Watchdog watchdog;
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
 
     public ActuatorController(Integer robotID, Integer actuatorID) {
         this.real = new CaDSRoboticArmReal("127.0.0.1", 50055);
         // this.real = new CaDSRoboticArmSimulation();
         // this.real = new RoboticArmMock();
+        this.serviceName = "R" + robotID + "A" + actuatorID;
         this.actuator = "A" + actuatorID.toString();
+        // this.real.setBackForthPercentageTo(0);
         // try {
-        //     Thread.sleep(5000);
+        //     Thread.sleep(1000);
         // } catch (InterruptedException e) {
         //     // TODO Auto-generated catch block
         //     e.printStackTrace();
         // }
         // this.real.setBackForthPercentageTo(100);
-
-        RegisterActuator ra = new RegisterActuatorClient();
-        ra.registerActuator("R"+robotID.toString()+"A"+actuatorID.toString(), true);
+        // RegisterActuator ra = new RegisterActuatorClient();
+        // ra.registerActuator("R"+robotID.toString()+"A"+actuatorID.toString(), true);
+        watchdog = Middleware.createWatchdogClient();
+        scheduler.scheduleAtFixedRate(this::periodicHeartbeat, 500, 150, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -66,21 +80,26 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
     }
 
     private void applyValue() {
+        int curr;
         switch (actuator) {
             case "A1":
-                real.setLeftRightPercentageTo(value);
+                curr = real.getLeftRightPercentage();
+                if (curr != value) real.setLeftRightPercentageTo(value);
                 System.out.println("Actuator A1 is set to " + value);
                 break;
             case "A2":
-                real.setUpDownPercentageTo(value);
+                curr = real.getUpDownPercentage();
+                if (curr != value) real.setUpDownPercentageTo(value);
                 System.out.println("Actuator A2 is set to " + value);
                 break;
             case "A3":
-                real.setBackForthPercentageTo(value);
+                curr = real.getBackForthPercentage();
+                if (curr != value) real.setBackForthPercentageTo(value);
                 System.out.println("Actuator A3 is set to " + value);
                 break;
             case "A4":
-                real.setOpenClosePercentageTo(value);
+                curr = real.getOpenClosePercentage();
+                if (curr != value) real.setOpenClosePercentageTo(value);
                 System.out.println("Actuator A4 is set to " + value);
                 break;
             default:
@@ -90,5 +109,9 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
 
     public int getValue() {
         return value;
+    }
+
+    private void periodicHeartbeat() {
+        watchdog.heartbeat(serviceName);
     }
 }

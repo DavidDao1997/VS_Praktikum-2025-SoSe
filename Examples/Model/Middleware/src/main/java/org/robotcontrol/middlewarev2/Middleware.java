@@ -10,6 +10,7 @@ import org.robotcontrol.middlewarev2.idl.Watchdog;
 import org.robotcontrol.middlewarev2.internal.idl.ActuatorControllerImpl;
 import org.robotcontrol.middlewarev2.internal.idl.MoveAdapterImpl;
 import org.robotcontrol.middlewarev2.internal.idl.StateServiceImpl;
+import org.robotcontrol.middlewarev2.internal.idl.WatchdogImpl;
 import org.robotcontrol.middlewarev2.rpc.Callable;
 import org.robotcontrol.middlewarev2.rpc.Invokable;
 import org.robotcontrol.middlewarev2.rpc.RpcServer;
@@ -55,7 +56,7 @@ public final class Middleware {
     // public static RpcServer createStateServiceServer(StateService stateServiceImpl) {}
 
     public static Watchdog createWatchdogClient() {
-        return null;
+        return new WatchdogImpl.Client();
     }
     // WatchdogServer: exposed via middleware.v2.server.WatchdogServer
     
