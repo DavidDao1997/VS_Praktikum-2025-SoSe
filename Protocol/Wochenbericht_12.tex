@@ -11,7 +11,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 
-\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Titel}
+\title{Wochenbericht XII - Praktikum "Verteilte Systeme": Fertigstellung der Implementierung und Testen}
 \author{Jannik Schön}
 \date{\today}
 
@@ -44,23 +44,34 @@
 \toprule
 \textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
 \midrule
-Manh-An David Dao & Testen & 75\% & 2h & in progress \\
+Manh-An David Dao & arc42 und Testen & 75\% & 2h & in progress \\
 \hline
 Jannik Schön & Testen & 75\% & 2h & in progress \\
 \hline
-Marc Siekmann & Testen & 75\% & 9h & in progress \\
+Marc Siekmann & arc42 und Testen & 75\% & 9h & in progress \\
 \hline
-Philipp Patt &  Testen & 75\% & 9
-h & in progress\\
+Philipp Patt & Testen & 75\% & 9h & in progress\\
 
 \bottomrule
 \end{tabular}
 
 \section{Zusammenfassung der Woche}
 
-In dieser Woche wurden Tests spezifiziert und anschließend durchgeführt, um deren Funktionalität und Zuverlässigkeit zu überprüfen. 
+In dieser Woche wurden Tests spezifiziert und anschließend durchgeführt, um die Funktionalität und Zuverlässigkeit des Systems zu überprüfen. 
 Im Zuge dieser Testaktivitäten wurden zudem verschiedene Bugfixes vorgenommen, um auftretende Fehler zu beheben. 
-Darüber hinaus erfolgte eine Überarbeitung beider arc42-Dokumente.
+Besonders haben wir Bezug auf die Anforderung Safety genommen:
+Dazu ist uns in der letzten Woche ein großer Delay zwischen Befehl einer Bewegung und der Ausführung am Roboterarm aufgefallen. 
+Dies wurde beseitigt, sodass der Delay nun kaum merkbar ist. 
+Es wurde verhindert, dass, falls eine Taste auf dem ITS-Board klemmen sollte, eine Taste gehalten werden kann und dass zwei Tasten gleichzeit gedrückt werden können.
+Es wurden nun Zeitstempel eingeführt, die dazu dienen bei einer zu große Latenz kritische Befehle nicht mehr auszuführen. 
+Teile des Codes mussten aufgrund von falscher Implementierung bzgl. der Architektur refactored werden.
+Darüber hinaus erfolgte eine Überarbeitung und Vervollständigen beider arc42-Dokumente.\\\\
+
+Wesentliche Pull-Requests und Subbranches:\\
+ITS-Board: \url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/26}\\
+Middleware: \url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/tree/wip/middleware-v2}\\
+arc42 Middleware: \url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/28}\\
+arc42 Applikation: \url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}\\
  
 \section{Nächste Schritte}
 - Testen \\ 
