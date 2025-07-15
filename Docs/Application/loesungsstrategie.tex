@@ -15,9 +15,8 @@ Dies förderte sowohl die Parallelisierung einzelner Entwicklungsaufgaben als au
 In der vorliegenden Architektur übernimmt der Controller nicht mehr die klassische Rolle eines Observers, sondern fungiert als schlanker, zustandsloser Vermittler zwischen Modell und View im Sinne des MVC-Musters. \\
 Anstelle eines ereignisgesteuerten oder abfragenden (Pull-)Ansatzes sendet das Modell (z.\,B. der \textit{StateService}) in regelmäßigen Intervallen aktiv (Push-basiert)\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.209-211} seinen aktuellen Zustand an den Controller. \\
 Dieser verarbeitet die empfangenen Daten nicht weiter, sondern leitet sie unmittelbar und unverändert an die View weiter.\\
-Dieses Verfahren gewährleistet durch fehlertolerantes Verhalten\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} Seite 62, 200} eine konsistente Darstellung des Systemzustands auch dann, wenn die View zum Zeitpunkt der Aktualisierung nicht verfügbar ist oder erst verzögert gestartet wird.
 Sobald sie aktiv ist, erhält sie automatisch den zuletzt übermittelten Zustand.\\
-Der Controller bleibt vollständig zustandslos\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} siehe S. 57-58,89,137}: Er speichert weder frühere Zustände noch verarbeitet er Eingaben oder Geschäftslogik. \\
+Der Controller bleibt vollständig zustandslos\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} siehe S. 57-58,89,137}: Er speichert weder frühere Zustände noch verarbeitet er Eingaben oder beinhaltet Geschäftslogik. \\
 Zudem erfolgt keine Rückrichtung von der View zum Modell. \\
 Die klare Trennung der Verantwortlichkeiten sowie der rein gerichtete Datenfluss erhöhen die Robustheit der Anwendung, reduzieren potenzielle Fehlerquellen und fördern die Wiederverwendbarkeit der Komponenten.\\
 \begin{table}[h!]
@@ -41,7 +40,7 @@ Die klare Trennung der Verantwortlichkeiten sowie der rein gerichtete Datenfluss
 % Sollten eventuell über die schritte nochmal genauer reden.
 \section{Model}
 Im Rahmen der gewählten MVC-Architektur übernimmt das \textit{Model} die zentrale Rolle bei der Verwaltung des Anwendungszustands und der Geschäftslogik.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.90-94}
-Gemäß dem Prinzip der \textit{Separation of Concerns} ist das Model ausschließlich für Datenhaltung und Zustandsverwaltung losgelöst von Darstellung und Steuerung. 
+Gemäß dem Prinzip der \textit{Separation of Concerns} ist das Model ausschließlich für Datenhaltung und Zustandsverwaltung zuständig und ist dabei losgelöst von Darstellung und Steuerung. 
 Die nachfolgenden Funktionen sind bewusst im Model (StateService) verankert, da sie direkt die Verwaltung und den Zustand der Roboter betreffen.
 \\\\% Hab ein Problem hier, da eigentlich der komplette Core das Modell ist, oder ich verstehe irgendwas nicht richtig
 Die Kapselung dieser Funktionen im Model stellt sicher, dass Zustandslogik, Validierung und Datenverarbeitung zentral gebündelt sind\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.91 und S.137}.
@@ -139,8 +138,8 @@ Durch die lokale Zustandsführung wird die Trennung von Logik, Steuerung und Dar
             \caption{Funktionen der Komponente ActuatorController}
             \label{tab:ActuatorController}
         \end{table}
-Der \texttt{ActuatorController} ist eine funktionale Komponente innerhalb des Anwendungskerns, die für die konkrete Steuerung einzelner Aktoren verantwortlich ist. 
-Sie kapselt die Logik zur Positionsveränderung eines Aktors entlang einer vorgegebenen Richtung (\texttt{INCREASE} oder \texttt{DECREASE}). Die Methode \texttt{move()} setzt den neuen Positionswert und stellt sicher, dass nur initialisierte Aktoren angesteuert werden. 
+Der \texttt{ActuatorController} ist eine funktionale Komponente innerhalb des Anwendungskerns, die für die konkrete Steuerung eines Aktuators verantwortlich ist. 
+Sie kapselt die Logik zur Positionsveränderung eines Aktuators entlang einer vorgegebenen Richtung (\texttt{INCREASE} oder \texttt{DECREASE}). Die Methode \texttt{move()} setzt den neuen Positionswert und stellt sicher, dass nur der initialisierte Aktuator angesteuert wird. 
 Damit ergänzt der \texttt{ActuatorController} die Bewegungslogik auf unterer Ebene und unterstützt die feingranulare Steuerung innerhalb der Gesamtarchitektur.
 
 \section{View}

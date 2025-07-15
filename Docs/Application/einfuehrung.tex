@@ -7,6 +7,8 @@ Es soll eine Applikation entwickelt werden, die beliebig hinzugefügte Roboterar
 \begin{itemize}
 	\item Roboterarm hoch
 	\item Roboterarm runter
+	\item Roboterarm vorwärts
+	\item Roboterarm zurück
 	\item Roboterarm links
 	\item Roboterarm rechts
 	\item Greifer auf
@@ -33,45 +35,45 @@ Es soll eine Applikation entwickelt werden, die beliebig hinzugefügte Roboterar
 	\hline
 	\endhead
 	
-	\hline
+	\hline  
 	\endfoot
    
         Funktionalität &  
         Der ausgewählte Roboterarm muss Steuerbefehle korrekt umsetzen
-        & Alle Abnahmetests werden erfolgreich bestanden
+        & Alle Abnahmetests werden erfolgreich bestanden.
         \\
         \hline
         Zuverlässigkeit & 
         Fehler dürfen den Betrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
-        & Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h)
+        & Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h).
         \\
         \hline
         Skalierbarkeit & 
         Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
-        & Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 254)
+        & Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 254).
         \\
         \hline
         Leistung & 
         Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
-        & max. 200 ms bis Befehlsausführung
+        & max. 200 ms bis Befehlsausführung.
         \\
         \hline
         Sicherheit (Safety) & 
-        Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
+        Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht.
         %Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
-        & Reaktionszeit max. 250 ms, bis Roboterarm stoppt
+        & Reaktionszeit max. 250 ms, bis Roboterarm stoppt.
         \\
         \hline
         Wartbarkeit & 
         Der Code muss übersichtlich sein, gut dokumentiert sein und wenig Komplexität enthalten. 
-        & Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar \\
+        & Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar. \\
         \hline
         %Portabilität & %Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
         %& nicht relevant
         %\\
         %\hline
         Benutzerfreundlichkeit & Bedienung ist intuitiv, sodass die Nutzer möglichst wenig Zeit mit der Einarbeitung in die Bedienung benötigen. 
-        & Keine Einweisung erforderlich
+        & Keine Einweisung erforderlich.
         \\
         \hline
 		Anpassbarkeit & Neue Funktionen, Sensoren oder Roboterarme sollen ohne tiefgreifende Änderungen am System integriert werden können. & Erweiterungen können durch modulare Struktur und erweiterbare Schnittstellen einfach hinzugefügt werden. \\ 

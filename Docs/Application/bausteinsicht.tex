@@ -38,8 +38,8 @@ Roboter-System & Gesamtsystem, das alle internen Steuer-, Safety- und Kommunikat
 \begin{tabular}{|p{4cm}|p{9cm}|}
 \hline
 \textbf{Komponente} & \textbf{Beschreibung} \\ \hline
-Model & Beinhaltet die Geschäftslogik. Sendet Zustandsänderungen an den Controller. \\ \hline
-Controller & Der Controller fungiert als Observer vom Model und gibt Zustandsänderungen des Models an die View weiter. \\ \hline
+Model & Beinhaltet die Geschäftslogik. Sendet periodisch Zustandsinformationen an den Controller. \\ \hline
+Controller &  Der Controller leitet die Informationen vom StateService an die View weiter. \\ \hline
 View & Bietet Interaktionsmöglichkeiten für den Nutzer und stellt dem Benutzer Informationen dar. 
 \end{tabular}
 \caption{Bausteinsicht Level 2}
@@ -50,7 +50,7 @@ View & Bietet Interaktionsmöglichkeiten für den Nutzer und stellt dem Benutzer
 \section{Bausteinsicht Level 3 Model}
 \begin{figure}[h] % [h] = here
     \centering
-    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_model.png}
+    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_model_v2.png}
     \caption{Bausteinsicht Level 3 Model}
 \end{figure}
 
@@ -59,7 +59,7 @@ View & Bietet Interaktionsmöglichkeiten für den Nutzer und stellt dem Benutzer
 \begin{tabular}{|p{4cm}|p{9cm}|}
 \hline
 \textbf{Komponente} & \textbf{Beschreibung} \\ \hline
-StateService & Speichert den ausgewählten Roboter und die verfügbaren Roboter. Bei Zustandsänderungen informiert er den Controller. \\ \hline
+StateService & Speichert die Bei Zustandsänderungen informiert er den Controller. \\ \hline
 MoveAdapter  & Empfängt einen Steuerungsbefehl vom View, übersetzt diesen mithilfe des StateServices, um den passenden Aktuator anzusprechen. \\ \hline
 ActuatorController & Empfängt einen Steuerwert, überprüft die Gültigkeit und setzt diesen mithilfe der ICadsRoboticArm API. \\ \hline
 \end{tabular}
