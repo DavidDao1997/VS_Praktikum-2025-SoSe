@@ -7,6 +7,7 @@
  */
 /* Includes ------------------------------------------------------------------*/
 #include "delay.h"
+#include "err.h"
 #include <ctype.h>
 #include <stdbool.h>
 #define STM32F429xx
@@ -24,7 +25,11 @@
 
 #include "lwip_interface.h"
 #include "app_stub.h"
-#include "rpc_client.h"
+//#include "rpc_client.h"
+#include "moveAdapter_client.h"
+#include "stateService_client.h"
+#include "rpc_server.h"
+#include "caching_proxy.h"
 
 #define S0 0x00
 #define S1 0x01
@@ -114,15 +119,18 @@ int main(void) {
   
   lcdPrintlnS("Initialisiere Netzwerk...");
   
-  int err = rpc_init();
+  //int err = rpc_init();
+  int err_proxy = rpc_proxy_init();
+  int err_server = rpc_server_init();
 
-  if (err != ERR_OK) {
+  if ((err_proxy != ERR_OK) && (err_server != ERR_OK)) {
     lcdPrintlnS("Fehler beim Starten der RPC Funktion");
     while (1) {
       // Endlosschleife bei Fehler
     }
   }
 
+  register_node( "IO", "setTimestamp");
   lcdPrintlnS("../done");
 
 

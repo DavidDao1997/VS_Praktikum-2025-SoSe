@@ -1,4 +1,6 @@
-#include "rpc_client.h" 
+#include "moveAdapter_client.h" 
+#include "stateService_client.h"
+#include "rpc_client.h"
 #include <stdint.h>
 #include <string.h>
 #include "lwip/udp.h"
@@ -37,14 +39,14 @@ void move(Direction dir) {
     const char* param[] = {dir_to_str(dir)};
     int numOfParam = 1;
 
-    rpc_invoke("move", paramTypes, param, numOfParam);
+    invoke_moveAdapter("move", paramTypes, param, numOfParam);
 }
 
 void register_node( char* name, char* functionName) {
     const char* paramTypes[] = { "String", "String" };
     const char* param[] = {name, functionName};
     int numOfParam = 2;
-    rpc_invoke("register_node", paramTypes, param, numOfParam);
+    register_invoke(functionName,paramTypes, param, numOfParam);
 }
 
 void select(SDirection dir) {
@@ -52,5 +54,5 @@ void select(SDirection dir) {
 
     const char* param[] = {sdir_to_str(dir)};
     int numOfParam = 1;
-    rpc_invoke("select", paramTypes, param, numOfParam);
+    invoke_stateService("select", paramTypes, param, numOfParam);
 }
