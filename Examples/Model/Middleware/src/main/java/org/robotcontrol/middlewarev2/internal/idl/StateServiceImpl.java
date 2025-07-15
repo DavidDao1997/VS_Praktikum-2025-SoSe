@@ -41,7 +41,7 @@ public class StateServiceImpl {
         }
 
         @Override
-        public void reportHealth(String serviceName, boolean isAlive) {
+        public void reportHealth(String serviceName, String subscription) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
         }

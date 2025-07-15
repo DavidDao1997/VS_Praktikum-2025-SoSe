@@ -164,7 +164,7 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
     }
 
     @Override
-    public void reportHealth(String serviceName, boolean isAlive) {
+    public void reportHealth(String serviceName, String subscription) {
         throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
     }
 

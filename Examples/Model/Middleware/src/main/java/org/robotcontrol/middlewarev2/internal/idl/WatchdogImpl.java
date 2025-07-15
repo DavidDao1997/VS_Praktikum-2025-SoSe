@@ -25,18 +25,18 @@ import org.robotcontrol.middlewarev2.rpc.RpcServer;
 public class WatchdogImpl {
 
     public static class Service implements Callable {
-        private static final Logger logger = new Logger("Watchdog");
+        private static final Logger LOGGER = new Logger("Watchdog");
 
         // Stores the last heartbeat timestamp for each service
         private final Map<String, Instant> lastHeartbeatTimestamps = new ConcurrentHashMap<>();
         // Scheduler for periodic timeout checks
-        private final ScheduledExecutorService scheduler;
+        private final ScheduledExecutorService timeoutChecker;
 
         // Executor for periodic subscriber notifications
-        private final ScheduledExecutorService scheduled_reporthealth = Executors.newSingleThreadScheduledExecutor();
+        private final ScheduledExecutorService healthReportScheduler = Executors.newSingleThreadScheduledExecutor();
 
         // Timeout threshold for heartbeats (in milliseconds)
-        private final Duration heartbeatTimeout = Duration.ofMillis(2000);
+        private static final Duration HEARTBEAT_TIMEOUT = Duration.ofMillis(2000);
 
         // Tracks online/offline status of each observedService
         private final Map<String, Boolean> observedServices = new ConcurrentHashMap<>();
@@ -46,9 +46,6 @@ public class WatchdogImpl {
         // Keeps the exact wildcard pattern (e.g. "R*") so we can send it back unaltered
         private final Map<String, String> subscriptionOriginals = new ConcurrentHashMap<>();
 
-        // Stores the actual subscriber instances
-        private final Map<String, HealthReportConsumer> subscriberConsumers = new ConcurrentHashMap<>();
-
         /**
          * Cache of HealthReportConsumerClient objects – avoids re‑creating sockets each
          * time
@@ -57,15 +54,15 @@ public class WatchdogImpl {
 
         public Service() {
             // Initialize scheduler to run timeout checks at fixed intervals
-            scheduler = Executors.newSingleThreadScheduledExecutor();
-            scheduler.scheduleAtFixedRate(
+            timeoutChecker = Executors.newSingleThreadScheduledExecutor();
+            timeoutChecker.scheduleAtFixedRate(
                     this::checkTimeouts,
-                    heartbeatTimeout.toMillis(),
-                    heartbeatTimeout.toMillis(),
+                    HEARTBEAT_TIMEOUT.toMillis(),
+                    HEARTBEAT_TIMEOUT.toMillis(),
                     TimeUnit.MILLISECONDS);
            
             // start periodic subscriber notifications every 200 ms
-            scheduled_reporthealth.scheduleAtFixedRate(this::periodicnotifySubscriber, 0, 200, TimeUnit.MILLISECONDS);
+            healthReportScheduler.scheduleAtFixedRate(this::notifySubscribersPeriodically, 0, 200, TimeUnit.MILLISECONDS);
         }
 
         /**
@@ -76,7 +73,7 @@ public class WatchdogImpl {
             if (subscriber == null || patternStr == null) {
                 throw new IllegalArgumentException("subscriber and patternStr must not be null");
             }
-            logger.info("Subscriber: %s, Service: %s", subscriber, patternStr);
+            LOGGER.info("Subscriber: %s, Service: %s", subscriber, patternStr);
             Pattern regex = Pattern.compile("^" + patternStr.replace("*", ".*") + "$");
             subscriptionPatterns.putIfAbsent(subscriber, regex);
             subscriptionOriginals.putIfAbsent(subscriber, patternStr);
@@ -86,14 +83,10 @@ public class WatchdogImpl {
             if (serviceName == null) {
                 throw new IllegalArgumentException("serviceName must not be null");
             }
-            // Check previous status for revival detection
-            boolean wasUp = observedServices.getOrDefault(serviceName, false);
-            boolean isFirstHeartbeat = !lastHeartbeatTimestamps.containsKey(serviceName);
             // Record timestamp
             lastHeartbeatTimestamps.put(serviceName, Instant.now());
             // Mark observedService as up
             observedServices.put(serviceName, true);
-            // Notify subscribers only on the first heartbeat
         }
 
         /**
@@ -105,16 +98,18 @@ public class WatchdogImpl {
             for (Map.Entry<String, Instant> entry : lastHeartbeatTimestamps.entrySet()) {
                 String observedService = entry.getKey();
                 Instant lastTime = entry.getValue();
-                if (lastTime.plus(heartbeatTimeout).isBefore(now)) {
+                if (lastTime.plus(HEARTBEAT_TIMEOUT).isBefore(now)) {
                     // Notify each subscriber whose pattern matches the timed-out observedService
-                    subscriptionPatterns.entrySet().stream()
-                            .filter(e -> e.getValue().matcher(observedService).matches())
-                            .map(Map.Entry::getKey)
-                            .forEach(subscriber -> notifySubscriber(subscriber, observedService));
+                    for (Map.Entry<String, Pattern> subscription : subscriptionPatterns.entrySet()) {
+                        String subscriber = subscription.getKey();
+                        Pattern pattern = subscription.getValue();
+                        if (pattern.matcher(observedService).matches()) {
+                            notifySubscriber(subscriber, observedService);
+                        }
+                    }
                     // Mark observedService as down
                     observedServices.put(observedService, false);
-                    // Remove timestamp to allow re-notification on next heartbeat
-                    lastHeartbeatTimestamps.remove(observedService);
+
                 }
             }
         }
@@ -131,14 +126,14 @@ public class WatchdogImpl {
             // Retrieve the originally supplied wildcard pattern
             String patternStr = subscriptionOriginals.getOrDefault(subscriber, "");
 
-            logger.info("Report Health: pattern=%s, service=%s", patternStr, service);
+            LOGGER.info("Report Health: pattern=%s, service=%s", patternStr, service);
             client.reportHealth(service, patternStr);
         }
 
         /**
          * Periodically notify each subscriber of current service status.
          */
-        private void periodicnotifySubscriber() {
+        private void notifySubscribersPeriodically() {
             // If we have no observed services yet, still inform every subscriber
             // so they know their subscription was accepted, but no matching service
             // is available at the moment.
@@ -183,6 +178,14 @@ public class WatchdogImpl {
                 default:
                     throw new IllegalArgumentException(String.format("Unknown function %s", fnName));
             }
+        }
+
+        /**
+         * Stop all background threads gracefully.
+         */
+        public void shutdown() {
+            timeoutChecker.shutdown();
+            healthReportScheduler.shutdown();
         }
 
     }

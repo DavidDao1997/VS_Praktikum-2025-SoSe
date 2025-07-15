@@ -63,7 +63,7 @@ public class Corev2 {
 
     public static class StateServiceMock implements StateService {
         @Override
-        public void reportHealth(String serviceName, boolean isAlive) {
+        public void reportHealth(String serviceName, String subscription) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
         }
@@ -82,7 +82,7 @@ public class Corev2 {
     public static class ControllerMock implements Controller {
 
         @Override
-        public void reportHealth(String serviceName, boolean isAlive) {
+        public void reportHealth(String serviceName, String subscription) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
         }
