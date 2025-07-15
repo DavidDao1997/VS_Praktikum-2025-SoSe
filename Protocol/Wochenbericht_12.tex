@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{Wochenbericht XX - Praktikum "Verteilte Systeme": Titel}
+\author{Jannik Schön}
+\date{\today}
+
+\lstset{
+    language=Java,                
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,                  
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,                   
+    numbersep=5pt,                 
+    backgroundcolor=\color{white}, 
+    showspaces=false,               
+    showstringspaces=false,         
+    showtabs=false,                
+    frame=single,                 
+    tabsize=4,                      
+    captionpos=b,                   
+    breaklines=true,                
+    breakatwhitespace=true,        
+    title=\lstname,               
+    escapeinside={\%*}{*)},         
+    morekeywords={Integer,IntWritable, Iterable, Text},
+}
+
+\begin{document}
+\maketitle
+\section{Mitglieder des Projektes }
+
+\begin{tabular}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{2cm} >{\centering\arraybackslash}p{2cm} >{\raggedright\arraybackslash}p{3cm}}
+\toprule
+\textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
+\midrule
+Manh-An David Dao & Testen & 75\% & 2h & in progress \\
+\hline
+Jannik Schön & Testen & 75\% & 2h & in progress \\
+\hline
+Marc Siekmann & Testen & 75\% & 9h & in progress \\
+\hline
+Philipp Patt &  Testen & 75\% & 9
+h & in progress\\
+
+\bottomrule
+\end{tabular}
+
+\section{Zusammenfassung der Woche}
+
+In dieser Woche wurden Tests spezifiziert und anschließend durchgeführt, um deren Funktionalität und Zuverlässigkeit zu überprüfen. 
+Im Zuge dieser Testaktivitäten wurden zudem verschiedene Bugfixes vorgenommen, um auftretende Fehler zu beheben. 
+Darüber hinaus erfolgte eine Überarbeitung beider arc42-Dokumente.
+ 
+\section{Nächste Schritte}
+- Testen \\ 
+- letzte Anpassungen im Arc42
+
+\end{document}
