@@ -1,13 +1,11 @@
 package org.robotcontrol.core.application.moveadapter;
 
-import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController;
 import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorController.ActuatorDirection;
-import org.robotcontrol.core.application.actuatorcontroller.rpc.ActuatorControllerMock;
-import org.robotcontrol.core.application.stateservice.StateService;
-import org.robotcontrol.middleware.actuatorcontroller.ActuatorControllerClient;
-import org.robotcontrol.middleware.idl.ActuatorController.Direction;
+import org.robotcontrol.middlewarev2.Middleware;
+import org.robotcontrol.middlewarev2.idl.ActuatorController;
+import org.robotcontrol.middlewarev2.idl.StateService;
 
-public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter {
+public class MoveAdapter implements org.robotcontrol.middlewarev2.idl.MoveAdapter {
 	private StateService stateService;
 	private String selected;
 
@@ -17,49 +15,49 @@ public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter 
 	}
 
 	public void move(RobotDirection robotDirection) {
-		String selectedRobot = stateService.getSelected();
+		// String selectedRobot = stateService.getSelected();
 		
 		
-		if (selectedRobot == null) {
-			stateService.setError(true, false);
-			return;
-		}
+		// if (selectedRobot == null) {
+		// 	stateService.setError(true, false);
+		// 	return;
+		// }
 		
 		Integer actuatorId;
-		ActuatorDirection direction;
+		ActuatorController.Direction direction;
 
 		switch (robotDirection) {
 			case LEFT:
 				actuatorId = 1;
-				direction = ActuatorDirection.DECREASE;
+				direction = ActuatorController.Direction.DECREASE;
 				break;
 			case DOWN:
 				actuatorId = 3;
-				direction = ActuatorDirection.DECREASE;
+				direction = ActuatorController.Direction.DECREASE;
 				break;
 			case BACKWARD:
 				actuatorId = 2;
-				direction = ActuatorDirection.DECREASE;
+				direction = ActuatorController.Direction.DECREASE;
 				break;
 			case CLOSE:		
 				actuatorId = 4;
-				direction = ActuatorDirection.DECREASE;
+				direction = ActuatorController.Direction.DECREASE;
 				break;
 			case RIGHT:
 				actuatorId = 1;
-				direction = ActuatorDirection.INCREASE;
+				direction = ActuatorController.Direction.INCREASE;
 				break;
 			case UP:
 				actuatorId = 3;
-				direction = ActuatorDirection.INCREASE;
+				direction = ActuatorController.Direction.INCREASE;
 				break;
 			case FORWARD:
 				actuatorId = 2;
-				direction = ActuatorDirection.INCREASE;
+				direction = ActuatorController.Direction.INCREASE;
 				break;
 			case OPEN:
 				actuatorId = 4;
-				direction = ActuatorDirection.INCREASE;
+				direction = ActuatorController.Direction.INCREASE;
 				break;
 			default:
 				System.out.println("ILLEGAL MOVEMENT");
@@ -68,8 +66,8 @@ public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter 
 		}
 		
 		// FIXME use client
-		org.robotcontrol.middleware.idl.ActuatorController acm = new ActuatorControllerClient(selected + "A" + actuatorId);
-		acm.move(Direction.values()[direction.ordinal()]);
+		ActuatorController acm = Middleware.createActuatorControllerClient(selected + "A" + actuatorId);
+		acm.move(ActuatorController.Direction.values()[direction.ordinal()]);
 
 		stateService.setError(false, true);
 		

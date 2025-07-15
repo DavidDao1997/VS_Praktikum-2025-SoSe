@@ -42,7 +42,7 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
         this.confirm = false;
 
         // start periodic update task: sendUpdate() every 1 second
-        scheduler.scheduleAtFixedRate(this::sendUpdate, 0, 200, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::sendUpdate, 0, 10000, TimeUnit.MILLISECONDS);
 		// this.moveAdapter = moveAdapter;
     }
 
@@ -101,16 +101,9 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
 
 	}
 
-	public void select(int sd) {
-		SelectDirection[] values = SelectDirection.values();
-		if (sd < 0 || sd >= values.length) {
-			throw new IllegalArgumentException("Invalid SelectDirection index: " + sd);
-		}
-		select(values[sd]);
-	}
-
 	@Override
 	public void select(SelectDirection sd) {
+		logger.info("select called with: %s", sd);
 		if (availableRobots.isEmpty()) {
 			error = true;
 			confirm = false;
@@ -155,10 +148,13 @@ public class StateService implements org.robotcontrol.middleware.idl.StateServic
     private void sendUpdate() {
         String[] availRobots = new String[availableRobots.size() + 1];
         availRobots[0] = "";
+		String availRobotsLog = "";
         for (int i = 0; i < availableRobots.size(); i++) {
             availRobots[i + 1] = availableRobots.get(i).getName();
+			availRobotsLog += availableRobots.get(i).getName();
         }
-		logger.info("controller.update(%s, %s, %s, %s)", availRobots, selectedRobot, error, confirm);
+
+		logger.info("controller.update(%s, %s, %s, %s)", availRobotsLog, selectedRobot, error, confirm);
         controller.update(convertStringArrayToBitmap256(availRobots), selectedRobot, error, confirm);
     }
 

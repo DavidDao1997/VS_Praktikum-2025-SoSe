@@ -1,22 +1,15 @@
 package org.robotcontrol.core;
 
-import org.robotcontrol.middleware.idl.UI;
-import org.robotcontrol.middleware.idl.StateService.SelectDirection;
-import org.robotcontrol.middleware.moveadapter.MoveAdapterServer;
-import org.robotcontrol.middleware.registeractuator.RegisterActuatorServer;
-import org.robotcontrol.middleware.rpc.RpcServer;
-import org.robotcontrol.middleware.stateservice.StateServiceServer;
-import org.robotcontrol.middleware.utils.Mocker;
-import org.robotcontrol.view.ViewClient;
-import org.robotcontrol.view.WebSocketView;
-import org.robotcontrol.websocket.RobotWebSocketServer;
-
 import java.io.IOException;
 
-import org.robotcontrol.core.application.controller.rpc.Controller;
-import org.robotcontrol.core.application.moveadapter.MoveAdapter;
-import org.robotcontrol.core.application.stateservice.StateService;
-import org.robotcontrol.http.SimpleHttpServer;
+// import org.robotcontrol.core.application.controller.rpc.Controller;
+// import org.robotcontrol.core.application.moveadapter.MoveAdapter;
+// import org.robotcontrol.core.application.stateservice.StateService;
+// import org.robotcontrol.middleware_old.moveadapter.MoveAdapterServer;
+// import org.robotcontrol.middleware_old.registeractuator.RegisterActuatorServer;
+// import org.robotcontrol.middleware_old.stateservice.StateServiceServer;
+// import org.robotcontrol.middleware_old.ui.UIClient;
+
 
 /**
  * Core is a central service that consolidates the functionality of 
@@ -27,42 +20,39 @@ import org.robotcontrol.http.SimpleHttpServer;
  */
 public class Core {
     public static void main(String[] args) throws IOException {
-        // WebSocket-Server starten
-        RobotWebSocketServer wsServer = new RobotWebSocketServer(4571);
-        wsServer.start();
+        // Integer PORT_MOVEADAPTER = Environment.getEnvIntOrExit("PORT_MOVEADAPTER");
+        // Integer PORT_STATESERVICE = Environment.getEnvIntOrExit("PORT_STATESERVICE");
+        // Integer PORT_REGISTERACTUATOR = Environment.getEnvIntOrExit("PORT_REGISTERACTUATOR");
 
-        // HTTP-Server starten
-        SimpleHttpServer.startServer(8080, "ui.html");
 
-        // WebSocket View erstellen
-        WebSocketView view = new WebSocketView(wsServer);
-        StateService stateService = new StateService(new Controller(view));
-        MoveAdapter moveAdapter = new MoveAdapter(stateService);
-        stateService.setMoveAdapter(moveAdapter);
-        // stateService.registerActuator("R1A1", true);
-        stateService.registerActuator("R1A2", true);
-        stateService.registerActuator("R1A3", true);
-        stateService.registerActuator("R1A4", true);
-        // stateService.setError(false, true);
 
-        // stateService.registerActuator("R2A1", true);
-        // stateService.registerActuator("R2A2", true);
-        // stateService.registerActuator("R2A3", true);
-        // stateService.registerActuator("R2A4", true);
+        // StateService stateService = new StateService(new Controller(new UIClient()));
+        // MoveAdapter moveAdapter = new MoveAdapter(stateService);
+        // stateService.setMoveAdapter(moveAdapter);
+        // // stateService.registerActuator("R1A1", true);
+        // stateService.registerActuator("R1A2", true);
+        // stateService.registerActuator("R1A3", true);
+        // stateService.registerActuator("R1A4", true);
+        // // stateService.setError(false, true);
+
+        // // stateService.registerActuator("R2A1", true);
+        // // stateService.registerActuator("R2A2", true);
+        // // stateService.registerActuator("R2A3", true);
+        // // stateService.registerActuator("R2A4", true);
         // stateService.select(SelectDirection.UP);
 
-        // stateService.registerActuator("R3A1", true);
-        // stateService.registerActuator("R3A2", true);
-        // stateService.registerActuator("R3A3", true);
-        // stateService.registerActuator("R3A4", true);
-        // stateService.select(SelectDirection.UP);
+        // // stateService.registerActuator("R3A1", true);
+        // // stateService.registerActuator("R3A2", true);
+        // // stateService.registerActuator("R3A3", true);
+        // // stateService.registerActuator("R3A4", true);
+        // // stateService.select(SelectDirection.UP);
 
-        RpcServer server = new RpcServer();
-        server.addService(new MoveAdapterServer(moveAdapter), "moveAdapter", "move");
-        server.addService(new StateServiceServer(stateService), "stateService", "select");
-        server.addService(new RegisterActuatorServer(stateService), "registerActuator", "reportHealth");
+        // RpcServer server = new RpcServer();
+        // server.addService(PORT_MOVEADAPTER, new MoveAdapterServer(moveAdapter), "moveAdapter", "move");
+        // server.addService(PORT_STATESERVICE, new StateServiceServer(stateService), "stateService", "select");
+        // server.addService(PORT_REGISTERACTUATOR, new RegisterActuatorServer(stateService), "registerActuator", "reportHealth");
 
-        server.Listen();
-        server.awaitTermination();
+        // server.Listen();
+        // server.awaitTermination();
     }
 }

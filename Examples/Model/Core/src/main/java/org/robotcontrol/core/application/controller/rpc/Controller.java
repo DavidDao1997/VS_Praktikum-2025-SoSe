@@ -1,16 +1,13 @@
 package org.robotcontrol.core.application.controller.rpc;
 
-import org.robotcontrol.middleware.ui.UIClient;
-
-import org.robotcontrol.view.WebSocketView;
-
+import org.robotcontrol.middleware.idl.UI;
 
 public class Controller implements org.robotcontrol.middleware.idl.Controller {
 
-    private final WebSocketView view;
+    private final UI ui;
 
-    public Controller(WebSocketView view) {
-        this.view = view;
+    public Controller(UI ui) {
+        this.ui = ui;
     }
 
     @Override
@@ -19,8 +16,8 @@ public class Controller implements org.robotcontrol.middleware.idl.Controller {
         // byte[])
        // byte[] robots2Byte = convertStringArrayToBitmap256(robots);
 
-        UIClient client = new UIClient();
-        client.updateView(robots, selected, error, confirm);
+        // UIClient client = new UIClient();
+        ui.updateView(robots, selected, error, confirm);
     }
 
 
