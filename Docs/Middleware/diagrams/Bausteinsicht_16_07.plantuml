@@ -1,0 +1,43 @@
+@startuml
+title Middleware-Komponentensicht
+
+top to bottom direction
+
+skinparam defaultTextAlignment center
+skinparam node {
+    BackgroundColor #fdf6e3
+    BorderColor #657b83
+    FontSize 11
+    FontName "Arial"
+}
+
+package "Client Middleware" {
+    [Caching-Proxy]
+    [Marshalling]
+    [Async RPC Sender]
+}
+
+package "Middleware Infrastruktur" {
+    [Message Transport]
+    [Naming Service]
+    [Watchdog]
+}
+
+package "Server Middleware" {
+    [Async RPC Receiver]
+    [Unmarshalling]
+    [Server-Skeleton]
+}
+
+' === Verbindungen (von oben nach unten) ===
+[Caching-Proxy] --> [Naming Service] : Dienstadresse auflösen
+[Caching-Proxy] --> [Marshalling] : Argumente serialisieren
+[Caching-Proxy] --> [Watchdog]: subscribe
+[Caching-Proxy] --> [Watchdog]: sendet heartbeat
+[Watchdog] --> [Async RPC Receiver]: reportHealth
+[Marshalling] --> [Async RPC Sender] : Anfrage senden
+[Async RPC Sender] --> [Message Transport] : Nachricht versenden
+[Message Transport] --> [Async RPC Receiver] : Nachricht empfangen
+[Async RPC Receiver] --> [Unmarshalling] : Deserialisieren
+[Unmarshalling] --> [Server-Skeleton] : Methodenaufruf
+@enduml
