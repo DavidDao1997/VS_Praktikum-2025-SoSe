@@ -50,16 +50,10 @@ Aus den vorherigen Feststellungen und den Use-Cases \textcolor{red}{TODO:Abschni
 	\endfoot
 	
 	
-	void register(string name, string function, string socket) & 
+	void register(string service, string function, string socket) & 
 	\textbf{Schnittstelle zur Applikation} für eine Funktion eines Services einer Node, um sich zu beim System zu registrieren. 
 	% Funktionsname der Callfunktion der Node als Callback / 3. Argument Callback nötig ?
 	& Jede Node (Servo) muss seinen eigenen Identifier und Socket vor der Registrierung kennen. 
-	\\
-	\hline
-	
-	int registerNewNode(string name, string function, string socket) \textcolor{red}{TODO:Anpassen} & 
-	Registriert neuen Empfänger in der Namensauflösung 
-	& Name ist noch nicht vorhanden; return 0 oder -1
 	\\
 	\hline
 	void invoke(string functionName, string[] paramTypes, string[] params)
@@ -91,8 +85,8 @@ Aus den vorherigen Feststellungen und den Use-Cases \textcolor{red}{TODO:Abschni
 	& Das Target muss existieren.
 	\\
 	\hline
-	char* resolveName(const String* target)
-	& Löst den eindeutigen Namen zu einem Socket (IPv4:Port) auf.
+	string resolve(string servicename, string functionname)
+	& Im nameserverst den eindeutigen Namen zu einem Socket (IPv4:Port) auf.
 	& Vorbedingung: target ungleich NULL; Rückgabe: String mit Socket-Adresse oder NULL bei Fehler.
 	\\
 	\hline
@@ -101,13 +95,32 @@ Aus den vorherigen Feststellungen und den Use-Cases \textcolor{red}{TODO:Abschni
 	& Vor: Node ist registriert; Nach: Timeout-Zähler zurückgesetzt
 	\\
 	\hline
-	void unregister(Identifier ident)
-	& Entfernt eine Node aus dem System, zb wenn nicht mehr erreichbar anhand seines Identifiers
-	& Vor: Node ist registriert; Nach: Node ist aus Liste entfernt
+	%void unregister(Identifier ident)
+	%& Entfernt eine Node aus dem System, zb wenn nicht mehr erreichbar anhand seines Identifiers
+	%& Vor: Node ist registriert; Nach: Node ist aus Liste entfernt
+	%\\
+	%\hline
+	bool set_or_update_timestamp(string servicename, string function, int timestamp)
+	&interne funktion, die einen Timestamp setzt wenn empfangen
+	& Vor: servicename, function nicht NULL Nach: true, wenn erfolgreich, false, wenn nicht
 	\\
 	\hline
-	 
+	bool get_timestamp(string servicename, string function, int out_timestamp)
+	&interne funktion, die einen Timestamp ausliest
+	& Vor: servicename, function nicht NULL Nach: true, wenn erfolgreich, false, wenn nicht
+	\\
+	\hline
+	int cache_store(string servicename, string functionname, string socket, int time);
+	& interne funktion, die einen socket in den cache legt
+	& Vor: servicename, function nicht NULL Nach: 0, wenn erfolgreich, -1, wenn nicht
 \end{longtable}
+
+%bool set_or_update_timestamp(const char *servicename, const char* function, uint32_t timestamp);
+%bool get_timestamp(const char *servicename, const char* function, uint32_t *out_timestamp);
+%int cache_store(const char* servicename, const char* functionname, const char* socket, uint32_t time);
+
+
+
 
 
 \section{IDL}
