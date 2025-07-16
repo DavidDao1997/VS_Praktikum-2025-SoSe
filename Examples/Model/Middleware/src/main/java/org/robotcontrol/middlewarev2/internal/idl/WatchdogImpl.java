@@ -36,7 +36,7 @@ public class WatchdogImpl {
         private final ScheduledExecutorService healthReportScheduler = Executors.newSingleThreadScheduledExecutor();
 
         // Timeout threshold for heartbeats (in milliseconds)
-        private static final Duration HEARTBEAT_TIMEOUT = Duration.ofMillis(2000);
+        private static final Duration HEARTBEAT_TIMEOUT = Duration.ofMillis(500);
 
         // Tracks online/offline status of each observedService
         private final Map<String, Boolean> observedServices = new ConcurrentHashMap<>();

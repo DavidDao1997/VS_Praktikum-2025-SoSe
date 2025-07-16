@@ -6,10 +6,12 @@ import org.robotcontrol.middleware.utils.Environment;
 import org.robotcontrol.middlewarev2.idl.ActuatorController;
 import org.robotcontrol.middlewarev2.idl.MoveAdapter;
 import org.robotcontrol.middlewarev2.idl.StateService;
+import org.robotcontrol.middlewarev2.idl.UI;
 import org.robotcontrol.middlewarev2.idl.Watchdog;
 import org.robotcontrol.middlewarev2.internal.idl.ActuatorControllerImpl;
 import org.robotcontrol.middlewarev2.internal.idl.MoveAdapterImpl;
 import org.robotcontrol.middlewarev2.internal.idl.StateServiceImpl;
+import org.robotcontrol.middlewarev2.internal.idl.UIImpl;
 import org.robotcontrol.middlewarev2.internal.idl.WatchdogImpl;
 import org.robotcontrol.middlewarev2.rpc.Callable;
 import org.robotcontrol.middlewarev2.rpc.Invokable;
@@ -44,11 +46,21 @@ public final class Middleware {
         );
     }
 
+ 
+
     public static ActuatorController createActuatorControllerClient(String serviceName) {
         return new ActuatorControllerImpl.Client(serviceName);
     }
     public static RpcServer createActuatorControllerServer(ActuatorController actuatorController, Integer port, String serviceName, String... clients) {
         return new ActuatorControllerImpl.Server(port, actuatorController, clients, serviceName, "move");
+    }
+
+    public static UI createUIClient(){
+        return new UIImpl.Client("ui");
+    }
+
+    public static RpcServer createUIServer(UI ui, Integer port, String... clients){
+      return  new UIImpl.Server(port, ui, clients, "ui", "updateView");
     }
 
     // each idl Interface has these 2 methods
@@ -70,4 +82,6 @@ public final class Middleware {
     public static RpcServer createDynamicServer(Callable Callable, String serviceName, String... fnNames) {
         return null;
     }
+
+    
 }

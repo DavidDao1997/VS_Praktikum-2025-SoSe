@@ -6,13 +6,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-import org.robotcontrol.middleware.ServerStub_I;
-import org.robotcontrol.middleware.idl.UI;
-import org.robotcontrol.middleware.rpc.RpcUtils;
-import org.robotcontrol.middleware.rpc.RpcValue;
+
 import org.robotcontrol.websocket.RobotWebSocketServer;
 
-public class WebSocketView implements UI {
+public class WebSocketView implements org.robotcontrol.middlewarev2.idl.UI {
 
     private final RobotWebSocketServer server;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -43,21 +40,19 @@ public class WebSocketView implements UI {
 
 
     @Override
-    public void updateView(byte[] robotBitmap, int selected, boolean error, boolean confirm) {
+    public void updateView(String[] robots, int selected, boolean error, boolean confirm) {
         // Umwandlung des byte[] robots in String
-        String robotsString = new String(robotBitmap, StandardCharsets.UTF_8);
-        System.out.println("Received robots string: " + robotsString);
-        System.out.println("Raw robotBitmap: " + Arrays.toString(robotBitmap));
+        
+        System.out.println("Received robots string: " + robots);
+        
 
-        // Sanitize und aufteilen der Roboter
-        String[] robotsArray = sanitizeRobots(robotsString);
 
-        // Ausgabe der Roboter, um sicherzustellen, dass sie korrekt sind
-        System.out.println("Sanitized robots array: " + Arrays.toString(robotsArray));
+
+
         System.out.printf("Selected: %d, Error: %b, Confirmation: %b\n", selected, error, confirm);
 
         // Erstellen der ViewData und JSON
-        ViewData data = new ViewData(robotsArray, selected, error, confirm);
+        ViewData data = new ViewData(robots, selected, error, confirm);
         try {
             String json = objectMapper.writeValueAsString(data);
             System.out.println("Sending JSON: " + json);  // Zum Debuggen

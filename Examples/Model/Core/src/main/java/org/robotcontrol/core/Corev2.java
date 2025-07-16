@@ -87,9 +87,12 @@ public class Corev2 {
             throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
         }
 
+
+
         @Override
-        public void update(byte[] robots, int selected, boolean error, boolean confirm) {
-            logger.info("update(%s, %s, %s, %s)", robots, selected, error, confirm);
+        public void update(String[] robots, int selected, boolean error, boolean confirm) {
+            logger.info("Update called");
+            throw new UnsupportedOperationException("Unimplemented method 'update'");
         }
     }
 }

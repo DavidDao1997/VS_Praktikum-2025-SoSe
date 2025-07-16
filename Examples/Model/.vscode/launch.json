@@ -6,6 +6,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "View V2",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.Main",
+            "projectName": "View",
+            "env": {
+                "PORT": 6000,
+                "IP_ADDR": "127.0.0.1",
+                "DNS_CALLBACK_PORT": 6001,
+                "DNS_SOCKET": "127.0.0.1:6001",
+                "LOG_LEVEL": "TRACE"
+
+            }
+        },
+        {
+            "type": "java",
             "name": "Watchdog v2",
             "request": "launch",
             "mainClass": "org.robotcontrol.middlewarev2.server.WatchdogServer",
@@ -18,19 +33,6 @@
                 "LOG_LEVEL": "TRACE"
             }
         },
-        // {
-        //     "type": "java",
-        //     "name": "MockClient",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.core.Corev2MockClient",
-        //     "projectName": "Core",
-        //     "env": {
-        //         "IP_ADDR": "127.0.0.1",
-        //         "DNS_CALLBACK_PORT": 9998,
-        //         "DNS_SOCKET": "127.0.0.1:9000",
-        //         "LOG_LEVEL": "TRACE"
-        //     }
-        // },
         {
             "type": "java",
             "name": "DnsServer v2",
@@ -60,75 +62,6 @@
                 "LOG_LEVEL": "TRACE"
             }
         },
-        // {
-        //     "type": "java",
-        //     "name": "Main",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.Main",
-        //     "projectName": "View"
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "WatchDog",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.middleware.watchdog.WatchDog",
-        //     "projectName": "Middleware",
-        //     "env": {
-        //         "LOG_LEVEL": "TRACE"
-        //     }
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "DnsServiceImpl",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.middleware.dns.DnsServiceImpl",
-        //     "projectName": "Middleware",
-        //     "env": {
-        //         "LOG_LEVEL": "TRACE"
-        //     }
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "Core",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.core.Core",
-        //     "projectName": "Core"
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "Middleware",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.middleware.Main",
-        //     "projectName": "Middleware"
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "View",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.Main",
-        //     "projectName": "View"
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "Watchdog",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.middleware.watchdog.WatchDog",
-        //     "projectName": "Middleware"
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "DNS",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.middleware.dns.DnsServiceImpl",
-        //     "projectName": "Middleware"
-        // },
-        // {
-        //     "type": "java",
-        //     "name": "ActuatorController",
-        //     "request": "launch",
-        //     "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",
-        //     "projectName": "ActuatorController"
-        // },
         {
             "type": "java",
             "name": "Current File",

@@ -179,7 +179,7 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 					.findFirst()
 					.ifPresent(r -> {
 						availableRobots.remove(r);
-						sendUpdate();
+						
 					});
 				// resubscribe to watchdog
 				renewSubscription();
@@ -210,37 +210,14 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 		for (int i = 0; i < availableRobots.size(); i++) {
 			availRobots[i + 1] = availableRobots.get(i).getName();
 		}
-		controller.update(convertStringArrayToBitmap256(availRobots), selectedRobot, error, confirm);
+		controller.update(availRobots, selectedRobot, error, confirm);
 	}
 
-	// Method to convert String[] into a 32-byte long byte[] for Bitmap256
-	private byte[] convertStringArrayToBitmap256(String[] robots) {
-		byte[] bitArray = new byte[4];
 
-		for (String robot : robots) {
-			if (!robot.isEmpty()) {
-				int robotId = extractIntAfterR(robot);
-				int bitIndex = robotId - 1;
-				int byteIndex = bitIndex / 8;
-				int bitInByte = bitIndex % 8;
-	
-				bitArray[byteIndex] ^= (1 << (7 - bitInByte));
-			}
-		}
-
-		return bitArray;
-	}
 
 	private void renewSubscription() {
 		watchdog.subscribe("StateService", "R*");
 	}
 
-	public static Integer extractIntAfterR(String input) {
-		Pattern pattern = Pattern.compile("R(\\d+)(A|\\b)");
-		Matcher matcher = pattern.matcher(input);
-		if (matcher.find()) {
-			return Integer.parseInt(matcher.group(1));
-		}
-		return null; // or throw an exception if you prefer
-	}
+
 }
