@@ -32,17 +32,15 @@
 	\hline
 	U3 & Namen auflösen & Die Middleware ermittelt, welche Dienste bei welcher Socket-Adresse zu finden sind.\\
 	\hline
-	U4 & Schnittstellen zur Applikation & Dienste werden der Applikation als Client-Stubs bereitgestellt. Die Applikation ruft die entfernten Dienste wie lokale Dienste auf. Interner Aufrufe werden vor der Applikation versteckt. \\
+	U4 & Marshalling & Die Middleware definiert eine IDL. Diese muss dafür sorgen, dass die Datenstrukturen und Parameter der Funktionsaufrufe via RPC korrekt in ein übertragbares Format (Marshalling) umgewandelt und am Zielsystem wieder entpackt (Unmarshalling) werden. \\
 	\hline
-	U5 & Marshalling & Die Middleware definiert eine IDL. Diese muss dafür sorgen, dass die Datenstrukturen und Parameter der Funktionsaufrufe via RPC korrekt in ein übertragbares Format (Marshalling) umgewandelt und am Zielsystem wieder entpackt (Unmarshalling) werden. \\
-	\hline
-	U6 & Transport & Die RPCs werden via UDP über die Netzwerkschicht transportiert. Das ist durch die Echtzeitanforderung bedingt. Kommunikation findet asynchron statt. Synchronizität wird durch mehrere asynchrone RPCs umgesetzt.\\
+	U5 & Transport & Die RPCs werden via UDP über die Netzwerkschicht transportiert. Das ist durch die Echtzeitanforderung bedingt. Kommunikation findet asynchron statt. Synchronizität wird durch mehrere asynchrone RPCs umgesetzt.\\
 	\hline 
-	U7 & Sicherheit & Versendete RPCs haben (zwischen Client und Server) Echtzeitanforderungen. \\
+	U6 & Sicherheit & Versendete RPCs haben (zwischen Client und Server) Echtzeitanforderungen. \\
 	\hline
-	U8 & Fehlertransparenz & Fehlerhafte Übertragung eines RPCs müssen ggf. der Applikation mitgeteilt werden. \\
+	U7 & Fehlertransparenz & Fehlerhafte Übertragung eines RPCs müssen ggf. der Applikation mitgeteilt werden. \\
 	\hline
-	U9 & Watchdog & Der Watchdog informiert Subscriber ob andere Services verfügbar sind.      %Für überwachte Health-Observables werden Watchdogs angelegt. Diese überwachen die Verfügbarkeit der Teilnehmer, wenn Lebenszeichen ausbleiben werden Health-Observer benachrichtigt.  \\
+	U8 & Watchdog & Der Watchdog informiert Subscriber ob andere Services verfügbar sind.\\      %Für überwachte Health-Observables werden Watchdogs angelegt. Diese überwachen die Verfügbarkeit der Teilnehmer, wenn Lebenszeichen ausbleiben werden Health-Observer benachrichtigt.  \\
 	\hline
 	
 \end{tabular}
@@ -101,15 +99,8 @@ Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische 
 		\item (Deserialisierung der empfangenen Aufrufs)
 		\item Einsetzen der Socketadresse im Cache
 	\end{itemize}
-	
-	\item \textbf{Schnittstellen zur Applikation U4:}\\
-	\begin{itemize}
-		\item Schnittstelle zum Registrieren
-		\item Schnittstelle zum Versenden von Funktionen
-		\item Schnittstelle zum Empfangen von Funktionen
-	\end{itemize}
-	
-	\item \textbf{Marshalling U5:}\\
+		
+	\item \textbf{Marshalling U4:}\\
 	\begin{itemize}
 		\item Aufruf des Marshallings mit Parameter (Funktionsname, Liste von Typisierten Parameter)
 		\item Übersetzen der Funktion und der Parameter mittels IDL in ein serialisierbaren Typen (char-array)
@@ -118,47 +109,37 @@ Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische 
 		\item Übersetzen serialisierter Funktionsaufruf in eine Funktion und der Parameter (Funktionsname, Liste von Typisierten Parameter) mittels IDL
 	\end{itemize}
 	
-	\item \textbf{Transport U6:}\\
+	\item \textbf{Transport U5:}\\
 	\begin{itemize}
 		\item Aufruf der Netzwerkschicht mit Parameter (Serialisierter Funktionsaufruf)
 		\item Empfang des serialisierten Funktionsaufrufs
 		\item Deserialisierung der Serialisierung
 	\end{itemize}
 	
-	\item \textbf{Sicherheit U7:}\\
+	\item \textbf{Sicherheit U6:}\\
 	\begin{itemize}
-		\item 
+		\item Auslesen des eigenes Timestamps 	
+		\item (Einheitliche Übersetzung und Serialisierung)
+		\item Senden an alle möglichen Sender
+		\item empfangen der Nachricht und Deserialisieren
+		\item Setzen des Timestamps bei zugehörigem  Empfänger
+		\item Nutzung des Timestamps bei Nachricht an Empfänger
 	\end{itemize}
 	
-	\item \textbf{Fehlertransparenz U8:}\\
+	\item \textbf{Fehlertransparenz U7:}\\
 	\begin{itemize}
 		\item Fehler dürfen nur in ausnahmenfällen mitgeteilt werden
 		\item Sollten so gut wie möglich verschleiert werden
 	\end{itemize}
 	
-	\item \textbf{Watchdog U9:}\\
+	\item \textbf{Watchdog U8:}\\
 	\begin{itemize}
-		\item 
+		\item Senden eines Subscriber-Requests an einen zentralen Watchdog
+		\item Periodisches Senden eines Heartbeats an den Watchdog
+		\item Senden von periodischen Healthreports an die Subscriber		
 	\end{itemize}
-	
-
-	\item \textbf{Registrierungsmanagement (U1):}  
-	Verwaltung und Verarbeitung von Node-Registrierungen mit eindeutigen Identifikatoren und Funktionsbeschreibungen.  
-	Persistenz der Node-Informationen und Zuordnung zu Node-Gruppen.
-	
-	\item \textbf{Weiterleitung (U2):}  
-	Marshalling der zu Versendeten Informationen, korrektes Verteilen an den entsprechenden Empfänger mit abschließenden Unmarshalling.
-	
-	\item \textbf{Namen auflösen (U3):}  
-	Einrichtung einer hierarischen Namensauflösung, die in der Lage ist, die Adresse eines Dienstes (einer Funktion) auf einem Node zu verschicken. Diese werden in Gruppen aus Nodes sortiert.
-	
-	\item \textbf{Marshalling (U4):}  
-	Einführung einer IDL Definition, sodass die Sprachne C und JAVA unterstützt werden.
-	
-	\item \textbf{Fehlertoleranz und Sicherheit:}  
-	Mechanismen zur Behandlung von Kommunikationsausfällen oder Unterbrechungen. Mitteilung an die Applikation zur Fehlertransparenz.
 \end{itemize}
-
+	
 \section{Externe Schnittstellen}
 
 Die Middleware besitzt folgende Schnittstellen:

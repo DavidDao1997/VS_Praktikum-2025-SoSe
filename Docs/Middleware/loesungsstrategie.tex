@@ -24,7 +24,8 @@ Middleware abstrahiert Verbindungsdetails, Adressierung und Datenformate für di
 
 \section*{Sicherheit / Safety}
 
-\textcolor{red}{TODO: Watchdog }
+Durch die Bedingung des CAP-Theorems wird sich durch die Safety-Anforderung\textcolor{red}{TODO:Abschnitt} für die Konsistenz entschieden.
+Dadurch bekommt jede RPC-Nachricht, die von der Applikation ausgelöst wurde einen Timestamp, der von dem jeweiligen Empfänger zuvor an den Sender propagiert wurde. So kann der Empfänger sowohl Reihenfolge als auch Rechtzeitigkeit bestimmen. Aus den Qualitätszielen\textcolor{red}{TODO:Abschnitt} geht hierbei eine maximale Differenz zwischen Auslösen der Funktion und Ankommen des RPC-Pakets von 250 ms hervor.
 	
 
 \section{Funktionen}
@@ -49,43 +50,43 @@ Aus den vorherigen Feststellungen und den Use-Cases \textcolor{red}{TODO:Abschni
 	\endfoot
 	
 	
-	void register(char* name, char* function, char* socket) & 
+	void register(string name, string function, string socket) & 
 	\textbf{Schnittstelle zur Applikation} für eine Funktion eines Services einer Node, um sich zu beim System zu registrieren. 
 	% Funktionsname der Callfunktion der Node als Callback / 3. Argument Callback nötig ?
 	& Jede Node (Servo) muss seinen eigenen Identifier und Socket vor der Registrierung kennen. 
 	\\
 	\hline
 	
-	int registerNewNode(String name, String function, String socket) & 
+	int registerNewNode(string name, string function, string socket) \textcolor{red}{TODO:Anpassen} & 
 	Registriert neuen Empfänger in der Namensauflösung 
 	& Name ist noch nicht vorhanden; return 0 oder -1
 	\\
 	\hline
-	void invoke(String name, String functionName, String[] argTypes, String[] args)
+	void invoke(string functionName, string[] paramTypes, string[] params)
 	& \textbf{Schnittstelle zur Applikation} um RPCs an entfernte Ziele zu senden. 
 	& IDL der Middleware kann den Typen Marshallable der Applikation serialisieren
 	\\
 	\hline
-	void call(String functionName, String[] argTypes, String[] args)
+	void call(string functionName, string[] argTypes, string[] args) \textcolor{red}{TODO:Überprüfen} 
 	& \textbf{Schnittstelle zur Applikation} um RPC in der lokalen Applikation aufzurufen
 	& Die Funktion mit den Parametern muss existieren
 	\\
-	int marshall(String functionName, String[] argTypes, String[] args, char* buffer, size bufSize)
+	int marshall(string functionName, string[] paramTypes, string[] params, string payload, uint32\_t timestamp)
 	& Führt Marshalling durch
 	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
 	\\
 	\hline
-	int unmarshall(const char* buffer, String functionName, String[] argTypes, String[] args)
+	void unmarshall(string payload, string functionName, string[] paramTypes, string[] params)
 	& Führt Unmarshalling durch
 	& Marshallable und buffer darf nicht NULL sein. Nach: return 0 oder -1
 	\\
 	\hline
-	void updateAvailableNodes(List<Node> nodes) 
+	void updateAvailableNodes(List<Node> nodes) \textcolor{red}{TODO:Anpassen} 
 	& Liste mit allen verfügbaren Nodes, um diese der Applikation mitzuteilen. 
 	& Es existiert eine Liste die auch von der Applikation gelesen werden kann (Liste muss angepasst werden an die )
 	\\
 	\hline
-	void forwardCall( const char* target, String functionName, String[] argTypes, String[] args)
+	void forwardCall( const char* target, String functionName, String[] argTypes, String[] args)\textcolor{red}{TODO:Anpassen} 
 	& Leitet den ankommenden RPC an das Target weiter
 	& Das Target muss existieren.
 	\\
@@ -111,11 +112,16 @@ Aus den vorherigen Feststellungen und den Use-Cases \textcolor{red}{TODO:Abschni
 
 \section{IDL}
 
-Die IDL dient der Serialisierung und Zuordnung der RPC Aufrufe\\\\
--copy in/ copy out
+Die IDL dient der Serialisierung und Zuordnung der RPC Aufrufe. Zur Serialisierung eignen sich 
+\subsection{copy in/ copy out}
+Zum Senden der RPC werden die Nachrichten in eine Nachricht kopiert, damit direkte Speciherzugriffe verhindert werden.  \textcolor{red}{TODO:Quelle} Dafür wird ein Format gefunden das für alle Nodes im verteilten System gleich ist. Unter anderem ist JSON ein geeignetes Forma  \textcolor{red}{TODO:Quelle}.  Dieses ist einfach zu verstehen und an für diese Anwendung einen angemessenen Overhead. Zudem ist JSON ein offenener Standard. Andere Formate wie XML haben einen größeren Overhead und sind für die Umsetzung eher nicht geeignet, da auch das Parsen komplexer ist  \textcolor{red}{TODO:Quelle}.  
 
-\subsection{Java}
+Das JSON ist folgendermaßen aufgebaut:
 
-\subsection{C}
+
+
+
+
+
 
 
