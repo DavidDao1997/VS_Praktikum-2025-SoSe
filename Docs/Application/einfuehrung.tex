@@ -2,7 +2,9 @@
 
 \section{Aufgabenstellung}
 
-Es soll eine Applikation entwickelt werden, die beliebig hinzugefügte Roboterarme erkennt und ansteuern kann. Jeder Roboter besteht aus vier unabhängigen Motoren. Über ein ITS-Board (STM32F4) sollen die Roboterarme innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher gesteuert werden. Mögliches Fehlverhalten der Software oder Architektur soll keine Gefahr für Anwesende darstellen. Der Benutzer soll einen zu steuernden Roboterarm auswählen und diesen anschließend mit den folgenden Bewegungen steuern:
+Es soll eine Applikation entwickelt werden, die beliebig hinzugefügte Roboterarme erkennt und ansteuern kann.
+Jeder Roboterarm besteht aus vier unabhängigen Motoren. Über ein ITS-Board (STM32F4) sollen die Roboterarme innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher gesteuert werden.
+Mögliches Fehlverhalten der Software oder Architektur soll keine Gefahr für Anwesende darstellen. Der Benutzer soll einen zu steuernden Roboterarm auswählen und diesen anschließend mit den folgenden Bewegungen steuern:
 
 \begin{itemize}
 	\item Roboterarm hoch
@@ -49,8 +51,8 @@ Es soll eine Applikation entwickelt werden, die beliebig hinzugefügte Roboterar
         \\
         \hline
         Skalierbarkeit & 
-        Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
-        & Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 254).
+        Zusätzliche Roboterarme oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
+        & Es können beliebig viele Roboterarme hinzugefügt und entfernt werden (0 - 254).
         \\
         \hline
         Leistung & 
@@ -123,7 +125,7 @@ Es soll eine Applikation entwickelt werden, die beliebig hinzugefügte Roboterar
 			\item vollständige Funktionalität
 			\item Benutzerfreundlichkeit
 			\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
-			\item Reaktionszeit: Die Robotersteuerung reagiert innerhalb eines definierten Zeitfensters
+			\item Reaktionszeit: Die Roboterarmsteuerung reagiert innerhalb eines definierten Zeitfensters
 			\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
 		\end{itemize}}
 		\\

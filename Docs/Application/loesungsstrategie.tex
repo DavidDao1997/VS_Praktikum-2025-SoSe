@@ -13,7 +13,7 @@ Dies förderte sowohl die Parallelisierung einzelner Entwicklungsaufgaben als au
 \section{Controller}
 
 In der vorliegenden Architektur übernimmt der Controller nicht mehr die klassische Rolle eines Observers, sondern fungiert als schlanker, zustandsloser Vermittler zwischen Modell und View im Sinne des MVC-Musters. \\
-Anstelle eines ereignisgesteuerten oder abfragenden (Pull-)Ansatzes sendet das Modell (z.\,B. der \textit{StateService}) in regelmäßigen Intervallen aktiv (Push-basiert)\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.209-211} seinen aktuellen Zustand an den Controller. \\
+Anstelle eines ereignisgesteuerten oder abfragenden (Pull-)Ansatzes sendet das Modell in regelmäßigen Intervallen aktiv (Push-basiert)\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.209-211} seinen aktuellen Zustand an den Controller. \\
 Dieser verarbeitet die empfangenen Daten nicht weiter, sondern leitet sie unmittelbar und unverändert an die View weiter.\\
 Sobald sie aktiv ist, erhält sie automatisch den zuletzt übermittelten Zustand.\\
 Der Controller bleibt vollständig zustandslos\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} siehe S. 57-58,89,137}: Er speichert weder frühere Zustände noch verarbeitet er Eingaben oder beinhaltet Geschäftslogik. \\
@@ -25,7 +25,7 @@ Die klare Trennung der Verantwortlichkeiten sowie der rein gerichtete Datenfluss
         \hline
         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
         \hline
-        void update(robots: Byte[], selected: int, error: bool, confirm: bool) & Modell sendet periodisch aktuellen Zustand & Controller leitet Daten unmittelbar an View weiter \\
+        void update(robots: String[], selected: int, error: bool, confirm: bool) & Modell sendet periodisch aktuellen Zustand & Controller leitet Daten unmittelbar an View weiter \\
         \hline
         void reportHealth(serviceName: String, subscription: String) & Gültiger Servicename und Abonnement vorhanden & Meldet den Gesundheitszustand eines Dienstes an das Modell zurück. \\
         \hline
@@ -41,7 +41,7 @@ Die klare Trennung der Verantwortlichkeiten sowie der rein gerichtete Datenfluss
 \section{Model}
 Im Rahmen der gewählten MVC-Architektur übernimmt das \textit{Model} die zentrale Rolle bei der Verwaltung des Anwendungszustands und der Geschäftslogik.\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.90-94}
 Gemäß dem Prinzip der \textit{Separation of Concerns} ist das Model ausschließlich für Datenhaltung und Zustandsverwaltung zuständig und ist dabei losgelöst von Darstellung und Steuerung. 
-Die nachfolgenden Funktionen sind bewusst im Model (StateService) verankert, da sie direkt die Verwaltung und den Zustand der Roboter betreffen.
+Die nachfolgenden Funktionen sind bewusst im Model (StateService) verankert, da sie direkt die Verwaltung und den Zustand des Roboterarms betreffen.
 \\\\% Hab ein Problem hier, da eigentlich der komplette Core das Modell ist, oder ich verstehe irgendwas nicht richtig
 Die Kapselung dieser Funktionen im Model stellt sicher, dass Zustandslogik, Validierung und Datenverarbeitung zentral gebündelt sind\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.91 und S.137}.
 Die View bleibt vollständig abstrahiert und erhält ausschließlich aktualisierte Daten über den Controller. 
@@ -55,13 +55,13 @@ Die View bleibt vollständig abstrahiert und erhält ausschließlich aktualisier
         \hline
         void setError(error: boolean, confirm: boolean) & Änderung des Fehler- oder Bestätigungsstatus notwendig & Setzt den Fehler- und Bestätigungsstatus und benachrichtigt den Controller. \\
         \hline
-        void select(SelectDirection selectDirection) & Liste der verfügbaren Roboter ist nicht leer & Wählt einen Roboter aus der Liste der verfügbaren Roboter aus und aktualisiert den Status. \\
+        void select(SelectDirection selectDirection) & Liste der verfügbaren Roboterarme ist nicht leer & Wählt einen Roboterarm aus der Liste der verfügbaren Roboterarme aus und aktualisiert den Status. \\
         \hline
-        void registerActuator(actuatorName: String, isAlive: boolean) & Motorname im richtigen Format (z.\,B.\ R1A1) & Registriert den Motor und ergänzt ggf. die Roboterverfügbarkeitsliste. \\
+        void registerActuator(actuatorName: String, isAlive: boolean) & Motorname im richtigen Format (z.\,B.\ R1A1) & Registriert den Motor und ergänzt ggf. die Roboterarmverfügbarkeitsliste. \\
         \hline
         void reportHealth(serviceName: String, subscription: String) & Gültiger Servicename und Abonnement vorhanden & Meldet den Gesundheitszustand eines Dienstes an das Modell zurück. \\
         \hline
-        boolean isAvailable() & keine & Prüft, ob alle vier Aktoren (A1–A4) des Roboters aktiv sind. Gibt \texttt{true} zurück, wenn der Roboter vollständig verfügbar ist. \\
+        boolean isAvailable() & keine & Prüft, ob alle vier Aktoren (A1–A4) des Roboterarms aktiv sind. Gibt \texttt{true} zurück, wenn der Roboterarm vollständig verfügbar ist. \\
         \hline
     \end{tabular}
     \caption{Funktionen der Komponente StateService}
@@ -69,8 +69,8 @@ Die View bleibt vollständig abstrahiert und erhält ausschließlich aktualisier
 \end{table}
 \clearpage
 Der \texttt{StateService} bildet das zentrale Zustandsmodell der Anwendung und ist als Teil der Model-Komponente im Sinne des MVC-Musters zu verstehen. 
-Er verwaltet den internen Systemzustand wie Fehlerstatus, Aktorverfügbarkeit, Roboterselektion und Gesundheitsinformationen. 
-Alle domänenspezifischen Funktionen, die sich auf den Roboterzustand und dessen Verwaltung beziehen, sind hier gebündelt. 
+Er verwaltet den internen Systemzustand wie Fehlerstatus, Aktorverfügbarkeit, Roboterarmselektion und Gesundheitsinformationen. 
+Alle domänenspezifischen Funktionen, die sich auf den Roboterarmzustand und dessen Verwaltung beziehen, sind hier gebündelt. 
 Somit kapselt der \texttt{StateService} nicht nur die Daten, sondern auch die zugehörige Logik zur Interpretation und Aktualisierung ein zentrales Merkmal von Modellkomponenten in verteilter Anwendungsarchitektur.
 
 
@@ -110,17 +110,17 @@ Somit kapselt der \texttt{StateService} nicht nur die Daten, sondern auch die zu
             \hline
             \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
             \hline
-            void move(robotDirection: RobotDirection) & Ein Roboter ist im StateService ausgewählt und verfügbar & Führt eine Bewegungsanweisung in der angegebenen Richtung für den aktuell ausgewählten Roboter aus. \\
+            void move(robotDirection: RobotDirection) & Ein Roboterarm ist im StateService ausgewählt und verfügbar & Führt eine Bewegungsanweisung in der angegebenen Richtung für den aktuell ausgewählten Roboterarm aus. \\
             \hline
-            void setSelected(selected: String) & Der angegebene Robotername existiert im StateService & Setzt den angegebenen Roboter als aktuell ausgewählten und initialisiert ggf. die Bewegung. Fehler werden im StateService registriert. \\
+            void setSelected(selected: String) & Der angegebene Roboterarmname existiert im StateService & Setzt den angegebenen Roboterarm als aktuell ausgewählten und initialisiert ggf. die Bewegung. Fehler werden im StateService registriert. \\
             \hline
         \end{tabular}
         \caption{Funktionen des MoveAdapter}
         \label{tab:MoveAdapter}
     \end{table}
     
-Der \texttt{MoveAdapter} ist eine zustandsbehaftete Komponente innerhalb des Modells. Er verwaltet die Auswahl eines Roboters und führt kontextbezogene Bewegungsbefehle aus. 
-Die Methode \texttt{setSelected()} speichert den ausgewählten Roboter intern, während \texttt{move()} Bewegungen für genau diesen ausführt. 
+Der \texttt{MoveAdapter} ist eine zustandsbehaftete Komponente innerhalb des Modells. Er verwaltet die Auswahl eines Roboterarms und führt kontextbezogene Bewegungsbefehle aus. 
+Die Methode \texttt{setSelected()} speichert den ausgewählten Roboterarm intern, während \texttt{move()} Bewegungen für genau diesen ausführt. 
 Durch die lokale Zustandsführung wird die Trennung von Logik, Steuerung und Darstellung gestärkt und die Konsistenz der Bewegungsoperationen sichergestellt.
 
 \clearpage
@@ -189,7 +189,7 @@ Die View besteht aus den unabhängigen Blöcken IO und UI. Die UI bietet eine So
         \hline
         \textbf{Funktion} & \textbf{Voraussetzung} & \textbf{Semantik} \\
         \hline
-        void updateView(robots: String[],selected: int, error: bool, confirm: bool) & Gültige Modell-Daten vorhanden & View-Schnittstelle. Aktualisiert die UI mit den neuesten Roboter-Daten und Statusinformationen (Fehler, Bestätigung). \\ 
+        void updateView(robots: String[],selected: int, error: bool, confirm: bool) & Gültige Modell-Daten vorhanden & View-Schnittstelle. Aktualisiert die UI mit den neuesten Roboterarm-Daten und Statusinformationen (Fehler, Bestätigung). \\ 
         \hline
     \end{tabular}
     \caption{UI Funktionen}

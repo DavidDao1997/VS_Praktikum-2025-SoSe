@@ -17,10 +17,10 @@ Zur Unterstützung des Nutzers wird auf einer Benutzeroberfläche (UI) bereitges
 	U1 & Roboterarm auswählen & Der Nutzer ist in der Lage einen vollständigen Roboterarm auswählen zu können. Der Nutzer hat jederzeit eine Übersicht, welche Roboterarm ausgewählt werden können und ob keiner auswählbar ist. \\
 	\hline
 	U2 & Bewegung auslösen & Der Nutzer kann die Bewegung des Roboterarms auslösen und bekommt Feedback. \\
+	%\hline
+	%U3 & Bewegungsrichtung unterscheiden & Die vom Nutzer ausgelöste Bewegungsrichtung wird dem richtigen Motor zugewiesen. \\
 	\hline
-	U3 & Bewegungsrichtung unterscheiden & Die vom Nutzer ausgelöste Bewegungsrichtung wird dem richtigen Motor zugewiesen. \\
-	\hline
-	U4 & Neuen Motor erkennen & Die einzelnen Motoren melden sich an. Sobald ein neuer vollständiger Roboterarm (4 Motoren) angesteuert werden kann, ist dieser auswählbar und steuerbar. \\
+	U3 & Neuen Motor erkennen & Die einzelnen Motoren melden sich an. Sobald ein neuer vollständiger Roboterarm (4 Motoren) angesteuert werden kann, ist dieser auswählbar und steuerbar. \\
 	\hline
 	
 	
@@ -44,9 +44,9 @@ Zur Unterstützung des Nutzers wird auf einer Benutzeroberfläche (UI) bereitges
 % Die Realisierung wird in einem /24 Netzwerk durchgeführt. In diesem wird das ITS-Board liegen. Ebenfalls sind in den Netzwerk die Roboterarme mit den vorgeschalteten Raspberry Pi, der jeweils einen Roboterarm ansteuert. Weitere Hilfmittel wie eine ICC-Cloud können ebenfalls genutzt werden.\\\\
 Die Applikation besteht aus einem ITS-Board und jeder Roboterarm wird von einem vorgeschalteten Raspberry Pi angesteuert. Es existiert eine Benutzeroberfläche (UI). Optional kann die Applikation um externe Dienste, die auf anderen Plattformen, wie der ICC-Cloud erweitert werden.
 
-\subsection{Technische Anforderungen an die Middleware}
+\subsection{Technische Anforderungen an die Applikation}
 
-Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische Funktionen bereitstellen:
+Um die fachlichen Use Cases umzusetzen, muss die Applikation folgende technische Funktionen bereitstellen:
 
 \begin{itemize}
 	\item \textbf{Roboterarm auswählen U1:}\\
@@ -67,15 +67,15 @@ Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische 
 		\item Der erfolgreiche Befehl wird dem Nutzer mitgeteilt
 	\end{itemize}
 	
-	\item \textbf{Bewegungsrichtung unterscheiden U3:}\\
-	\begin{itemize}
-		\item Der Steuerungsbefehl wird inklusive Richtung der Applikation übergeben
-		\item Anhand der Steuerungsrichtung wird entschieden welcher Motor angesprochen wird
-		\item Es wird überprüft, ob der Motor angesprochen werden kann/auswählbar ist
-		\item Der Steuerungsbefehl wird an den ausgewählten Roboterarm weitergegeben
-	\end{itemize}
+	% \item \textbf{Bewegungsrichtung unterscheiden U3:}\\
+	% \begin{itemize}
+	% 	\item Der Steuerungsbefehl wird inklusive Richtung der Applikation übergeben
+	% 	\item Anhand der Steuerungsrichtung wird entschieden welcher Motor angesprochen wird
+	% 	\item Es wird überprüft, ob der Motor angesprochen werden kann/auswählbar ist
+	% 	\item Der Steuerungsbefehl wird an den ausgewählten Roboterarm weitergegeben
+	% \end{itemize}
 	
-	\item \textbf{Neuen Motor erkennen U4:}\\
+	\item \textbf{Neuen Motor erkennen U3:}\\
 	\begin{itemize}
 		\item Ein neuer Motor wird angeschlossen
 		\item Die Software des Motors sendet einen Anmelde-Anfrage mit dessen Zugehörigkeit und Bewegungsfunktion
