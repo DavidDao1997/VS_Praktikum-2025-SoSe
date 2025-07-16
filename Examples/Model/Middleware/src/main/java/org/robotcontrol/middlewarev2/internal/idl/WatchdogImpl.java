@@ -98,15 +98,7 @@ public class WatchdogImpl {
             for (Map.Entry<String, Instant> entry : lastHeartbeatTimestamps.entrySet()) {
                 String observedService = entry.getKey();
                 Instant lastTime = entry.getValue();
-                if (lastTime.plus(HEARTBEAT_TIMEOUT).isBefore(now)) {
-                    // Notify each subscriber whose pattern matches the timed-out observedService
-                    for (Map.Entry<String, Pattern> subscription : subscriptionPatterns.entrySet()) {
-                        String subscriber = subscription.getKey();
-                        Pattern pattern = subscription.getValue();
-                        if (pattern.matcher(observedService).matches()) {
-                            notifySubscriber(subscriber, observedService);
-                        }
-                    }
+                if (!lastTime.plus(HEARTBEAT_TIMEOUT).isBefore(now)) {
                     // Mark observedService as down
                     observedServices.put(observedService, false);
 
