@@ -2,7 +2,6 @@ package org.robotcontrol.core.application.stateservice;
 
 import org.junit.Test;
 import org.robotcontrol.core.application.moveadapter.MoveAdapterMock;
-import org.robotcontrol.middleware.idl.StateService.SelectDirection;
 
 import static org.junit.Assert.assertEquals;
 

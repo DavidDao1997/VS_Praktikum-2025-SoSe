@@ -1,8 +1,10 @@
 package org.robotcontrol.core.application.stateservice;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(of = "name")
 public class Robot {
 	private String name;
 	

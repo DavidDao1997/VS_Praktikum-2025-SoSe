@@ -27,10 +27,27 @@
             "projectName": "Middleware",
             "env": {
                 "IP_ADDR": "127.0.0.1",
+                "SERVICE": "watchdog",
                 "PORT": 8000,
-                "DNS_CALLBACK_PORT": 9997,
+                "DNS_CALLBACK_PORT": 8001,
+                "TIMESTAMP_PORT": 8002,
                 "DNS_SOCKET": "127.0.0.1:9000",
-                "LOG_LEVEL": "TRACE"
+                "LOG_LEVEL": "DEBUG"
+            }
+        },
+        {
+            "type": "java",
+            "name": "ActuatorController v2",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",
+            "projectName": "ActuatorController",
+            "args": "1 1",
+            "env": {
+                "IP_ADDR": "127.0.0.1",
+                "PORT": 7000,
+                "DNS_CALLBACK_PORT": 7001,
+                "DNS_SOCKET": "127.0.0.1:9000",
+                // // "LOG_LEVEL": "TRACE"
             }
         },
         {
@@ -42,7 +59,7 @@
             "env": {
                 "IP_ADDR": "172.16.1.200",
                 "PORT": 9000,
-                "LOG_LEVEL": "TRACE"
+                // "LOG_LEVEL": "TRACE"
             }
         },
         {
@@ -53,13 +70,13 @@
             "projectName": "Core",
             "env": {
                 "IP_ADDR": "127.0.0.1",
-                "MOVEADAPTER_PORT": 9001,
-                "STATESERVICE_PORT": 9002,
-                "DNS_CALLBACK_PORT": 9999,
+                "MOVEADAPTER_PORT": 6000,
+                "STATESERVICE_PORT": 6001,
+                "DNS_CALLBACK_PORT": 6002,
                 "SERVICE": "core",
-                "TIMESTAMP_PORT": 9998,
+                "TIMESTAMP_PORT": 6003,
                 "DNS_SOCKET": "127.0.0.1:9000",
-                "LOG_LEVEL": "TRACE"
+                "LOG_LEVEL": "DEBUG"
             }
         },
         {

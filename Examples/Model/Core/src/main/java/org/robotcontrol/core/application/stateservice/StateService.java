@@ -62,6 +62,10 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 
 		scheduler.scheduleAtFixedRate(() -> watchdog.subscribe("StateService", "R*"), 1, 5, TimeUnit.SECONDS);
 	}
+	
+	public void setMoveAdapter(MoveAdapter moveAdapter) {
+		this.moveAdapter = moveAdapter;
+	}
 
 	@Override
 	public void select(SelectDirection sd) {
@@ -178,14 +182,23 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 					.filter(r -> r.getName().equals(robotName))
 					.findFirst()
 					.ifPresent(r -> {
-						availableRobots.remove(r);
-						
+						removeAvailableRobot(r);
 					});
 				// resubscribe to watchdog
 				renewSubscription();
 				iterator.remove();
 			}
 		}
+	}
+
+	private void removeAvailableRobot(Robot robot) {
+		int idx = availableRobots.indexOf(robot);
+		logger.error("attempting to remove robot %s (idx: %s), currently selected %s", robot.getName(), idx, selectedRobot);
+		if (idx == selectedRobot) {
+			selectedRobot = 0;
+			if (moveAdapter != null) moveAdapter.setSelected("");
+		}
+		availableRobots.remove(robot);
 	}
 
 	/**

@@ -21,14 +21,16 @@ public class StateServiceImpl {
         public void call(String fnName, RpcValue... args) {
             switch (fnName) {
                 case "select":
-                    System.out.println(RpcValue.unwrap(args[0]));
                     stateService.select(SelectDirection.values()[((Long) RpcValue.unwrap(args[0])).intValue()]);    
                     break;
-                // case "reportHealth":
-                //     stateService.reportHealth(fnName, false);
-
-                default:
+                case "reportHealth":
+                    stateService.reportHealth(
+                        (String) RpcValue.unwrap(args[0]),
+                        (String) RpcValue.unwrap(args[1])
+                    );
                     break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown function %s", fnName));
             }
         }
     }

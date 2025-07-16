@@ -20,6 +20,7 @@ public class MoveAdapter implements org.robotcontrol.middlewarev2.idl.MoveAdapte
 	}
 
 	public void move(RobotDirection robotDirection) {
+		if (selected.isEmpty()) return;
 		// String selectedRobot = stateService.getSelected();
 		
 		
@@ -69,8 +70,6 @@ public class MoveAdapter implements org.robotcontrol.middlewarev2.idl.MoveAdapte
 				stateService.setError(true, false);
 				return;
 		}
-		
-		// FIXME use client
 		ActuatorController acm = clients.get(selected + "A" + actuatorId);
 		if (acm == null) {
 			acm = Middleware.createActuatorControllerClient(selected + "A" + actuatorId);

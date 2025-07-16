@@ -42,7 +42,7 @@ public final class Middleware {
             stateService, 
             clients, 
             "StateService", 
-            "select"
+            "select", "reportHealth"
         );
     }
 

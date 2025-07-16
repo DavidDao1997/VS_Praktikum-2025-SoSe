@@ -27,7 +27,10 @@ public class RpcClientImpl implements Invokable {
 
     @Override
     public void invoke(String fnName, RpcValue... args) {
-        
+        // we should invoke first to prevent dns resolve delay. this has the downside of the first call allways failing.
+        if (rawClient != null) {
+            rawClient.invoke(fnName, args);
+        }
 
         String resolvedSocket = dns.resolve(serviceName, fnName);
 
@@ -43,11 +46,6 @@ public class RpcClientImpl implements Invokable {
             rawClient = isInternal 
                 ? new RawRpcClientImpl(socket)
                 : new InvokableWithTimestampAdapter(new RawRpcClientImpl(socket), serviceName);
-        }
-
-        // FIXME we should invoke first to prevent dns resolve delay. this has the downside of the first call allways failing.
-        if (rawClient != null) {
-            rawClient.invoke(fnName, args);
         }
     }
 }

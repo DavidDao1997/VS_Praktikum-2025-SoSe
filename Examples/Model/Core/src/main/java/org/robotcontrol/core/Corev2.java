@@ -1,11 +1,11 @@
 package org.robotcontrol.core;
 
+import org.robotcontrol.core.application.stateservice.StateService;
 import org.robotcontrol.middleware.utils.Environment;
 import org.robotcontrol.middleware.utils.Logger;
 import org.robotcontrol.middlewarev2.Middleware;
 import org.robotcontrol.middlewarev2.idl.Controller;
 import org.robotcontrol.middlewarev2.idl.MoveAdapter;
-import org.robotcontrol.middlewarev2.idl.StateService;
 import org.robotcontrol.middlewarev2.idl.StateService.SelectDirection;
 import org.robotcontrol.middlewarev2.rpc.RpcServer;
 
@@ -15,7 +15,7 @@ public class Corev2 {
     public static void main(String[] args) throws InterruptedException {
         StateService stateService = new org.robotcontrol.core.application.stateservice.StateService(new ControllerMock());
         MoveAdapter moveAdapter = new org.robotcontrol.core.application.moveadapter.MoveAdapter(stateService);
-        moveAdapter.setSelected("R1");
+        stateService.setMoveAdapter(moveAdapter);
 
         RpcServer moveAdapterServer = Middleware.createMoveAdapterServer(
             moveAdapter, 
@@ -27,7 +27,7 @@ public class Corev2 {
         RpcServer stateServiceServer = Middleware.createStateServiceServicer(
             stateService,
             Environment.getEnvIntOrExit("STATESERVICE_PORT"),
-            "IO"
+            "IO", "watchdog"
         );
         stateServiceServer.start();
         // MoveAdapter client = Middleware.createMoveAdapterClient();
@@ -61,23 +61,23 @@ public class Corev2 {
         }
     }
 
-    public static class StateServiceMock implements StateService {
-        @Override
-        public void reportHealth(String serviceName, String subscription) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
-        }
+    // public static class StateServiceMock implements StateService {
+    //     @Override
+    //     public void reportHealth(String serviceName, String subscription) {
+    //         // TODO Auto-generated method stub
+    //         throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
+    //     }
 
-        @Override
-        public void setError(boolean err, boolean confirm) {
-            logger.info("setError(%s, %s)", err, confirm);
-        }
+    //     @Override
+    //     public void setError(boolean err, boolean confirm) {
+    //         logger.info("setError(%s, %s)", err, confirm);
+    //     }
 
-        @Override
-        public void select(SelectDirection selectDirection) {
-            logger.info("select(%s)", selectDirection);
-        }
-    }
+    //     @Override
+    //     public void select(SelectDirection selectDirection) {
+    //         logger.info("select(%s)", selectDirection);
+    //     }
+    // }
 
     public static class ControllerMock implements Controller {
 
@@ -91,8 +91,20 @@ public class Corev2 {
 
         @Override
         public void update(String[] robots, int selected, boolean error, boolean confirm) {
-            logger.info("Update called");
-            throw new UnsupportedOperationException("Unimplemented method 'update'");
+            StringBuilder sb = new StringBuilder();
+            for (String robot : robots) {
+                sb.append(String.format(" %s", robot));
+            }
+
+            logger.info("update(%s, %s, %s, %s)", sb.toString(), selected, error, confirm);
+        }
+
+        private static String toHexString(byte[] bytes) {
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(String.format("%02X", b)); // %02X ensures two-digit uppercase hex
+            }
+            return sb.toString();
         }
     }
 }

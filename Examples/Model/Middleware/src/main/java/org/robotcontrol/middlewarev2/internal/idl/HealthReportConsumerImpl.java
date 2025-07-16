@@ -34,7 +34,7 @@ public class HealthReportConsumerImpl {
         private Invokable client;
 
         public Client(String serviceName) {
-            this.client = new RpcClientImpl(serviceName, true);
+            this.client = new RpcClientImpl(serviceName, false);
         }
         @Override
         public void reportHealth(String serviceName, String subscription) {
