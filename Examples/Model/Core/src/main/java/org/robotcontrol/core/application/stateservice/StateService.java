@@ -1,10 +1,12 @@
 package org.robotcontrol.core.application.stateservice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +32,8 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 	private boolean error;
 	private boolean confirm;
 	private final Watchdog watchdog = Middleware.createWatchdogClient();
-	private List<Robot> registeredRobots;
-	private List<Robot> availableRobots;
+	private final CopyOnWriteArrayList<Robot> registeredRobots; 
+	private final CopyOnWriteArrayList<Robot> availableRobots;
 
 	// maps to track last-report timestamps
 	private final Map<String, Long> serviceTimestamps = new ConcurrentHashMap<>();
@@ -42,23 +44,17 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 
 	public StateService(Controller controller) {
 		this.controller = controller;
-		this.registeredRobots = new ArrayList<>();
-		this.availableRobots = new ArrayList<>();
+		this.registeredRobots = new CopyOnWriteArrayList<>();
+		this.availableRobots = new CopyOnWriteArrayList<>();
 		this.selectedRobot = 0;
 		this.error = false;
 		this.confirm = false;
 
-		// Robot r = new Robot("R10");
-		// r.setA1(true);
-		// r.setA2(true);
-		// r.setA3(true);
-		// r.setA4(true);
-		// availableRobots.add(r);
 
 		// start periodic update task: sendUpdate() every 10 seconds
-		scheduler.scheduleAtFixedRate(this::sendUpdate, 0, 10000, TimeUnit.MILLISECONDS);
+		scheduler.scheduleAtFixedRate(this::sendUpdate, 0, 250, TimeUnit.MILLISECONDS);
 		// schedule periodic timeout checks every second
-		scheduler.scheduleAtFixedRate(this::checkTimestamps, 1, 1, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(this::checkTimestamps, 1, 200, TimeUnit.MILLISECONDS);
 
 		scheduler.scheduleAtFixedRate(() -> watchdog.subscribe("StateService", "R*"), 1, 5, TimeUnit.SECONDS);
 	}
@@ -73,7 +69,6 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 		if (availableRobots.isEmpty()) {
 			error = true;
 			confirm = false;
-			sendUpdate();
 			return;
 		}
 
@@ -90,7 +85,7 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 		}
 		confirm = true;
 		error = false;
-		sendUpdate();
+		//sendUpdate();
 	}
 
 	public String getSelected() {
@@ -109,6 +104,7 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 
 	@Override
 	public void reportHealth(String serviceName, String subscription) {
+		
 		// record health report timestamps
 
 		subscriptionTimestamps.put(subscription, System.currentTimeMillis());
@@ -172,6 +168,7 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 	 */
 	private void checkServiceTimeouts(long now) {
 		Iterator<Map.Entry<String, Long>> iterator = serviceTimestamps.entrySet().iterator();
+
 		while (iterator.hasNext()) {
 			Map.Entry<String, Long> entry = iterator.next();
 			String service = entry.getKey();
@@ -184,22 +181,25 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 					.ifPresent(r -> {
 						removeAvailableRobot(r);
 					});
-				// resubscribe to watchdog
-				renewSubscription();
+				
 				iterator.remove();
 			}
 		}
 	}
 
 	private void removeAvailableRobot(Robot robot) {
-		int idx = availableRobots.indexOf(robot);
+		System.out.println("Trying to remove");
+		int idx = availableRobots.indexOf(robot) + 1;
 		logger.error("attempting to remove robot %s (idx: %s), currently selected %s", robot.getName(), idx, selectedRobot);
+		if(idx <= 0) return;
 		if (idx == selectedRobot) {
 			selectedRobot = 0;
 			if (moveAdapter != null) moveAdapter.setSelected("");
 		}
+		if(idx < selectedRobot) selectedRobot--;
 		availableRobots.remove(robot);
 	}
+
 
 	/**
 	 * Checks for stale subscriptions and re-subscribes if needed.
@@ -224,6 +224,8 @@ public class StateService implements org.robotcontrol.middlewarev2.idl.StateServ
 			availRobots[i + 1] = availableRobots.get(i).getName();
 		}
 		controller.update(availRobots, selectedRobot, error, confirm);
+		System.out.printf("Controller.update debug - availRobots=%s, selectedRobot=%d, error=%b, confirm=%b\n", Arrays.toString(availRobots), selectedRobot, error, confirm);
+
 	}
 
 
