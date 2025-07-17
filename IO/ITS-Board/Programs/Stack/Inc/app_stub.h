@@ -1,3 +1,7 @@
+/**
+* App stub for IO to communicate over RPC
+*/
+
 #ifndef APP_STUB_H
 #define APP_STUB_H
 

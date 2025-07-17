@@ -29,7 +29,11 @@ typedef struct {
 
 static cache_entry_t cache[CACHE_SIZE];
 
-
+/**
+  * @brief  Sended RPC
+  * @param  
+  * @retval None
+  */
 static void rpc_send(const char* payload) {
     struct pbuf* p = pbuf_alloc(PBUF_TRANSPORT, strlen(payload), PBUF_RAM);
     if (!p){
@@ -42,6 +46,11 @@ static void rpc_send(const char* payload) {
 }
 
 // Hilfsfunktion: Suche im Cache
+/**
+  * @brief  Schaut im Cache
+  * @param  
+  * @retval 
+  */
 static const char* cache_lookup(const char* servicename, const char* functionname) {
     for (int i = 0; i < CACHE_SIZE; ++i) {
         if (cache[i].valid &&
@@ -58,6 +67,11 @@ static const char* cache_lookup(const char* servicename, const char* functionnam
     return NULL;
 }
 
+/**
+  * @brief  Speichert in Cache
+  * @param  
+  * @retval 
+  */
 int cache_store(const char* servicename, const char* functionname, const char* socket, uint32_t time) {
     for (int i = 0; i < CACHE_SIZE; ++i) {
         if (!cache[i].valid ||
@@ -82,10 +96,20 @@ int cache_store(const char* servicename, const char* functionname, const char* s
     return 0;
 }
 
+/**
+  * @brief  Setzt empfaenger IP
+  * @param  
+  * @retval 
+  */
 void set_server_ip(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
     IP4_ADDR(&rpc_target_server_ip, a, b, c, d);
 }
 
+/**
+  * @brief  Schaut in Cache
+  * @param  
+  * @retval 
+  */
 const char* resolve_proxy_dns(const char* servicename,const char* functionname) {
     const char* cached = cache_lookup(servicename, functionname);
     if (cached) {
@@ -94,12 +118,21 @@ const char* resolve_proxy_dns(const char* servicename,const char* functionname) 
     return NULL;
 }
 
+/**
+  * @brief  Funktion, um Resolve zu speicher
+  * @param  
+  * @retval 
+  */
 void receive_resolution(uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint32_t port) {
     set_server_ip( a,  b,  c,  d);
     rpc_target_server_port = port;
 }
 
-
+/**
+  * @brief  Fragt bei DNS an
+  * @param  
+  * @retval 
+  */
 void resolve_dns(const char* servicename, const char* functionname) {
     set_server_ip(172, 16, 1, 87); 
     rpc_target_server_port = 9000; 
@@ -137,6 +170,12 @@ void resolve_dns(const char* servicename, const char* functionname) {
     }
 }
 
+
+/**
+  * @brief  Aufruffunktion des Cachingproxy
+  * @param  
+  * @retval 
+  */
 void proxy_send(const char * servicename,const  char* function, const char* param[],
             const int numOfParam, uint32_t timestamp ){
     char payload[PAYLOAD_FIXED_SIZE];
@@ -147,7 +186,11 @@ void proxy_send(const char * servicename,const  char* function, const char* para
 
 }
 
-
+/**
+  * @brief  Initialisiert Proxy
+  * @param  
+  * @retval 
+  */
 int rpc_proxy_init(void) {
     int err = ERR_OK;
     udp_send_pcb = udp_new();

@@ -16,8 +16,8 @@
 void register_invoke(const char* func, const char* paramTypes[], const char* param[],
                 const int numOfParam);
 
-//void rpc_send_heartbeat(uint32_t now);
-//void rpc_send_timestamp(uint32_t now);
+void rpc_send_heartbeat(uint32_t now);
+void rpc_send_timestamp(uint32_t now);
 
 
 #endif // RPC_CLIENT_H

@@ -8,9 +8,6 @@
 
 #define RPC_MAX_PARAMS 4
 
-//char function[64];
-//char params[RPC_MAX_PARAMS][64];
-
 // Funktionsdefinition
 typedef struct {
     const char* name;
@@ -27,9 +24,6 @@ static const RpcFunction rpcFunctionTable[] = {
     {"resolve",       { "String", "String", "String"}, 3 },
     { "receiveResolution", { "String", "String", "String" }, 3 },
     {"setTimestamp",{"String", "String", "int"}, 3},
-
-    // TODO ADD ALL FUNCTIONS
-
 };
 
 static const int rpcFunctionCount = sizeof(rpcFunctionTable) / sizeof(RpcFunction);
@@ -43,6 +37,9 @@ static inline const RpcFunction* find_rpc_function(const char* name) {
     }
     return NULL;
 }
+
+
+// ONLY USED IF ITS-BOARD IS USED AS UI
 
 // Bitmap-Codierung: Setzt Bits für Rx-Einträge
 // static inline void encode_rlist_to_bitmap(const char* rlist[], int rcount, uint32_t out[8]) {
