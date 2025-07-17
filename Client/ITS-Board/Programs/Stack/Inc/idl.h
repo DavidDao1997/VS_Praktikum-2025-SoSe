@@ -45,18 +45,18 @@ static inline const RpcFunction* find_rpc_function(const char* name) {
 }
 
 // Bitmap-Codierung: Setzt Bits für Rx-Einträge
-static inline void encode_rlist_to_bitmap(const char* rlist[], int rcount, uint32_t out[8]) {
-    for (int i = 0; i < 8; ++i) out[i] = 0;
-    for (int i = 0; i < rcount; ++i) {
-        if (rlist[i][0] == 'R') {
-            int idx = atoi(rlist[i] + 1);
-            if (idx >= 0 && idx < 256) {
-                int slot = idx / 32;
-                int bit = idx % 32;
-                out[slot] |= (1U << bit);
-            }
-        }
-    }
-}
+// static inline void encode_rlist_to_bitmap(const char* rlist[], int rcount, uint32_t out[8]) {
+//     for (int i = 0; i < 8; ++i) out[i] = 0;
+//     for (int i = 0; i < rcount; ++i) {
+//         if (rlist[i][0] == 'R') {
+//             int idx = atoi(rlist[i] + 1);
+//             if (idx >= 0 && idx < 256) {
+//                 int slot = idx / 32;
+//                 int bit = idx % 32;
+//                 out[slot] |= (1U << bit);
+//             }
+//         }
+//     }
+// }
 
 #endif // RPC_IDL_H

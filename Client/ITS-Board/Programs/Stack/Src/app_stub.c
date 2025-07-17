@@ -11,12 +11,12 @@
 // Hilfsfunktion: Enum zu String
 const char* dir_to_str(Direction dir) {
     switch (dir) {
-        case DIR_UP: return "0";
-        case DIR_DOWN:  return "1";
+        case DIR_FORWARD: return "0";
+        case DIR_BACKWARD:  return "1";
         case DIR_LEFT: return "2";
         case DIR_RIGHT:  return "3";
-        case DIR_FORWARD: return "4";
-        case DIR_BACKWARD:  return "5";
+        case DIR_UP: return "4";
+        case DIR_DOWN:  return "5";
         case DIR_OPEN: return "6";
         case DIR_CLOSE:  return "7";
         default:        return "99";
