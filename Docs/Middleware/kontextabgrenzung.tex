@@ -38,9 +38,7 @@
 	\hline 
 	U6 & Sicherheit & Versendete RPCs haben (zwischen Client und Server) Echtzeitanforderungen. \\
 	\hline
-	U7 & Fehlertransparenz & Fehlerhafte Übertragung eines RPCs müssen ggf. der Applikation mitgeteilt werden. \\
-	\hline
-	U8 & Watchdog & Der Watchdog informiert Subscriber ob andere Services verfügbar sind.\\      %Für überwachte Health-Observables werden Watchdogs angelegt. Diese überwachen die Verfügbarkeit der Teilnehmer, wenn Lebenszeichen ausbleiben werden Health-Observer benachrichtigt.  \\
+	U7 & Watchdog & Der Watchdog informiert Subscriber ob andere Services verfügbar sind.\\      %Für überwachte Health-Observables werden Watchdogs angelegt. Diese überwachen die Verfügbarkeit der Teilnehmer, wenn Lebenszeichen ausbleiben werden Health-Observer benachrichtigt.  \\
 	\hline
 	
 \end{tabular}
@@ -126,13 +124,7 @@ Um die fachlichen Use Cases umzusetzen, muss die Middleware folgende technische 
 		\item Nutzung des Timestamps bei Nachricht an Empfänger
 	\end{itemize}
 	
-	\item \textbf{Fehlertransparenz U7:}\\
-	\begin{itemize}
-		\item Fehler dürfen nur in ausnahmenfällen mitgeteilt werden
-		\item Sollten so gut wie möglich verschleiert werden
-	\end{itemize}
-	
-	\item \textbf{Watchdog U8:}\\
+	\item \textbf{Watchdog U7:}\\
 	\begin{itemize}
 		\item Senden eines Subscriber-Requests an einen zentralen Watchdog
 		\item Periodisches Senden eines Heartbeats an den Watchdog
