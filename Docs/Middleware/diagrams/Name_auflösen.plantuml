@@ -1,0 +1,22 @@
+@startuml
+
+participant "Cache Proxy" as CP
+participant "Server Stub\n(Client Server Stub)" as CsSerS
+participant "Client Stub" as CS
+participant "Server Stub\n(NameServer)" as SerS
+participant "NameServer" as NaSer
+participant "Client Stub\n (NameServer)" as CS_2
+
+
+CP ->> CS: resolve(Service, functionName, ownService, callbackFunction)
+CS -> CS: marshall(Service, functionName, ownService, callbackFunction)
+CS -> SerS: send(RPC)
+SerS -> SerS: unmarshall(RPC)
+SerS ->> NaSer: resolve(Service, functionName, ownService, callbackFunction)
+NaSer ->> CS_2: callbackFunction(Service, functionName, socket)
+CS_2 ->> CS_2: marshall(Service, functionName, socket)
+CS_2 ->> CsSerS: send(RPC)
+CsSerS -> CsSerS: unmarshall(RPC)
+CsSerS ->> CP: caching(Service, functionName, socket)
+
+@enduml

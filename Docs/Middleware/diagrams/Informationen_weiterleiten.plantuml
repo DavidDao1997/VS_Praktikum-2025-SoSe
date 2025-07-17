@@ -1,0 +1,13 @@
+@startuml
+participant "Application Client Stub" as AcS
+participant "Client Stub" as CS
+'participant "Proxy" as P
+participant "Server Stub" as SerS
+participant "Application Server Stub" as ASerS
+
+AcS ->> CS: invoke(Service, functionName, parameter)
+CS -> CS: marshall(Service, functionName, parameter)
+CS ->> SerS: send(RPC)
+SerS -> SerS: unmarshall(RPC)
+SerS ->> ASerS: call(Service, functionName, parameter)
+@enduml
