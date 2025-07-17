@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Prüfen, ob X (z. B. "2" in R2A1) als Argument übergeben wurde
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <X-Wert für RXYA, z. B. 2>"
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <X-Wert für RXYA, z. B. 2> <IP_ADDR>"
     exit 1
 fi
 
 X="$1"
-
+IP_ADDR="$2"
 # Prüfen, ob X eine Zahl ist
 if ! [[ "$X" =~ ^[0-9]+$ ]]; then
     echo "Fehler: X muss eine Zahl sein (z. B. 2 für R2A1-R2A4)"
@@ -15,7 +15,6 @@ if ! [[ "$X" =~ ^[0-9]+$ ]]; then
 fi
 
 # Feste Werte
-IP_ADDR="172.16.1.61"
 DNS_SOCKET="172.16.1.87:9000"
 
 # Array für gestartete PIDs
