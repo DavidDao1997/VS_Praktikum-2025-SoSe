@@ -13,7 +13,7 @@ public class Helper {
      * @return a 4-byte array where each bit corresponds to one robot ID
      */
     public static byte[] convertStringArrayToBitmap256(String[] robots) {
-        byte[] bitArray = new byte[4];
+        byte[] bitArray = new byte[32];
 
         for (String robot : robots) {
             if (!robot.isEmpty()) {
@@ -36,8 +36,8 @@ public class Helper {
      * @return array of strings in the format "R<id>"
      */
     public static String[] convertBitmap256ToStringArray(byte[] bitArray) {
-        if (bitArray == null || bitArray.length != 4) {
-            throw new IllegalArgumentException("Bitmap must be a 4-byte array");
+        if (bitArray == null || bitArray.length != 32) {
+            throw new IllegalArgumentException("Bitmap must be a 32-byte array");
         }
 
         List<String> robots = new ArrayList<>();

@@ -35,5 +35,15 @@ public class Main {
         );
         uiServer.start();
 
+        Runtime.getRuntime().addShutdownHook(
+            new Thread(() -> {
+                try {
+                    wsServer.stop();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            })
+        );
     }
 }
