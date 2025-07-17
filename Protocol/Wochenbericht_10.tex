@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{Wochenbericht 10 - RPC Übertragung, Watchdog}
+\author{David Dao}
+\date{\today}
+
+\lstset{
+    language=Java,                
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,                  
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,                   
+    numbersep=5pt,                 
+    backgroundcolor=\color{white}, 
+    showspaces=false,               
+    showstringspaces=false,         
+    showtabs=false,                
+    frame=single,                 
+    tabsize=4,                      
+    captionpos=b,                   
+    breaklines=true,                
+    breakatwhitespace=true,        
+    title=\lstname,               
+    escapeinside={\%*}{*)},         
+    morekeywords={Integer,IntWritable, Iterable, Text},
+}
+
+\begin{document}
+\maketitle
+\section{Mitglieder des Projektes }
+
+\begin{tabular}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{2cm} >{\centering\arraybackslash}p{2cm} >{\raggedright\arraybackslash}p{3cm}}
+\toprule
+\textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
+\midrule
+Manh-An David Dao & Controller RPC Übertragung, Arc42 Überarbeitung  & 80\% & 4h & in review\\
+\hline
+Jannik Schön & Watchdog, Arc42 Überarbeitung  & 80\% & 4h & in progress \\
+\hline
+Marc Siekmann & ITS-Board View, RPC Übertragung in C & 90\% & 5h & in progress \\
+\hline
+Philipp Patt & RPC Übertragung in JAVA, DNS & 80\% & 6h & in progress \\
+
+\bottomrule
+\end{tabular}
+
+
+\section{Bearbeitete Themen und Schlüssel Erkenntnisse}
+\subsection{Arc42 Überarbeitung}
+Die Kapitel 4-7 wurden Überarbeitet\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}}. 
+
+\subsection{Controller RPC Übertragung}
+Der Controller wurde implementiert, und erste Schritte zur RPC-Übertragung wurden durchgeführt.
+Ursprünglich war gRPC geplant, jedoch stellte sich heraus, dass es auf TCP basiert, welches verbindungsorientiert ist.\footnote{\url{https://grpc.io/blog/grpc-load-balancing/}}.
+Diese Eigenschaft führt zu Problemen bei der Echtzeitkommunikation.
+Daher haben wir uns entschieden, eine eigene RPC-Lösung zu entwickeln, die speziell auf Echtzeitkommunikation ausgerichtet ist und UDP nutzt.
+
+\subsection{Watchdog/Heartbeat}
+In der ersten Iteration wurde sich auf einen zentralen Hotspot, bzw. eine zentralisiertes Heartbeat Protokoll verständigt\footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/31}}.
+Nach weiter Disskussion sind wir zu dem Schluss gekommen, dass ein solcher Ansatz ein zu großes Risiko in Hinsicht auf einem Single Point of Failure bietet\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf}S.198 }.
+Um dieses Risiko zu mindern, soll im nächsten Schritt eine Hierarchisches Heartbeat Protokoll\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf}S.199} implementiert werden. Dabei soll eine Out-of-Band Kommunikation genutzt werden. 
+Jeder Prozess bekommt seinen eigenen Watchdog.  
+
+\subsection{Fertigstellung der Applikation}
+Die Applikation wurde nach dem arc42 \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}} fertiggestellt.
+
+\subsection{RPC Übertragung in C und JAVA}
+
+Für das ITS-Board wurde das IO nach der vorgeschriebenen FSM im arc42 Dokument \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/29}} implementiert. Ebenfalls wurde ein Client der Middleware in C implementiert und beispielhaft eine JAVA Implementierung des Modells via RPC beispielhaft angesprochen. 
+Bzgl. Watchdog muss noch ein Server implementiert werden. 
+Zudem wurde ein Client und ein Server in JAVA umgesetzt. Dieses soll für die Applikationsstubs eingesetzt werden, die in JAVA umgesetzt sind. Das Marshalling wird mit JSON umgesetzt und mit UDP versendet.
+
+\subsection{DNS}
+
+DNS ist nach dem konzept der Service-Registrierung\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.213} implementiert. 
+Das Naming\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.214} gruppiert mehrere RPCs in Services und der DNS löst die Kombination Service \& Funtionsname auf.
+Als nächstes gilt es diesen in den diversen clients einzubinden.
+
+\section{Nächste Schritte}
+- Vervollständigung arc42 Applikation und Middleware\\
+- Fertigstellung Watchdog und DNS\\
+- Testen der Applikation mit RPC
+
+\end{document}
