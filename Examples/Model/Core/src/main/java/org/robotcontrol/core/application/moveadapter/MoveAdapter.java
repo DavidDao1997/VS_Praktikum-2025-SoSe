@@ -3,12 +3,12 @@ package org.robotcontrol.core.application.moveadapter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.robotcontrol.middleware.Middleware;
+import org.robotcontrol.middleware.idl.ActuatorController;
+import org.robotcontrol.middleware.idl.StateService;
 import org.robotcontrol.middleware.utils.Logger;
-import org.robotcontrol.middlewarev2.Middleware;
-import org.robotcontrol.middlewarev2.idl.ActuatorController;
-import org.robotcontrol.middlewarev2.idl.StateService;
 
-public class MoveAdapter implements org.robotcontrol.middlewarev2.idl.MoveAdapter {
+public class MoveAdapter implements org.robotcontrol.middleware.idl.MoveAdapter {
 	private static final Logger logger = new Logger("MoveAdapter");
 	private StateService stateService;
 	private String selected;

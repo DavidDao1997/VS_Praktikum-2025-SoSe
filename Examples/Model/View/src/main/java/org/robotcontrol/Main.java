@@ -1,12 +1,10 @@
 package org.robotcontrol;
 
 import org.robotcontrol.http.SimpleHttpServer;
-
+import org.robotcontrol.middleware.Middleware;
+import org.robotcontrol.middleware.idl.UI;
+import org.robotcontrol.middleware.rpc.RpcServer;
 import org.robotcontrol.middleware.utils.Environment;
-import org.robotcontrol.middleware.utils.Logger;
-import org.robotcontrol.middlewarev2.Middleware;
-import org.robotcontrol.middlewarev2.idl.UI;
-import org.robotcontrol.middlewarev2.rpc.RpcServer;
 import org.robotcontrol.view.WebSocketView;
 import org.robotcontrol.websocket.RobotWebSocketServer;
 

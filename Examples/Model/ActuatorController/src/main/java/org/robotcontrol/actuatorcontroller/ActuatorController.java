@@ -5,14 +5,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 import org.cads.vs.roboticArm.hal.real.CaDSRoboticArmReal;
+import org.robotcontrol.middleware.Middleware;
+import org.robotcontrol.middleware.idl.Watchdog;
+import org.robotcontrol.middleware.rpc.RpcServer;
 import org.robotcontrol.middleware.utils.Environment;
 import org.robotcontrol.middleware.utils.Logger;
-import org.robotcontrol.middlewarev2.Middleware;
-import org.robotcontrol.middlewarev2.idl.Watchdog;
-import org.robotcontrol.middlewarev2.rpc.RpcServer;
 
 
-public class ActuatorController implements org.robotcontrol.middlewarev2.idl.ActuatorController {
+public class ActuatorController implements org.robotcontrol.middleware.idl.ActuatorController {
     private static final Logger logger = new Logger("ActuatorController");
     public static void main(String[] args) {
          if (args.length != 2) {

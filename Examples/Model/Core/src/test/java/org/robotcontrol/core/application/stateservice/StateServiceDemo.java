@@ -1,15 +1,13 @@
 package org.robotcontrol.core.application.stateservice;
 
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.robotcontrol.core.Corev2.ControllerMock;
-import org.robotcontrol.middlewarev2.idl.Controller;
-import org.robotcontrol.middlewarev2.idl.StateService.SelectDirection;
+import org.robotcontrol.middleware.idl.Controller;
+import org.robotcontrol.middleware.idl.StateService.SelectDirection;
 
 public class StateServiceDemo {
     public static void main(String[] args) throws InterruptedException {
@@ -91,5 +89,36 @@ public class StateServiceDemo {
             }
         }
         // scanner.close();
+    }
+
+
+    // public static class StateServiceMock implements StateService {
+    //     @Override
+    //     public void reportHealth(String serviceName, String subscription) {
+    //         // TODO Auto-generated method stub
+    //         throw new UnsupportedOperationException("Unimplemented method 'reportHealth'");
+    //     }
+
+    //     @Override
+    //     public void setError(boolean err, boolean confirm) {
+    //         logger.info("setError(%s, %s)", err, confirm);
+    //     }
+
+    //     @Override
+    //     public void select(SelectDirection selectDirection) {
+    //         logger.info("select(%s)", selectDirection);
+    //     }
+    // }
+
+    public static class ControllerMock implements Controller {
+        @Override
+        public void update(String[] robots, int selected, boolean error, boolean confirm) {
+            StringBuilder sb = new StringBuilder();
+            for (String robot : robots) {
+                sb.append(String.format(" %s", robot));
+            }
+
+            System.out.printf("update(%s, %s, %s, %s)\n", sb.toString(), selected, error, confirm);
+        }
     }
 }

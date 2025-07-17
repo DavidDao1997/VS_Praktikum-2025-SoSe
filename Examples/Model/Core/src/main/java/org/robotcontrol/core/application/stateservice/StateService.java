@@ -1,29 +1,25 @@
 package org.robotcontrol.core.application.stateservice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.robotcontrol.middleware.Middleware;
+import org.robotcontrol.middleware.idl.Controller;
+import org.robotcontrol.middleware.idl.MoveAdapter;
+import org.robotcontrol.middleware.idl.Watchdog;
 import org.robotcontrol.middleware.utils.Logger;
-import org.robotcontrol.middlewarev2.Middleware;
-import org.robotcontrol.middlewarev2.idl.Controller;
-import org.robotcontrol.middlewarev2.idl.MoveAdapter;
-import org.robotcontrol.middlewarev2.idl.Watchdog;
 
 import lombok.Setter;
 
 @Setter
-public class StateService implements org.robotcontrol.middlewarev2.idl.StateService {
+public class StateService implements org.robotcontrol.middleware.idl.StateService {
 	private final Logger logger = new Logger("StateService");
 
 	private MoveAdapter moveAdapter;

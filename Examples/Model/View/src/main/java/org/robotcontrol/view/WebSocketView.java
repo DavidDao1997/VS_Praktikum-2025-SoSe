@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.robotcontrol.websocket.RobotWebSocketServer;
 
-public class WebSocketView implements org.robotcontrol.middlewarev2.idl.UI {
+public class WebSocketView implements org.robotcontrol.middleware.idl.UI {
 
     private final RobotWebSocketServer server;
     private final ObjectMapper objectMapper = new ObjectMapper();

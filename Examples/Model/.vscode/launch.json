@@ -20,7 +20,7 @@
         },
         {
             "type": "java",
-            "name": "View V2",
+            "name": "View",
             "request": "launch",
             "mainClass": "org.robotcontrol.Main",
             "projectName": "View",
@@ -34,9 +34,9 @@
         },
         {
             "type": "java",
-            "name": "Watchdog v2",
+            "name": "Watchdog",
             "request": "launch",
-            "mainClass": "org.robotcontrol.middlewarev2.server.WatchdogServer",
+            "mainClass": "org.robotcontrol.middleware.server.WatchdogServer",
             "projectName": "Middleware",
             "env": {
                 "IP_ADDR": "127.0.0.1",
@@ -50,7 +50,7 @@
         },
         {
             "type": "java",
-            "name": "ActuatorController v2",
+            "name": "ActuatorController",
             "request": "launch",
             "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",
             "projectName": "ActuatorController",
@@ -65,9 +65,9 @@
         },
         {
             "type": "java",
-            "name": "DnsServer v2",
+            "name": "DnsServer",
             "request": "launch",
-            "mainClass": "org.robotcontrol.middlewarev2.server.DnsServer",
+            "mainClass": "org.robotcontrol.middleware.server.DnsServer",
             "projectName": "Middleware",
             "env": {
                 "IP_ADDR": "172.16.1.200",
@@ -77,9 +77,9 @@
         },
         {
             "type": "java",
-            "name": "Core v2",
+            "name": "Core",
             "request": "launch",
-            "mainClass": "org.robotcontrol.core.Corev2",
+            "mainClass": "org.robotcontrol.core.Core",
             "projectName": "Core",
             "env": {
                 "IP_ADDR": "127.0.0.1",
