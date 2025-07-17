@@ -25,9 +25,6 @@
 
 #include "lwip_interface.h"
 #include "app_stub.h"
-//#include "rpc_client.h"
-#include "moveAdapter_client.h"
-#include "stateService_client.h"
 #include "rpc_server.h"
 #include "caching_proxy.h"
 
