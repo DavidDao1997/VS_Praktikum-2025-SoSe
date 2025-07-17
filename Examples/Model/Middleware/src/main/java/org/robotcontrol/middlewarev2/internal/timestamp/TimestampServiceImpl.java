@@ -26,6 +26,7 @@ public class TimestampServiceImpl implements Callable {
     }
 
     private void setTimestamp(String serviceName, String functionName, Long timestamp) {
+        logger.trace("setting Timestamp: %s.%s -> %s",serviceName, functionName, timestamp);
         timestampRegistry.put(toKey(serviceName, functionName), timestamp);
     }
 
