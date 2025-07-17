@@ -1,0 +1,15 @@
+@echo off
+set LOG_LEVEL=DEBUG
+set IP_ADDR=172.16.1.87
+set MOVEADAPTER_PORT=9001
+set STATESERVICE_PORT=9002
+set DNS_CALLBACK_PORT=9999
+set SERVICE=core
+set TIMESTAMP_PORT=9998
+set DNS_SOCKET=172.16.1.87:9000
+ 
+
+echo Running %JAR_PATH%...
+java -jar "core.jar"
+
+pause
