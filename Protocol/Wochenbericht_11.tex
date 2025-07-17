@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{Wochenbericht 11 - Praktikum "Verteilte Systeme": Implementierung}
+\author{Marc Siekmann}
+\date{\today}
+
+\lstset{
+    language=Java,                
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,                  
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,                   
+    numbersep=5pt,                 
+    backgroundcolor=\color{white}, 
+    showspaces=false,               
+    showstringspaces=false,         
+    showtabs=false,                
+    frame=single,                 
+    tabsize=4,                      
+    captionpos=b,                   
+    breaklines=true,                
+    breakatwhitespace=true,        
+    title=\lstname,               
+    escapeinside={\%*}{*)},         
+    morekeywords={Integer,IntWritable, Iterable, Text},
+}
+
+\begin{document}
+\maketitle
+\section{Mitglieder des Projektes }
+
+\begin{tabular}{>{\raggedright\arraybackslash}p{3cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{2cm} >{\centering\arraybackslash}p{2cm} >{\raggedright\arraybackslash}p{3cm}}
+\toprule
+\textbf{Mitglied des Projektes} & \textbf{Aufgabe} & \textbf{Fortschritt} & \textbf{Zeiteinsatz} & \textbf{Check} \\
+\midrule
+Manh-An David Dao & Implementierung Controller und Debugging  & 80\% & 8h & in progress \\
+\hline
+Jannik Schön & Implementierung Watchdog & 80\% & 8h & in progress \\
+\hline
+Marc Siekmann & Implementierung ITS-Board & 80\% & 8h & in progress \\
+\hline
+Philipp Patt & Implementierung DNS Server und Watchdog & 80\% & 8h & in progress \\
+
+\bottomrule
+\end{tabular}
+
+\section{Zusammenfassung der Woche}
+
+\noindent
+Im Berichtszeitraum wurden alle Komponenten des verteilten Systems analysiert, überarbeitet und um die volle Funktionalität erweitert. Die Verfügbarkeit und Latenzverhalten wurden optimiert.\\
+Bislang registrierten sich alle Services ausschließlich nach einem vollständigen Neustart. Durch einen ereignisgetriebenen Mechanismus erfolgt die (Re-)Registrierung nun automatisch bei jeder Statusänderung, was Fehlertoleranz und Wiederherstellungszeit verbessert.\\
+Die Anwendungslogik enthielt implizite Annahmen über eine dauerhafte Persistenz des internen Zustands, wodurch UI-Ereignisse ohne vorherigen Reload teilweise unberücksichtigt blieben. Durch die Umstellung von einem \texttt{onChange}-Modell wird periodisch der View upgedatet, sodass Oberflächenelemente permanent konsistent bleiben.\\
+Außerdem wurde die Antwort des Namensservers so erweitert, dass Service- und Funktionsnamen gemeinsam mit dem Socket zurückgeliefert werden und somit eindeutig zuordenbar sind.\\
+Bisher waren alle DNS-Abfragen bislang komplett ungecached. Ergänzend wurde daher ein spezialisierter Caching-Proxy implementiert, der ausgehende DNS-Requests abfängt, wiederkehrende Anfragen direkt beantwortet und Einträge adaptiv über TTL-Strategien validiert. Damit versprechen wir uns eine Verringerung der Latenzzeiten\footnote{\url{https://github.com/scimbe/vs_script/blob/main/vs-script-first-v01.pdf} S.96/97}.\\
+Ein weiterhin offener Punkt betrifft die Latenz zwischen Bewegungsaufforderung im Steuerungsmodul und deren physischer Ausführung, die derzeit über 1\,s liegt. Dies betrifft die geforderte Sicherheit und muss folgende Woche behoben werden.\\
+Insgesamt steigerten die vorgenommenen Maßnahmen die Systemzuverlässigkeit signifikant; die verbleibende Verzögerung wird in er kommenden, letzten mit hoher Priorität adressiert.
+\\ \\
+Die Arbeiten finden in den PRs \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/26}} \footnote{\url{https://git.haw-hamburg.de/infwgi246/vs_praktikum-2025-sose/-/merge_requests/27}} statt. 
+
+\section{Nächste Schritte}
+
+Arc Dokumentation, Sicherheit (Zeitsensitivität), und debugging vervollständigen.
+
+\end{document}
