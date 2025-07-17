@@ -1,0 +1,102 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+                {
+            "type": "java",
+            "name": "StateServiceDemo",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.core.application.stateservice.StateServiceDemo",
+            "projectName": "Core",
+                "env": {
+                "PORT": 6666,
+                "IP_ADDR": "127.0.0.1",
+                "DNS_CALLBACK_PORT": 6001,
+                "DNS_SOCKET": "127.0.0.1:6001",
+                "LOG_LEVEL": "DEBUG"
+            }
+        },
+        {
+            "type": "java",
+            "name": "View",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.Main",
+            "projectName": "View",
+            "env": {
+                "PORT": 5000,
+                "IP_ADDR": "127.0.0.1",
+                "DNS_CALLBACK_PORT": 5001,
+                "DNS_SOCKET": "127.0.0.1:9000",
+
+            }
+        },
+        {
+            "type": "java",
+            "name": "Watchdog",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.middleware.server.WatchdogServer",
+            "projectName": "Middleware",
+            "env": {
+                "IP_ADDR": "127.0.0.1",
+                "SERVICE": "watchdog",
+                "PORT": 8000,
+                "DNS_CALLBACK_PORT": 8001,
+                "TIMESTAMP_PORT": 8002,
+                "DNS_SOCKET": "127.0.0.1:9000",
+                "LOG_LEVEL": "DEBUG"
+            }
+        },
+        {
+            "type": "java",
+            "name": "ActuatorController",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.actuatorcontroller.ActuatorController",
+            "projectName": "ActuatorController",
+            "args": "1 1",
+            "env": {
+                "IP_ADDR": "127.0.0.1",
+                "PORT": 7000,
+                "DNS_CALLBACK_PORT": 7001,
+                "DNS_SOCKET": "127.0.0.1:9000",
+                // // "LOG_LEVEL": "TRACE"
+            }
+        },
+        {
+            "type": "java",
+            "name": "DnsServer",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.middleware.server.DnsServer",
+            "projectName": "Middleware",
+            "env": {
+                "IP_ADDR": "172.16.1.200",
+                "PORT": 9000,
+                // "LOG_LEVEL": "TRACE"
+            }
+        },
+        {
+            "type": "java",
+            "name": "Core",
+            "request": "launch",
+            "mainClass": "org.robotcontrol.core.Core",
+            "projectName": "Core",
+            "env": {
+                "IP_ADDR": "127.0.0.1",
+                "MOVEADAPTER_PORT": 6000,
+                "STATESERVICE_PORT": 6001,
+                "DNS_CALLBACK_PORT": 6002,
+                "SERVICE": "core",
+                "TIMESTAMP_PORT": 6003,
+                "DNS_SOCKET": "127.0.0.1:9000",
+                "LOG_LEVEL": "DEBUG"
+            }
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        }
+    ]
+}
