@@ -1,19 +1,10 @@
 services:
-  server:
-    image: java-udp-server
-    ports:
-      - "45054:45054/udp"
 
-  client:
-    image: c-udp-client
-    depends_on:
-      - server
+  view:
+    image: git.haw-hamburg.de:5000/infwgi246/vs_praktikum-2025-sose/robot-control/view:latest
+    network_mode: "host"
     environment:
-      SERVER_IP: server
-
-  dnsclient:
-    image: dns-client
-    depends_on:
-      - dnsserver
-  dnsserver:
-    image: dns-server
+      IP_ADDR: ${IP_ADDR:-172.16.1.201}
+      PORT: 5000
+      DNS_CALLBACK_PORT: 5001
+      DNS_SOCKET: ${DNS_SOCKET:-172.16.1.201:9000}
