@@ -13,23 +13,27 @@ public class RpcClientImpl implements Invokable {
     private final String serviceName;
     private String socket;
     private final Dns dns;
-    private Invokable rawClient;
-    private final boolean isInternal;
+    private RawRpcClientImpl rawClient;
+    private final boolean withTimestamp;
+    private final TimestampServerImpl timestampServer;
 
     public RpcClientImpl(String serviceName, boolean isInternal) {
         this.serviceName = serviceName;
-        this.isInternal = isInternal;
+        this.withTimestamp = !isInternal;
         this.dns = DnsCachedClientFactory.createDnsCachedClient();
-        if (!isInternal) {
-            TimestampServerImpl.getInstance();
+        if (withTimestamp) {
+            timestampServer = TimestampServerImpl.getInstance();
+        } else {
+            timestampServer = null;
         }
     }
 
     @Override
     public void invoke(String fnName, RpcValue... args) {
-        // we should invoke first to prevent dns resolve delay. this has the downside of the first call allways failing.
-        if (rawClient != null) {
-            rawClient.invoke(fnName, args);
+        Long timestamp = null;
+        if (withTimestamp) {
+            timestamp = timestampServer.getTimestamp(serviceName, fnName);
+            if (timestamp == null || timestamp == 0) return;
         }
 
         String resolvedSocket = dns.resolve(serviceName, fnName);
@@ -40,12 +44,15 @@ public class RpcClientImpl implements Invokable {
         }
 
         if (!resolvedSocket.equals(socket)) {
-            logger.info("resolved a new socket old: '%s' -> new: '%s' ", socket, resolvedSocket);
+            logger.debug("resolved a new socket old: '%s' -> new: '%s' ", socket, resolvedSocket);
             socket = resolvedSocket;
 
-            rawClient = isInternal 
-                ? new RawRpcClientImpl(socket)
-                : new InvokableWithTimestampAdapter(new RawRpcClientImpl(socket), serviceName);
+            rawClient = new RawRpcClientImpl(socket); 
+        }
+        if (withTimestamp) {
+            rawClient.invoke(timestamp, fnName, args);
+        } else {
+            rawClient.invoke(fnName, args);
         }
     }
 }
