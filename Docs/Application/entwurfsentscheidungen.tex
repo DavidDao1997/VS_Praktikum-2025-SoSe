@@ -1,31 +1,20 @@
-\chapter{Entwurfsentscheidungen}
+%\chapter{Entwurfsentscheidungen}
 
 
 % ADR https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions 
 % Title | Context | Decision | Status | Consequences
 
-\begin{table}[h!]
-	\centering
-	\begin{tabular}{p{3cm}|p{4cm}| p{5.5cm} | p{1.5cm}|}
-		\hline
-		\textbf{Entscheidung} & \textbf{Alternativen} & \textbf{Begründung} & \textbf{Woche}\\
-		\hline
-		Client-Server  & Schichten-Modell, Service-Orientiert, Ereignisgesteuert,Microservice, P2P, Serverless  & Bi-Direktionale Kommunikation via RPC. Komplexität vermeiden (Microservices, Serverless) &  2\\
-		\hline
-		RPC Kommunikation & MQTT, REST... & Funktionaler Ansatz; Es muss nur eine API bereitgestellt werden, sher effizient, kleiner Overhead, asynchrone Kommunikation möglich & 2 \\
-		\hline
-		Roboter-Software &  & Möglichkeit eine API bereitzustellen; Flexibilität, um Befehle zu verarbeiten (Sprache etc.); Erweiterbare Funktionalität & 2 \\
-		\hline
-		Logik liegt auf Raspberry Pi des zu steuernden R-Arms& Auf ITS-Board, Externer Server & Leistungsstark, kein Single Point Of Failure, Selbstverwaltung, erweiterte Skalierbarkeit & 2 \\
-		\hline
-		TCP & UDP  & verbindungsorientiert, damit Daten vollständig sind& 2\\
-		\hline
-		direkte Kopplung & Indirekte Kopplung,Losgekoppelte Kopplung, Strukturelle Kopplung  & Verbindung ausschliesslich zu gesteuertem Roboter & 2 \\
-		\hline
-		&  & & \\
-		\hline
-	\end{tabular}
-	\caption{Zentrale Entwurfsentscheidungen}
-	\label{tab:entwurfsentschiedungen}
-\end{table}
+% \begin{table}[h!]
+% 	\centering
+% 	\begin{tabular}{p{3cm}|p{4cm}| p{5.5cm} | p{1.5cm}|}
+% 		\hline
+% 		\textbf{Entscheidung} & \textbf{Alternativen} & \textbf{Begründung} & \textbf{Woche}\\
+% 		\hline
+% 		Logik liegt auf Raspberry Pi des zu steuernden R-Arms& Auf ITS-Board, Externer Server & Leistungsstark, kein Single Point Of Failure, Selbstverwaltung, erweiterte Skalierbarkeit & 2 \\
+		 
+% 		\hline
+% 	\end{tabular}
+% 	\caption{Zentrale Entwurfsentscheidungen}
+% 	\label{tab:entwurfsentschiedungen}
+% \end{table}
 % updates when kapitel 4 ist geändert

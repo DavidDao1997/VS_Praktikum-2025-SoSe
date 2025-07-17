@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Status View</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.5em;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 30px;
+        }
+        li {
+            font-size: 1.1em;
+            margin: 5px 0;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        li.selected {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        .status-button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            margin-right: 20px;
+            color: white;
+            background-color: lightgray;
+        }
+        .error {
+            background-color: red;
+        }
+        .confirmation {
+            background-color: green;
+        }
+        .disabled {
+            background-color: gray;
+        }
+        #connectionStatus {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+ 
+<h1>Verfügbare Roboter</h1>
+<p id="connectionStatus">Verbindung wird hergestellt...</p>
+ 
+<ul id="robotList"></ul>
+ 
+<button id="errorBtn" class="status-button">Fehlerstatus</button>
+<button id="confirmationBtn" class="status-button">Bestätigung</button>
+ 
+<script>
+    // UpdateView Funktion, um die empfangenen Roboter-Daten anzuzeigen
+   function updateView(AvailableRobots, SelectedRobotIdx, Error, Confirmation) {
+    const list = document.getElementById("robotList");
+    const errorBtn = document.getElementById("errorBtn");
+    const confirmationBtn = document.getElementById("confirmationBtn");
+ 
+    list.innerHTML = "";  // Leere die Liste, bevor neue Daten eingefügt werden
+ 
+    // Wenn keine Auswahl getroffen wurde, aber Roboter vorhanden sind, fülle die Liste mit den Roboter-Namen
+    AvailableRobots.forEach((name, idx) => {
+        const li = document.createElement("li");
+ 
+        // Zeige den Namen des Roboters
+        li.textContent = name;
+ 
+        // Adjust for 1-based index (0 = no selection)
+        if (SelectedRobotIdx > 0 && idx === SelectedRobotIdx - 1) {
+            li.classList.add("selected");
+        }
+ 
+        list.appendChild(li);  // Füge das Listenelement zur Liste hinzu
+    });
+ 
+    // Fehler-Button anpassen
+    errorBtn.className = "status-button";
+    if (Error) {
+        errorBtn.classList.add("error");
+        errorBtn.textContent = "Fehler erkannt";
+    } else {
+        errorBtn.classList.add("disabled");
+        errorBtn.textContent = "Kein Fehler";
+    }
+ 
+    // Bestätigungs-Button anpassen
+    confirmationBtn.className = "status-button";
+    if (Confirmation) {
+        confirmationBtn.classList.add("confirmation");
+        confirmationBtn.textContent = "Erfolgreich";
+    } else {
+        confirmationBtn.classList.add("disabled");
+        confirmationBtn.textContent = "Keine Aktion";
+    }
+}
+ 
+ 
+ 
+    // WebSocket und Verbindung zum Server
+    window.onload = function () {
+        const statusText = document.getElementById("connectionStatus");
+ 
+        // Versuche, eine Verbindung zum WebSocket-Server aufzubauen
+        const socket = new WebSocket("ws://localhost:4567");
+ 
+        // Wenn die Verbindung geöffnet wird
+        socket.onopen = function () {
+            console.log("WebSocket verbunden mit Server.");
+            statusText.textContent = "WebSocket verbunden.";
+        };
+ 
+        // Wenn eine Nachricht empfangen wird
+        socket.onmessage = function (event) {
+            try {
+                const data = JSON.parse(event.data);  // Empfange und parse die Nachricht
+                console.log("Empfangenes JSON:", data);  // Protokolliere die empfangenen Daten
+ 
+                // Rufe updateView mit den empfangenen Daten auf
+                updateView(
+                    data.available_robots,  // Liste der verfügbaren Roboter
+                    data.selected_robot_idx,  // Der Index des ausgewählten Roboters
+                    data.error,  // Fehlerstatus
+                    data.confirmation  // Bestätigungsstatus
+                );
+            } catch (e) {
+                console.error("Fehler beim Verarbeiten der Nachricht:", e);  // Fehlerbehandlung
+            }
+        };
+ 
+        // Wenn ein Fehler auftritt
+        socket.onerror = function (error) {
+            console.error("WebSocket Fehler:", error);
+            statusText.textContent = "WebSocket Fehler!";
+        };
+ 
+        // Wenn die WebSocket-Verbindung geschlossen wird
+        socket.onclose = function () {
+            console.warn("WebSocket Verbindung geschlossen.");
+            statusText.textContent = "WebSocket Verbindung geschlossen.";
+        };
+    };
+</script>
+ 
+</body>
+</html>

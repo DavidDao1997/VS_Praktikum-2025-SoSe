@@ -1,0 +1,45 @@
+@startuml
+' ------------------------------------------------------------
+' View Component – verfeinerte Darstellung
+' ------------------------------------------------------------
+
+skinparam componentStyle uml2
+skinparam roundCorner 15
+skinparam shadowing true
+skinparam lollipopSize 18
+skinparam ComponentPadding 50
+skinparam ArrowColor #0A84FF
+skinparam ArrowThickness 2
+
+' ------------------------------------------------------------
+' Stereotyp‐Stile
+skinparam component<<BlackBox>> {
+  BackgroundColor #333333
+  BorderColor White
+  FontColor White
+}
+
+skinparam component<<WhiteBox>> {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+
+' ------------------------------------------------------------
+component "Controller\n" as C <<WhiteBox>> {
+
+  ' Bereitgestellte Schnittstelle (Lollipop)
+  portout "updateView()" as uV
+
+  ' Benötigte Schnittstellen (Socket)
+  portin  "update()"   as u
+
+  component Controller <<Blackbox>> as CB
+}
+
+' Verkabelung
+u --> CB
+CB --> uV
+
+@enduml

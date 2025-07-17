@@ -1,0 +1,23 @@
+@startuml
+' ------------------------------------------------------------
+' Roboter-System – Kontextdiagramm (Black-Box)
+' ------------------------------------------------------------
+
+' Moderner UML-2-Component-Style
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor #333333 
+  BorderColor White
+  FontColor White
+}
+
+actor "Benutzer" as User
+
+' Roboter-System jetzt als **Black-Box** (kein innerer Block)
+component "Roboter-System" as System <<blackbox>>
+
+' Interaktion
+User   --> System : Bedien-/Steuerbefehle
+System --> User   : Feedback
+
+@enduml
