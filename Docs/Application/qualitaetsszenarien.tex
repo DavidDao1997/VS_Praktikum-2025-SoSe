@@ -1,142 +1,142 @@
 \chapter{Qualitätsszenarien}
-- Bezug auf section 1.2 
-- weniger wichtige Requirements müssen genannt werden
+% - Bezug auf section 1.2 
+% - weniger wichtige Requirements müssen genannt werden
 
-\section{Quality Requirements Overview}
+% \section{Quality Requirements Overview}
 
 
 
-\subsection{Ziele für Software Engineering}
-\begin{table}[h!]
-	\centering
-	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-		\hline
-		\textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
-		\hline
-		Funktionalität &  
-		%Der Roboter muss Steuerbefehle korrekt umsetzen, auf Umgebungsdaten reagieren und vordefinierte Aufgaben zuverlässig erfüllen.
-		& Alle Abnahmetests werden erfolgreich bestanden
-		\\
-		\hline
-		Zuverlässigkeit & 
-		Teilausfälle dürfen den Gesamtsystembetrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
-		& Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h)
-		\\
-		\hline
-		Skalierbarkeit & 
-		Zusätzliche Roboterarme oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
-		& Es können beliebig viele Roboterarme hinzugefügt und entfernt werden (0 - N)
-		\\
-		\hline
-		Leistung & 
-		Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
-		& Reaktionszeit max. 250 ms
-		\\
-		\hline
-		Sicherheit (Safety) & 
-		Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
-		Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
-		& Reaktionszeit max. 250 ms, bis Roboterarm stoppt
-		\\
-		\hline
-		Wartbarkeit & 
-		Der Code muss modular, gut dokumentiert und testbar sein. Fehlerdiagnose und Protokollierung sollen integriert sein. 
-		& 
-		\\
-		\hline
-		Portabilität & Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
-		& 
-		\\
-		\hline
-		Benutzerfreundlichkeit & Konfiguration und Überwachung müssen intuitiv bedienbar und gut visualisiert sein. 
-		& Keine Einweisung erforderlich
-		\\
-		\hline
-		Anpassbarkeit & 
-		Neue Funktionen, Sensoren oder Regeln sollen ohne tiefgreifende Änderungen am System integrierbar sein. 
-		& 
-		\\
-		\hline
-		Kompatibilität & 
-		Das System soll mit bestehenden Standards und Protokollen kommunizieren können. 
-		& 
-		\\
-		\hline
-	\end{tabular}
-	\caption{Qualitätsziele der Software Engineering}
-	\label{tab:seziele}
-\end{table}
+% \subsection{Ziele für Software Engineering}
+% \begin{table}[h!]
+% 	\centering
+% 	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
+% 		\hline
+% 		\textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
+% 		\hline
+% 		Funktionalität &  
+% 		%Der Roboter muss Steuerbefehle korrekt umsetzen, auf Umgebungsdaten reagieren und vordefinierte Aufgaben zuverlässig erfüllen.
+% 		& Alle Abnahmetests werden erfolgreich bestanden
+% 		\\
+% 		\hline
+% 		Zuverlässigkeit & 
+% 		Teilausfälle dürfen den Gesamtsystembetrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
+% 		& Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h)
+% 		\\
+% 		\hline
+% 		Skalierbarkeit & 
+% 		Zusätzliche Roboterarme oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
+% 		& Es können beliebig viele Roboterarme hinzugefügt und entfernt werden (0 - N)
+% 		\\
+% 		\hline
+% 		Leistung & 
+% 		Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
+% 		& Reaktionszeit max. 250 ms
+% 		\\
+% 		\hline
+% 		Sicherheit (Safety) & 
+% 		Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
+% 		Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
+% 		& Reaktionszeit max. 250 ms, bis Roboterarm stoppt
+% 		\\
+% 		\hline
+% 		Wartbarkeit & 
+% 		Der Code muss modular, gut dokumentiert und testbar sein. Fehlerdiagnose und Protokollierung sollen integriert sein. 
+% 		& 
+% 		\\
+% 		\hline
+% 		Portabilität & Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
+% 		& 
+% 		\\
+% 		\hline
+% 		Benutzerfreundlichkeit & Konfiguration und Überwachung müssen intuitiv bedienbar und gut visualisiert sein. 
+% 		& Keine Einweisung erforderlich
+% 		\\
+% 		\hline
+% 		Anpassbarkeit & 
+% 		Neue Funktionen, Sensoren oder Regeln sollen ohne tiefgreifende Änderungen am System integrierbar sein. 
+% 		& 
+% 		\\
+% 		\hline
+% 		Kompatibilität & 
+% 		Das System soll mit bestehenden Standards und Protokollen kommunizieren können. 
+% 		& 
+% 		\\
+% 		\hline
+% 	\end{tabular}
+% 	\caption{Qualitätsziele der Software Engineering}
+% 	\label{tab:seziele}
+% \end{table}
 
-\clearpage
-\subsection{Ziele der Verteilte Systeme}
-\begin{table}[h!]
-	\centering
-	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-		\hline
-		\textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
-		\hline
-		Ressourcenteilung  & ...& \\
-		Offenheit & ...& \\
-		Skalierbarkeit & ...& siehe Tabelle \ref{tab:skalierbarkeit} \\
-		Verteilung Transparenz & ...& siehe Tabelle \ref{tab:transparenzen} \\
-		\hline
-	\end{tabular}
-	\caption{Qualitätsziele der Verteilten Systeme}
-	\label{tab:vsziele}
-\end{table}
+% \clearpage
+% \subsection{Ziele der Verteilte Systeme}
+% \begin{table}[h!]
+% 	\centering
+% 	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
+% 		\hline
+% 		\textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
+% 		\hline
+% 		Ressourcenteilung  & ...& \\
+% 		Offenheit & ...& \\
+% 		Skalierbarkeit & ...& siehe Tabelle \ref{tab:skalierbarkeit} \\
+% 		Verteilung Transparenz & ...& siehe Tabelle \ref{tab:transparenzen} \\
+% 		\hline
+% 	\end{tabular}
+% 	\caption{Qualitätsziele der Verteilten Systeme}
+% 	\label{tab:vsziele}
+% \end{table}
 
-\subsubsection{Skalierbarkeit}
-\begin{table}[h!]
-	\centering
-	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-		\hline
-		\textbf{Ziel} & \textbf{Metrik} & \textbf{Metrik} \\
-		\hline
-		Vertikale Skalierung   & ... &\\
-		\hline
-		Horizontale Skalierung & ...& \\
-		\hline
-		Räumliche Skalierbarkeit &  & 1 \\
-		\hline
-		Funktionale Skalierbarkeit & ... & \\
-		\hline
-		Administrative-Skalierbarkeit & &1 \\
-		\hline
-	\end{tabular}
-	\caption{Skalierbarkeit von verteilten Systemen}
-	\label{tab:skalierbarkeit}
-\end{table}
+% \subsubsection{Skalierbarkeit}
+% \begin{table}[h!]
+% 	\centering
+% 	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
+% 		\hline
+% 		\textbf{Ziel} & \textbf{Metrik} & \textbf{Metrik} \\
+% 		\hline
+% 		Vertikale Skalierung   & ... &\\
+% 		\hline
+% 		Horizontale Skalierung & ...& \\
+% 		\hline
+% 		Räumliche Skalierbarkeit &  & 1 \\
+% 		\hline
+% 		Funktionale Skalierbarkeit & ... & \\
+% 		\hline
+% 		Administrative-Skalierbarkeit & &1 \\
+% 		\hline
+% 	\end{tabular}
+% 	\caption{Skalierbarkeit von verteilten Systemen}
+% 	\label{tab:skalierbarkeit}
+% \end{table}
 
-\newpage
-\subsubsection{Verteilungs-Transparenzen}
-\begin{table}[h!]
-	\centering
-	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
-		\hline
-		\textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
-		\hline
-		Zugriffstransparenz   & ...&\\
-		\hline
-		Lokalitäts-Transparenz  & ...&\\
-		\hline
-		Migrationstransparenz & ...&\\
-		\hline
-		Replikationstransparenz &...&\\
-		\hline
-		Fehlertransparenz &... &\\
-		\hline
-		Ortstransparenz & .. &\\
-		\hline
-		Skalierbarkeits-Transparenz & ... & \\
-		%Concurrency
-		%Relocation
-		\hline
-	\end{tabular}
-	\caption{Verteilungs-Transparenzen}
-	\label{tab:transparenzen}
-\end{table}
+% % \newpage
+% \subsubsection{Verteilungs-Transparenzen}
+% \begin{table}[h!]
+% 	\centering
+% 	\begin{tabular}{p{4cm}|p{5cm}|p{5cm}|}
+% 		\hline
+% 		\textbf{Ziel} & \textbf{Beschreibung} & \textbf{Metrik} \\
+% 		\hline
+% 		Zugriffstransparenz   & ...&\\
+% 		\hline
+% 		Lokalitäts-Transparenz  & ...&\\
+% 		\hline
+% 		Migrationstransparenz & ...&\\
+% 		\hline
+% 		Replikationstransparenz &...&\\
+% 		\hline
+% 		Fehlertransparenz &... &\\
+% 		\hline
+% 		Ortstransparenz & .. &\\
+% 		\hline
+% 		Skalierbarkeits-Transparenz & ... & \\
+% 		%Concurrency
+% 		%Relocation
+% 		\hline
+% 	\end{tabular}
+% 	\caption{Verteilungs-Transparenzen}
+% 	\label{tab:transparenzen}
+% \end{table}
 
-\newpage
+% \newpage
 
 \section{Bewertungsszenarien}
 \begin{table}[h!]
@@ -162,28 +162,97 @@ Roboterarm innerhalb von 250 ms in den Ruhezustand.
 \end{table}
 
 
+\clearpage
+
+% \subsection{Abnahmetests}
+
+% Die folgenden Abnahmetests dienen dem Nachweis, dass die in Abschnitt \ref{tab:seziele} definierten Qualitätsziele erreicht werden. Jeder Test prüft eine oder mehrere Anforderungen an Funktionalität, Zuverlässigkeit, Leistung oder Sicherheit.
+
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{p{1.6cm}|p{4cm}|p{5.5cm}|p{5.5cm}}
+% \hline
+% \textbf{Test-ID} & \textbf{Testname} & \textbf{Beschreibung} & \textbf{Erwartetes Ergebnis / Erfolgskriterium} \\
+% \hline
+% AT-01 & Heartbeat bei Verbindungsabbruch & Simuliere Verbindungsabbruch (z.B. Ethernet Kabel trennen). Der Heartbeat-Mechanismus muss korrekt auslösen. & Heartbeat fällt aus, System erkennt Verbindungsverlust.\\
+% \hline
+% AT-02 & Horizontale Transport Einzelroboter, Hindernis & Ein Roboterarm bewegt ein Objekt horizontal von links nach rechts, hinter einem Hindernis entlang (nicht drüber). & Objekt erreicht korrektes Ziel, keine Kollision mit Hindernis, saubere Bewegung. \\
+% \hline
+% AT-03 & Vertikale Transport  Höhenunterschied (20cm) & Objekt wird von unten nach oben über 20cm transportiert und sicher abgelegt. & Objekt liegt stabil, kein Herunterfallen, exakte Position. \\
+% \hline
+% AT-04 & Switch zwischen Roboterarmen & Zwischen zwei Robotern wird gewechselt, ohne dass der inaktive Roboter sich bewegt. Keine Teardown-Phase. & Der neue Roboter akzeptiert RPC-Aufrufe, der vorherige ist still. Kein ungewolltes Bewegen. \\
+% \hline
+% AT-05 & Horizontale Transport mit zwei Robotern + Switch & Zwei Roboter führen gemeinsam eine horizontale Bewegung aus (wie AT-02), aber mit einem Mid-Weg-Switch von Roboter A auf B. & Objekt bleibt stabil, Bewegung ohne Unterbrechung, reibungsloser Übergang, keine doppelte Bewegung. \\
+% \hline
+% AT-06 & Heartbeat-Abbruch beim Roboterwechsel & Beim Wechsel von Roboter A auf B wird gezielt der Heartbeat von A abgebrochen, um Ausfallverhalten zu prüfen. & Heartbeat-Abbruch wird erkannt, System wechselt sicher auf B, kein Deadlock oder Fehlzustand. \\
+% \hline
+% AT-07 & Transport unter Netzwerklast & Das System wird während der Bewegung mit zusätzlichem Netzwerkverkehr belastet (z.B. durch künstliche UDP-Flut oder parallele Netzwerkstreams). & Bewegung wird trotz hoher Netzwerklast korrekt ausgeführt, keine Verzögerung, kein Paketverlust mit Auswirkung auf die Bewegung. \\
+% \hline
+% \end{tabular}
+% \caption{Abnahmetests zur Absicherung der Qualitätsanforderungen}
+% \label{tab:abnahmetests}
+% \end{table}
+\subsection{End-to-End Tests}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{p{1.6cm}|p{4cm}|p{5.5cm}|p{5.5cm}}
+        \hline
+        \textbf{Test-ID} & \textbf{Erwartung} & \textbf{Ergebnis} \\
+        \hline
+        1  & IO -> ActuatorController & Ein Bewegungsbefehl nach links hat eine Bewegung des Roboterarms nach links zur Folge & Bestanden\\
+		\hline
+        2  & IO -> ActuatorController & Ein Bewegungsbefehl nach rechts hat eine Bewegung des Roboterarms nach rechts zur Folge & Bestanden \\
+		\hline
+        3  & IO -> ActuatorController & Ein Bewegungsbefehl  nach oben hat eine Bewegung des Roboterarms nach oben zur Folge & Bestanden\\
+		\hline
+        4  & IO -> ActuatorController & Ein Bewegungsbefehl nach unten hat eine Bewegung des Roboterarms nach unten zur Folge & Bestanden \\
+		\hline
+        5  & IO -> ActuatorController & Ein Bewegungsbefehl nach vorne hat eine Bewegung des Roboterarms nach vorne zur Folge & Bestanden \\
+		\hline
+        6  & IO -> ActuatorController & Ein Bewegungsbefehl nach hinten hat eine Bewegung des Roboterarms nach hinten zur Folge & Bestanden \\
+		\hline
+        7  & IO -> ActuatorController & Ein Bewegungsbefehl des schließens hat eine anteilige Schließung der Klaue des Roboterarms zur Folge & Bestanden \\
+		\hline
+        8  & IO -> ActuatorController & Ein Bewegungsbefehl des öffnens hat eine anteilige Öffnung der Klaue des Roboterarms zur Folge & Bestanden\\
+        \hline
+        9  & IO -> UI & Wenn der Selektionsbefehl nach oben ausgeführt wird, muss in der UI der Roboter ein Schritt weiter oben selektiert werden & Bestanden  \\
+		\hline
+        10 & IO -> UI & Wenn der Selektionsbefehl nach unten ausgeführt wird, muss in der UI der Roboter ein Schritt weiter unten selektiert werden & Bestanden \\
+        \hline
+        11 & ActuatorController -> UI & Wenn ein ActuatorController beendet wird oder kein Netzwerkzugriff mehr hat, soll der zugehörige Roboter aus der UI entfernt werden  & Bestanden  \\
+        \hline
+        12 & ActuatorController -> UI & Wenn ein ActuatorController gestartet wird, oder er wieder einen Netzwerkverbindung bekommt und dadaurch ein Roboter komplettiert wird, muss dieser in der UI angezeigt werden& Bestanden  \\
+
+        \hline
+        % ...weitere Zeilen nach Bedarf...
+    \end{tabular}
+    \caption{End-to-End Testfälle}
+    \label{tab:e2e_tests}
+\end{table}
+\clearpage
 
 \subsection{Abnahmetests}
-
+ 
 Die folgenden Abnahmetests dienen dem Nachweis, dass die in Abschnitt \ref{tab:seziele} definierten Qualitätsziele erreicht werden. Jeder Test prüft eine oder mehrere Anforderungen an Funktionalität, Zuverlässigkeit, Leistung oder Sicherheit.
-
+ 
 \begin{table}[h!]
 \centering
 \begin{tabular}{p{1.6cm}|p{4cm}|p{5.5cm}|p{5.5cm}}
 \hline
 \textbf{Test-ID} & \textbf{Testname} & \textbf{Beschreibung} & \textbf{Erwartetes Ergebnis / Erfolgskriterium} \\
 \hline
-AT-01 & Heartbeat bei Verbindungsabbruch & Simuliere Verbindungsabbruch (z.B. Ethernet Kabel trennen). Der Heartbeat-Mechanismus muss korrekt auslösen. & Heartbeat fällt aus, System erkennt Verbindungsverlust.\\
+AT-01 & Heartbeat bei Verbindungsabbruch & Simuliere Verbindungsabbruch (Ethernet Kabel trennen). Der Heartbeat-Mechanismus muss korrekt auslösen. & Roboterarm stoppt unter 250ms\\
 \hline
-AT-02 & Horizontale Transport Einzelroboter, Hindernis & Ein Roboterarm bewegt ein Objekt horizontal von links nach rechts, hinter einem Hindernis entlang (nicht drüber). & Objekt erreicht korrektes Ziel, keine Kollision mit Hindernis, saubere Bewegung. \\
+AT-02 & Horizontale Transport Einzelroboter, Hindernis & Ein Roboterarm bewegt ein Objekt(bsp. kleines stück Pappe, was den Greifer nicht behidnert) horizontal von links nach rechts. & Objekt erreicht geplantes Ziel, keine Kollision mit Hindernis.\\
 \hline
 AT-03 & Vertikale Transport  Höhenunterschied (20cm) & Objekt wird von unten nach oben über 20cm transportiert und sicher abgelegt. & Objekt liegt stabil, kein Herunterfallen, exakte Position. \\
 \hline
-AT-04 & Switch zwischen Roboterarmen & Zwischen zwei Robotern wird gewechselt, ohne dass der inaktive Roboter sich bewegt. Keine Teardown-Phase. & Der neue Roboter akzeptiert RPC-Aufrufe, der vorherige ist still. Kein ungewolltes Bewegen. \\
+AT-04 & Switch zwischen Roboterarmen & Zwischen zwei Robotern wird gewechselt, ohne dass der inaktive Roboter sich bewegt. & Der neue Roboter akzeptiert RPC-Aufrufe, der vorherige ist still. Kein ungewolltes Bewegen. \\
 \hline
 AT-05 & Horizontale Transport mit zwei Robotern + Switch & Zwei Roboter führen gemeinsam eine horizontale Bewegung aus (wie AT-02), aber mit einem Mid-Weg-Switch von Roboter A auf B. & Objekt bleibt stabil, Bewegung ohne Unterbrechung, reibungsloser Übergang, keine doppelte Bewegung. \\
 \hline
-AT-06 & Heartbeat-Abbruch beim Roboterwechsel & Beim Wechsel von Roboter A auf B wird gezielt der Heartbeat von A abgebrochen, um Ausfallverhalten zu prüfen. & Heartbeat-Abbruch wird erkannt, System wechselt sicher auf B, kein Deadlock oder Fehlzustand. \\
+AT-06 & Heartbeat-Abbruch beim Roboterwechsel & Beim Wechsel von Roboter A auf B wird gezielt der Heartbeat von A abgebrochen. & Keinerlei störung, Bewegung auf Roboter B sind ohne Probleme weiter ausführbar\\
 \hline
 AT-07 & Transport unter Netzwerklast & Das System wird während der Bewegung mit zusätzlichem Netzwerkverkehr belastet (z.B. durch künstliche UDP-Flut oder parallele Netzwerkstreams). & Bewegung wird trotz hoher Netzwerklast korrekt ausgeführt, keine Verzögerung, kein Paketverlust mit Auswirkung auf die Bewegung. \\
 \hline
@@ -191,3 +260,6 @@ AT-07 & Transport unter Netzwerklast & Das System wird während der Bewegung mit
 \caption{Abnahmetests zur Absicherung der Qualitätsanforderungen}
 \label{tab:abnahmetests}
 \end{table}
+ 
+ 
+ 

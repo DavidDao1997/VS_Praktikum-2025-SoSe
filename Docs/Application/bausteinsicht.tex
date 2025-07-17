@@ -50,7 +50,7 @@ View & Bietet Interaktionsmöglichkeiten für den Nutzer und stellt dem Benutzer
 \section{Bausteinsicht Level 3 Model}
 \begin{figure}[h] % [h] = here
     \centering
-    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_model_v2.png}
+    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_model_updated.png}
     \caption{Bausteinsicht Level 3 Model}
 \end{figure}
 
@@ -60,9 +60,9 @@ View & Bietet Interaktionsmöglichkeiten für den Nutzer und stellt dem Benutzer
 \hline
 \textbf{Komponente} & \textbf{Beschreibung} \\ \hline
 StateService & Speichert die Zustandsänderungen, informiert periodisch den Controller. 
-Informiert den MoveAdapter über den derzeitigen selektierten Roboterarm.\\ \hline
+Informiert den MoveAdapter über den derzeitigen selektierten Roboterarm. Durch die reporthealth() Methode, werden die Zustände der verschiedenen Aktoren überwacht. Darauf aufbauend wird die Liste der verfügbaren Roboter aufgebaut.\\ \hline
 MoveAdapter  & Empfängt einen Steuerungsbefehl vom View, übersetzt diesen um den passenden Aktuator anzusprechen. \\ \hline
-ActuatorController & Empfängt einen Steuerwert, überprüft die Gültigkeit und setzt diesen mithilfe der ICadsRoboticArm API. \\ \hline
+ActuatorController & Empfängt einen Steuerwert, überprüft die Gültigkeit und setzt diesen mithilfe der ICadsRoboticArm API. Sendet einen heartbeat an den Watchdog. \\ \hline
 \end{tabular}
 \caption{Bausteinsicht Level 3}
 \label{tab:lvl3}
@@ -71,7 +71,7 @@ ActuatorController & Empfängt einen Steuerwert, überprüft die Gültigkeit und
 \section{Bausteinsicht Level 3 View}
 \begin{figure}[h] % [h] = here
     \centering
-    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_view.png}
+    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_view_final.png}
     \caption{Bausteinsicht Level 3 View}
 \end{figure}
 
@@ -83,6 +83,27 @@ ActuatorController & Empfängt einen Steuerwert, überprüft die Gültigkeit und
 IO & Leitet die Steuerungsbefehle des Benutzers an den MoveAdapter weiter. Leitet Selektierungsbefehle an den StateService. \\ \hline
 UI  & Stellt dem Nutzer dar welche Roboter verfügbar sind, welcher ausgewählt ist und gibt Rückmeldungen (Fehler, Bestätigungen).\\ \hline
 \end{tabular}
-\caption{Bausteinsicht Level 3}
+\caption{Bausteinsicht Level 3: View}
 \label{tab:lvl3}
 \end{table}
+
+\section{Bausteinsicht Level 3 Controller}
+\begin{figure}[h] % [h] = here
+    \centering
+    \includegraphics[width=0.6\textwidth]{diagrams/baustein_lvl_3_controller_final.png}
+    \caption{Bausteinsicht Level 3 Controller}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{4cm}|p{9cm}|}
+\hline
+\textbf{Komponente} & \textbf{Beschreibung} \\ \hline
+Controller & Leitet Nachrichten des StateService an das View weiter. \\ \hline 
+\end{tabular}
+\caption{Bausteinsicht Level 3: Controller}
+\label{tab:lvl3}
+\end{table}
+
+
+

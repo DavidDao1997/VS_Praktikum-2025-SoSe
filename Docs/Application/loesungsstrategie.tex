@@ -63,6 +63,14 @@ Die View bleibt vollständig abstrahiert und erhält ausschließlich aktualisier
         \hline
         boolean isAvailable() & keine & Prüft, ob alle vier Aktoren (A1–A4) des Roboterarms aktiv sind. Gibt \texttt{true} zurück, wenn der Roboterarm vollständig verfügbar ist. \\
         \hline
+        checkServiceTimeouts() & keine & Überprüft alle 250ms ob services sich mindestens 1 mal pro Sekunde melden, löscht Einträge wenn diese kein Heartbeat mehr verschicken.\\
+        \hline
+        checkSubscriptionTimeouts() & keine & Überprüft alle 250ms of die subscription noch aktiv ist, ansonsten wird beim Watchdog erneut subscribed. \\
+        \hline
+        sendUpdate() & Eine Controller Instanz muss erstellt worden sein & Sendet alle 250ms periodisch Zustandsänderungen an den Controller
+      
+
+
     \end{tabular}
     \caption{Funktionen der Komponente StateService}
     \label{tab:StateService}

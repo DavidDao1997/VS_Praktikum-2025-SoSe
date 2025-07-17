@@ -27,22 +27,19 @@ skinparam component<<WhiteBox>> {
 
 
 ' ------------------------------------------------------------
-component "View\n" as V <<WhiteBox>> {
+component "Controller\n" as C <<WhiteBox>> {
 
   ' Bereitgestellte Schnittstelle (Lollipop)
-  portout "updateView()" as IUpdate
+  portout "updateView()" as uV
 
   ' Benötigte Schnittstellen (Socket)
-  portin  "move()"   as IMove
-  portin  "select()" as ISelect
+  portin  "update()"   as u
 
-  component UI <<Blackbox>>
-  component IO <<Blackbox>>
+  component Controller <<Blackbox>> as CB
 }
 
 ' Verkabelung
-IUpdate --> UI     
-IO      --> IMove  
-IO      --> ISelect
+u --> CB
+CB --> uV
 
 @enduml
