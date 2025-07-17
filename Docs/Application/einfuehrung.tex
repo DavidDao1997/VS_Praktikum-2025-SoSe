@@ -2,11 +2,15 @@
 
 \section{Aufgabenstellung}
 
-Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter Systeme nach Tanenbaum \& van Steen entworfen und implementiert werden. Über ein ITS-Board (STM32F4) sollen beliebig viele autonome Roboterarme innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher und effizient gesteuert werden. Die verteilte Architektur soll dabei explizit gewährleisten, dass durch Fehlverhalten der Software oder Architektur keine Gefahr für Anwesende entstehen kann. Daraus geht hervor, dass der Benutzer einen zu steuernden Roboterarm auswählt und diesen anschließend mit den folgenden Bewegungen steuern kann:
+Es soll eine Applikation entwickelt werden, die beliebig hinzugefügte Roboterarme erkennt und ansteuern kann.
+Jeder Roboterarm besteht aus vier unabhängigen Motoren. Über ein ITS-Board (STM32F4) sollen die Roboterarme innerhalb eines kontrollierten Areals (z.B. BT7 R7.65 – als realer Testbereich) sicher gesteuert werden.
+Mögliches Fehlverhalten der Software oder Architektur soll keine Gefahr für Anwesende darstellen. Der Benutzer soll einen zu steuernden Roboterarm auswählen und diesen anschließend mit den folgenden Bewegungen steuern:
 
 \begin{itemize}
 	\item Roboterarm hoch
 	\item Roboterarm runter
+	\item Roboterarm vorwärts
+	\item Roboterarm zurück
 	\item Roboterarm links
 	\item Roboterarm rechts
 	\item Greifer auf
@@ -33,77 +37,81 @@ Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter System
 	\hline
 	\endhead
 	
-	\hline
+	\hline  
 	\endfoot
    
         Funktionalität &  
         Der ausgewählte Roboterarm muss Steuerbefehle korrekt umsetzen
-        & Alle Abnahmetests werden erfolgreich bestanden
+        & Alle Abnahmetests werden erfolgreich bestanden.
         \\
         \hline
         Zuverlässigkeit & 
         Fehler dürfen den Betrieb nicht gefährden. Fehlererkennung und -toleranz müssen integriert sein.
-        & Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h)
+        & Das System ist über dem gesamten Abnahmezeitraum stabil (ca. 1,5 h).
         \\
         \hline
         Skalierbarkeit & 
-        Zusätzliche Roboter oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
-        & Es können beliebig viele Roboter hinzugefügt und entfernt werden (0 - 253)
+        Zusätzliche Roboterarme oder Komponenten sollen ohne Änderungen an der bestehenden Architektur integrierbar sein. 
+        & Es können beliebig viele Roboterarme hinzugefügt und entfernt werden (0 - 254).
         \\
         \hline
         Leistung & 
         Reaktionszeiten auf Steuerbefehle und Ereignisse müssen innerhalb definierter Zeitgrenzen liegen. 
-        & max. 200 ms bis Befehlsausführung
+        & max. 200 ms bis Befehlsausführung.
         \\
         \hline
         Sicherheit (Safety) & 
-        Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht
+        Es bewegt sich immer genau ein Roboterarm. Sollte das System nicht wie gewünscht reagieren, wird ein sicherer Zustand erreicht.
         %Das System darf unter keinen Umständen eine Gefährdung für Personen/Gegenstände darstellen. Bei Fehlern muss sofort ein sicherer Zustand erreicht werden (z.B. Notstopp). 
-        & Reaktionszeit max. 250 ms, bis Roboterarm stoppt
+        & Reaktionszeit max. 250 ms, bis Roboterarm stoppt.
         \\
         \hline
         Wartbarkeit & 
         Der Code muss übersichtlich sein, gut dokumentiert sein und wenig Komplexität enthalten. 
-        & Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar  
-        
-        \\
+        & Zyklomatische Komplexität $\leq$ 10 und LOC $\leq$ 30 pro Methode/Funktion exklusive Kommentar. \\
         \hline
         %Portabilität & %Die Software soll ohne großen Aufwand auf vergleichbaren Embedded-Systemen lauffähig sein. 
         %& nicht relevant
         %\\
         %\hline
         Benutzerfreundlichkeit & Bedienung ist intuitiv, sodass die Nutzer möglichst wenig Zeit mit der Einarbeitung in die Bedienung benötigen. 
-        & Keine Einweisung erforderlich
+        & Keine Einweisung erforderlich.
         \\
         \hline
+		Anpassbarkeit & Neue Funktionen, Sensoren oder Roboterarme sollen ohne tiefgreifende Änderungen am System integriert werden können. & Erweiterungen können durch modulare Struktur und erweiterbare Schnittstellen einfach hinzugefügt werden. \\ 
+		\hline
+%Anpassbarkeit sollte man eventuell noch durchsprechen, bin aber der meinung das es möglich bsp. UI/Controller
         %Anpassbarkeit & 
         %Neue Funktionen, Sensoren oder Regeln sollen ohne tiefgreifende Änderungen am System integrierbar sein. 
         %& 
         %\\
         %\hline
+		Kompatibilität & Das System soll mit verschiedenen Hard- und Softwareplattformen kompatibel sein. & Es unterstützt die Kommunikation mit Embedded-Systemen. \\ 
+		\hline
         %Kompatibilität & 
         %Das System soll mit bestehenden Standards und Protokollen kommunizieren können. 
         %& 
         %\\
-        %\hline
-        Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme sind ansteuerbar \\
+        %\hline 
+		% Ressourcenteilung  & Mehrere Roboterarme können über einem Netzwerk von einem ITS-Board gesteuert werden& Alle hinzugefügten Roboterarme sind ansteuerbar \\
+        %Ressourcenteilung & Mehrere Roboterarme können über ein Netzwerk von einem ITS-Board gesteuert werden. & Alle hinzugefügten Roboterarme sind ansteuerbar und teilen die verfügbaren Rechenressourcen vom ITS-BRD effizient. \\
+		\hline
+        %Offenheit & 
+       	%\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
+        %& Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
         \hline
-        Offenheit & 
-       	\parbox[t]{5cm}{Zugänglichkeit\\Interoperabilität\\Portabilität} 
-        & Einzelne Softwarekomponenten können, ausgetauscht oder portiert werden, um zb Standards bzgl. Kommunikation und Datenstruktur zu tauschen oder um die Plattform zu wechseln. Die Funktionalität bleibt gleich\\
+        %Zugriffstransparenz   & Die Umsetzung der Roboterarmsteuerung ist für den Benutzer nicht erkennbar und möglichst einfach gehalten & GUI zeigt nur Zustände des ausgewähltem Roboterarms an ( z.B. Verfügbarkeit) und der Roboterarm ist über das ITS-Board so einfach wie möglich steuerbar\\
         \hline
-        Zugriffstransparenz   & Die Umsetzung der Roboterarmsteuerung ist für den Benutzer nicht erkennbar und möglichst einfach gehalten & GUI zeigt nur Zustände des ausgewähltem Roboterarms an ( z.B. Verfügbarkeit) und der Roboterarm ist über das ITS-Board so einfach wie möglich steuerbar\\
+        %Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist für den Benutzer unsichtbar  & Aus der Sicht der Benutzer sind alle benötigten Ressourcen zu Steuerung direkt und lokal auf dem ITS-Board\\
         \hline
-        Lokalitäts-Transparenz  & Die Netzwerk- und Softwarestruktur ist für den Benutzer unsichtbar  & Aus der Sicht der Benutzer sind alle benötigten Ressourcen zu Steuerung direkt und lokal auf dem ITS-Board\\
-       
-        
+	
 \end{longtable}
+
 
 
 
 \clearpage
 \section{Stakeholder}
-
 \begin{table}[h!]
 	\caption{Interessen der Stakeholder}
 	\label{tab:stakeholder}
@@ -117,17 +125,18 @@ Es soll ein verteiltes Steuerungssystem gemäß den Prinzipien verteilter System
 			\item vollständige Funktionalität
 			\item Benutzerfreundlichkeit
 			\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
-			\item Reaktionszeit: Die Robotersteuerung reagiert innerhalb eines definierten Zeitfensters
+			\item Reaktionszeit: Die Roboterarmsteuerung reagiert innerhalb eines definierten Zeitfensters
 			\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
 		\end{itemize}}
 		\\
 		\hline
 		Betreiber 
-		&\parbox{10cm}{\begin{itemize}
+		&\parbox{10cm}{
+			\begin{itemize}
 			\item Portabilität: Das System kann auf verschiedenen Plattformen betrieben werden.
 			\item Zuverlässigkeit: Das System kann über den gesamten benötigten Zeitraum ohne Ausfälle genutzt werden
 			\item Sicherheit: Während des Betriebs kommen keine Personen durch Fehler des Systems zu schaden
-		\end{itemize}}
+			\end{itemize}}
 		\\
 		\hline
 		Entwicklerteam 

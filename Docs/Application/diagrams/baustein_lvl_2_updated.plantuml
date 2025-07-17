@@ -1,0 +1,39 @@
+@startuml
+' ------------------------------------------------------------
+' RoboterSystem – MVC        (White-Box + Black-Box Komponenten)
+' ------------------------------------------------------------
+
+' Modernes UML-2-Style-Layout
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor #333333  
+  BorderColor White
+  FontColor White
+}
+
+' Weißer Container für das Gesamtsystem
+skinparam component<<WhiteBox>> {
+  BackgroundColor White
+  BorderColor Black
+  FontColor Black
+}
+
+left to right direction
+
+' ------------------------------------------------------------
+' White-Box Container „RoboterSystem“
+component "RoboterSystem" as RS <<WhiteBox>> {
+
+    ' MVC-Komponenten (Black-Box-Stil)
+    component "Model"      as M <<Blackbox>>
+    component "Controller" as C <<Blackbox>>
+    component "View"       as V <<Blackbox>>
+
+    ' Methodenaufrufe (intern)
+    M -(0- C : update()
+    C -(0- V : updateView()
+    V -(0- M : move()
+    V -(0- M : select()
+}
+
+@enduml

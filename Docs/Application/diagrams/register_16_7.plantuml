@@ -1,0 +1,17 @@
+@startuml
+participant "ActuatorController (Model)" as ActCtrl
+participant "StateService (Model)" as StS
+'participant "MoveAdapter (Model)" as MA
+participant "Controller (Controller)" as Ctrl
+participant "UI (View)" as UI
+
+ActCtrl ->> StS: registerActuator(R1A1, true)
+ActCtrl ->> StS: registerActuator(R1A2, true)
+ActCtrl ->> StS: registerActuator(R1A4, true)
+ActCtrl ->> StS: registerActuator(R1A4, true)
+
+StS     ->> Ctrl: update([R1], 1, false, true)
+Ctrl    ->> UI: updateView([R1], 1, false, true)
+
+
+@endumlx

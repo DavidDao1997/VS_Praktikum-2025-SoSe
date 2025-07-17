@@ -1,0 +1,16 @@
+@startuml
+actor User
+
+participant "IO (View)" as IO
+participant "StateService (Model)" as StS
+participant "MoveAdapter (Model)" as MA
+participant "Controller (Controller)" as Ctrl
+participant "UI (View)" as UI
+
+
+User -> IO: wählt Roboter
+IO -> StS: select(SelectDirection selectDirection)
+StS -> MA: setSelected(Int)
+StS -> Ctrl: update(Byte[],Int,Bool,Bool)
+Ctrl -> UI: updateView(String [],Int,Bool,Bool)
+@enduml

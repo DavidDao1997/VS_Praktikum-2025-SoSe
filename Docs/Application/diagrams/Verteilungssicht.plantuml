@@ -1,0 +1,26 @@
+@startuml
+' Verteilungssicht: UML-konformes Deployment-Diagramm
+
+frame "Verteilungssicht" {
+
+    node "PC/Rechner" as pc {
+        artifact "UI"
+    }
+
+    node "ITS-BRD" as brd {
+        artifact "IO"
+    }
+
+    node "Raspberry Pi" as pi {
+        artifact "ActuatorController"
+    }
+
+    node "PC/Rechner2" as pc2 {
+        artifact "StateService"
+        artifact "MoveAdapter"
+        artifact "Controller"
+    }
+}
+
+
+@enduml

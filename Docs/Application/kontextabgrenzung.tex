@@ -3,22 +3,103 @@ Ziel dieses Kapitels ist es, das zu entwickelnde System innerhalb seines fachlic
 
 \section{Fachlicher Kontext}
 
-Das verteilte System soll es ermöglichen beliebig viele (1 - 254) Roboterarme in einem Raum zu steuern. Die Kommunikation zum Nutzer und die Steuerung wird durch ein ITS-Board realisiert. 
+% Das verteilte System soll es ermöglichen beliebig viele (1 - 254) Roboterarme in einem Raum zu steuern. Die Kommunikation zum Nutzer und die Steuerung wird durch ein ITS-Board realisiert. 
+% Es wird eine UI angeboten auf dem Rechner, der für die Orientierung für den Nutzer bereitgestellt wird.
+
+Die Applikation ermöglicht es, beliebig viele Roboterarme (zwischen 1 und 254) in einem Raum zu steuern. Die Kommunikation mit dem Nutzer sowie die Steuerung der Roboterarme erfolgen über ein ITS-Board. 
+Zur Unterstützung des Nutzers wird auf einer Benutzeroberfläche (UI) bereitgestellt, die eine intuitive Orientierung und Bedienung der Roboterarme ermöglicht.
+
+\subsection{Use Cases}
+\begin{tabular}{|p{1.5cm}|p{4cm}|p{8.5cm}|}
+	\hline
+	\textbf{ID} & \textbf{Name} & \textbf{Beschreibung} \\
+	\hline
+	U1 & Roboterarm auswählen & Der Nutzer ist in der Lage einen vollständigen Roboterarm auswählen zu können. Der Nutzer hat jederzeit eine Übersicht, welche Roboterarm ausgewählt werden können und ob keiner auswählbar ist. \\
+	\hline
+	U2 & Bewegung auslösen & Der Nutzer kann die Bewegung des Roboterarms auslösen und bekommt Feedback. \\
+	%\hline
+	%U3 & Bewegungsrichtung unterscheiden & Die vom Nutzer ausgelöste Bewegungsrichtung wird dem richtigen Motor zugewiesen. \\
+	\hline
+	U3 & Neuen Motor erkennen & Die einzelnen Motoren melden sich an. Sobald ein neuer vollständiger Roboterarm (4 Motoren) angesteuert werden kann, ist dieser auswählbar und steuerbar. \\
+	\hline
+	
+	
+		
+\end{tabular}
+
+\subsection{Fachliche Randbedingungen}
+
+\begin{itemize}
+	\item Es können bis zu 254 Roboterarme ausgewählt werden
+	\item Jeder Roboterarm hat 4 Motoren, die unabhängig voneinander sind
+	\item Teile der Applikation sind auf dem ITS-Board zu implementieren
+	\item Die Applikation ist sicher. Personen dürfen nicht zu schaden kommen.
+	
+\end{itemize}
+
+
 
 \section{Technischer Kontext}
 
-Die Realisierung wird in einem /24 Netzwerk durchgeführt. In diesem wird das ITS-Board liegen. Ebenfalls sind in den Netzwerk die Roboterarme mit den vorgeschalteten Raspberry Pi, der jeweils einen Roboterarm ansteuert. Weitere Hilfmittel wie eine ICC-Cloud können ebenfalls genutzt werden.
+% Die Realisierung wird in einem /24 Netzwerk durchgeführt. In diesem wird das ITS-Board liegen. Ebenfalls sind in den Netzwerk die Roboterarme mit den vorgeschalteten Raspberry Pi, der jeweils einen Roboterarm ansteuert. Weitere Hilfmittel wie eine ICC-Cloud können ebenfalls genutzt werden.\\\\
+Die Applikation besteht aus einem ITS-Board und jeder Roboterarm wird von einem vorgeschalteten Raspberry Pi angesteuert. Es existiert eine Benutzeroberfläche (UI). Optional kann die Applikation um externe Dienste, die auf anderen Plattformen, wie der ICC-Cloud erweitert werden.
+
+\subsection{Technische Anforderungen an die Applikation}
+
+Um die fachlichen Use Cases umzusetzen, muss die Applikation folgende technische Funktionen bereitstellen:
+
+\begin{itemize}
+	\item \textbf{Roboterarm auswählen U1:}\\
+	\begin{itemize}
+		\item Der Nutzer sucht durch eine Eingabe den gewünschten vollständigen Roboterarm aus
+		\item Die Applikation wertet die Auswahl aus, ob die Gruppe auswählbar ist
+		\item Die Gruppe aus Motoren wird als ausgewählt für die Ansteuerung markiert
+		\item Die Auswahl wird als erfolgreich markiert
+		\item dem Nutzer werden die Auswahländerungen angezeigt und bekommt die erfolgreich Mitteilung
+	\end{itemize}
+	
+	\item \textbf{Bewegung auslösen U2:}\\
+	\begin{itemize}
+		\item Der Nutzer betätigt eine Auswahl für die Bewegungsrichtung
+		\item Der Steuerungsbefehl wird inklusive Richtung der Applikation übergeben
+		\item Der Steuerungsbefehl wird übersetzt
+		\item Die Bewegung wird anhand einer Prozentualen Bewegung durchgeführt
+		\item Der erfolgreiche Befehl wird dem Nutzer mitgeteilt
+	\end{itemize}
+	
+	% \item \textbf{Bewegungsrichtung unterscheiden U3:}\\
+	% \begin{itemize}
+	% 	\item Der Steuerungsbefehl wird inklusive Richtung der Applikation übergeben
+	% 	\item Anhand der Steuerungsrichtung wird entschieden welcher Motor angesprochen wird
+	% 	\item Es wird überprüft, ob der Motor angesprochen werden kann/auswählbar ist
+	% 	\item Der Steuerungsbefehl wird an den ausgewählten Roboterarm weitergegeben
+	% \end{itemize}
+	
+	\item \textbf{Neuen Motor erkennen U3:}\\
+	\begin{itemize}
+		\item Ein neuer Motor wird angeschlossen
+		\item Die Software des Motors sendet einen Anmelde-Anfrage mit dessen Zugehörigkeit und Bewegungsfunktion
+		\item Der neue Motor wird eingetragen
+		\item Es wird geprüft, ob durch den Motor eine kompletter Roboterarm nun auswählbar ist
+		\item dem Nutzer wird ggf. mitgeteilt, dass ein neuer Roboterarm auswählbar ist
+	\end{itemize}
+	
+\end{itemize}
+
 
 \section{Externe Schnittstellen}
 
 \begin{itemize}
 	\item{System:} Der Benutzer kann über ein Bildschirm einzelne erreichbare Roboterarme erkennen. Die Auswahl und Steuern der einzelnen Roboterarme wird durch IO-Buttons realisiert.
 	
-	\item{ITS-Board:} Das ITS-Board kommuniziert über einen TCP-Server mit einer eigenen IP-Adresse mit dem System.
-	
-	\item{Roboterarm:} Der Roboterarm wird mit einer IP-Adresse angesprochen. Dafür ist der vorgeschaltete Raspberry Pi mit einem eigenem TCP-Server zuständig. Dieser stellt ebenfalls eine API für die Steuerung zur Verfügung.  
-	
-	\item{ICC Cloud:} Die ICC Cloud kommuniziert über eine IP-Adresse. % TODO wording, ist das korrekt formuliert?
-	
+	% \item{ITS-Board:} Das ITS-Board kommuniziert über einen TCP-Server mit einer eigenen IP-Adresse mit dem System.
+   	\item{ITS-Board:} Das ITS-Board kommuniziert über einen leichtgewichtigen UDP-Server mit einer eigenen IP-Adresse mit dem System.
+
+	% \item{Roboterarm:} Der Roboterarm wird mit einer IP-Adresse angesprochen. Dafür ist der vorgeschaltete Raspberry Pi mit einem eigenem UDP-Server zuständig. Dieser stellt ebenfalls eine API für die Steuerung zur Verfügung.  
+	\item{Roboterarm:} Der Roboterarm wird über eine IP-Adresse angesprochen. Die Kommunikation erfolgt über einen vorgeschalteten Raspberry Pi, der einen eigenen UDP-Server und eine API zur Steuerung bereitstellt.
+
+	% \item{ICC Cloud:} Die ICC Cloud kommuniziert über eine IP-Adresse. % TODO wording, ist das korrekt formuliert?
+	%\item{ICC Cloud:} Die ICC Cloud ist über eine IP-Adresse im Netzwerk erreichbar. %Eventuell so besser? ist es mit UDP/TCP oder Websocket erreichbar?
+
 	
 \end{itemize}
