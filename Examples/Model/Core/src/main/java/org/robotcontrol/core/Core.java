@@ -8,7 +8,7 @@ import org.robotcontrol.middleware.rpc.RpcServer;
 import org.robotcontrol.middleware.utils.Environment;
 import org.robotcontrol.middleware.utils.Logger;
 
-public class Corev2 {
+public class Core {
     private static final Logger logger = new Logger("Corev2");
 
     public static void main(String[] args) throws InterruptedException {

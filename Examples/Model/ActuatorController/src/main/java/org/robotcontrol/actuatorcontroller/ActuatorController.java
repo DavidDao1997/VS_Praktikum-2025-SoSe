@@ -36,13 +36,14 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
     }
 
     private int value = 50;
-    private final int MIN_VALUE = 0;
-    private final int MAX_VALUE = 100;
     private final String serviceName;
     private final String actuator;
     private ICaDSRoboticArm real;
     private final Watchdog watchdog;
+    private final int MIN_VALUE = 5;
+    private final int MAX_VALUE = 95;
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final int INCREMENT = 5;
 
 
     public ActuatorController(Integer robotID, Integer actuatorID) {
@@ -53,58 +54,59 @@ public class ActuatorController implements org.robotcontrol.middleware.idl.Actua
         this.actuator = "A" + actuatorID.toString();
         // this.real.setBackForthPercentageTo(0);
         // try {
-        //     Thread.sleep(1000);
+        //     Thread.sleep(INCREMENT00);
         // } catch (InterruptedException e) {
         //     // TODO Auto-generated catch block
         //     e.printStackTrace();
         // }
-        // this.real.setBackForthPercentageTo(100);
+        // this.real.setBackForthPercentageTo(INCREMENT0);
         // RegisterActuator ra = new RegisterActuatorClient();
         // ra.registerActuator("R"+robotID.toString()+"A"+actuatorID.toString(), true);
+        real.setBackForthPercentageTo(50);
+        real.setLeftRightPercentageTo(50);
+        real.setOpenClosePercentageTo(50);
+        real.setUpDownPercentageTo(50);
         watchdog = Middleware.createWatchdogClient();
         scheduler.scheduleAtFixedRate(this::periodicHeartbeat, 500, 150, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void move(Direction actuatorDirection) {
-        if (actuatorDirection == Direction.INCREASE) {
-            if (value < MAX_VALUE) {
-                value+=10;
-            }
-        } else if (actuatorDirection == Direction.DECREASE) {
-            if (value > MIN_VALUE) {
-                value-=10;
-            }
-        }
-        applyValue();
-    }
-
-    private void applyValue() {
         int curr;
+        int next;
         switch (actuator) {
             case "A1":
                 curr = real.getLeftRightPercentage();
-                if (curr != value) real.setLeftRightPercentageTo(value);
-                System.out.println("Actuator A1 is set to " + value);
+                if (curr >= MAX_VALUE && actuatorDirection == Direction.INCREASE) return;
+                if (curr <= MIN_VALUE && actuatorDirection == Direction.DECREASE) return;
+                next = curr + (actuatorDirection == Direction.INCREASE ? INCREMENT : -INCREMENT);
+                real.setLeftRightPercentageTo(next);
                 break;
             case "A2":
                 curr = real.getUpDownPercentage();
-                if (curr != value) real.setUpDownPercentageTo(value);
-                System.out.println("Actuator A2 is set to " + value);
+                if (curr >= MAX_VALUE && actuatorDirection == Direction.INCREASE) return;
+                if (curr <= MIN_VALUE && actuatorDirection == Direction.DECREASE) return;
+                next = curr + (actuatorDirection == Direction.INCREASE ? INCREMENT : -INCREMENT);
+                real.setUpDownPercentageTo(next);
                 break;
             case "A3":
                 curr = real.getBackForthPercentage();
-                if (curr != value) real.setBackForthPercentageTo(value);
-                System.out.println("Actuator A3 is set to " + value);
+                if (curr >= MAX_VALUE && actuatorDirection == Direction.INCREASE) return;
+                if (curr <= MIN_VALUE && actuatorDirection == Direction.DECREASE) return;
+                next = curr + (actuatorDirection == Direction.INCREASE ? INCREMENT : -INCREMENT);
+                real.setBackForthPercentageTo(next);
                 break;
             case "A4":
                 curr = real.getOpenClosePercentage();
-                if (curr != value) real.setOpenClosePercentageTo(value);
-                System.out.println("Actuator A4 is set to " + value);
+                if (curr >= MAX_VALUE && actuatorDirection == Direction.INCREASE) return;
+                if (curr <= MIN_VALUE && actuatorDirection == Direction.DECREASE) return;
+                next = curr + (actuatorDirection == Direction.INCREASE ? INCREMENT : -INCREMENT);
+                real.setOpenClosePercentageTo(next);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid actuator name: " + actuator);
         }
+        System.out.println("Actuator A4 is set to " + next);
     }
 
     public int getValue() {
