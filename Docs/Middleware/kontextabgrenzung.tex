@@ -53,13 +53,13 @@
 	%\item Jeder Server hat einen eindeutigen Namen. Dieser gruppiert Dienste.
 	%\item Die Middleware muss mit dem Ausfall oder der Nichterreichbarkeit einzelner Nodes robust umgehen können.
 	%\item Die Systemsicherheit hat höchste Priorität: Weiterleitungen ungültiger RPCs an die Applikation müssen verhindert werden. Es muss eine Fehlermeldung an die Applikation erfolgen. 
-	\item Die Middleware dient als Vermittler bzw, Abstraktionsschicht. Dadurch ist mindestens eine indirekte Kopplung zu implementieren. Um eine hohe Skalierbarkeit oder Fehlertoleranz zu erreichen, ist eine losgekoppelte Kopplung zu implementieren \textcolor{red}{TODO: Quelle}.
+	\item Die Middleware dient als Vermittler bzw, Abstraktionsschicht. Dadurch ist mindestens eine indirekte Kopplung zu implementieren. Um eine hohe Skalierbarkeit oder Fehlertoleranz zu erreichen, ist eine losgekoppelte Kopplung zu implementieren.
 \end{itemize}
 
 \section{Technischer Kontext}
 
 Die Middleware positioniert sich technisch als Vermittlungsschicht zwischen der Anwendungsebene und den darunterliegenden Betriebssystem- und Kommunikationsdiensten. Sie ist über mehrere Teilnehmer verteilt, die über ein lokales /24 Netzwerk miteinander verbunden sind.
-Die Middleware nutzt Netzwerkprotokolle, insbesondere UDP, sowie Betriebssystemfunktionen, um eine zuverlässige Kommunikation zu gewährleisten. Gleichzeitig bietet sie den Anwendungen eine abstrahierte, einheitliche Schnittstelle, die die Heterogenität der zugrundeliegenden Systeme verbirgt. \textcolor{red}{TODO: Quelle} Aus diesem Grund eignet sich in den folgenden Abschnitte eine funktionale Zerlegung\textcolor{red}{TODO: Quelle}. Mit dieser kann die Middleware alle geforderten Ziele eines verteilten Systems (\textcolor{red}{TODO: ABSCHNITT}) einhalten. Mit einer ressourcen-basierten Zerlegung ist dies komplexer.
+Die Middleware nutzt Netzwerkprotokolle, insbesondere UDP, sowie Betriebssystemfunktionen, um eine zuverlässige Kommunikation zu gewährleisten. Gleichzeitig bietet sie den Anwendungen eine abstrahierte, einheitliche Schnittstelle, die die Heterogenität der zugrundeliegenden Systeme verbirgt. Aus diesem Grund eignet sich in den folgenden Abschnitte eine funktionale Zerlegung. Mit dieser kann die Middleware alle geforderten Ziele eines verteilten Systems einhalten. Mit einer ressourcen-basierten Zerlegung ist dies komplexer.
 
 \subsection{Technische Anforderungen an die Middleware}
 
