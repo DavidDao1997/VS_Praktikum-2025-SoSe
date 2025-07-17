@@ -1,0 +1,10 @@
+@startuml
+
+
+participant "Client Stub" as CS
+participant "Server Stub" as SerS
+
+CS ->> SerS: send(RPC)
+SerS -> SerS: unmarshall(RPC)
+
+@enduml

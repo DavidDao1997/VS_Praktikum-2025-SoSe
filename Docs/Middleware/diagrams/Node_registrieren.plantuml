@@ -1,0 +1,13 @@
+@startuml
+participant "Application Client Stub" as AcS
+participant "Client Stub" as CS
+participant "Server Stub" as SerS
+participant "NameServer" as NaSer
+
+
+AcS ->> CS: register(Service, functionName, socket)
+CS -> CS: marshall(Service, functionName, socket)
+CS ->> SerS: send(RPC)
+SerS -> SerS: unmarshall(RPC)
+SerS ->> NaSer: register(Service, functionName, socket)
+@enduml

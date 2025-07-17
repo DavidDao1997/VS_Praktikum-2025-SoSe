@@ -1,0 +1,11 @@
+@startuml
+
+
+participant "Client Stub" as CS
+participant "Marshaller" as MS
+
+CS -> MS: marshall(Service, functionName, parameter)
+MS --> CS: 
+
+
+@enduml

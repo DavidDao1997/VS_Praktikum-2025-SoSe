@@ -1,0 +1,23 @@
+@startuml
+title Watchdog Heartbeat Reporting
+
+participant "Stateservice Client Stub" as SerSCS
+participant "ActuatorController Client Stub" as ACCS
+participant "Watchdog" as WD
+
+== Initiale Subscription ==
+SerSCS ->> WD: subscribe("Stateservice", "R*")
+
+== Heartbeat-Verarbeitung ==
+
+alt Heartbeat erfolgreich
+    loop alle 150ms
+        ACCS ->> WD: heartbeat("R1A1")
+        WD ->> SerSCS: reportHealth("R1A1", "R*")
+    end
+else Heartbeat fällt aus
+    ACCS -x WD: heartbeat(R1A1)
+    WD ->> SerSCS: reportHealth(" ", "R*")
+    'note over WD: Heartbeat für "R1A1" bleibt aus\nFehlermeldung oder Eskalation möglich
+end
+@enduml
